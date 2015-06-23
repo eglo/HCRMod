@@ -6,39 +6,78 @@ using System.Text;
 using System.Media;
 
 namespace Plugin.HCR {
-	public class Display {
+
+	
+	public class Dbg {
+
+		[Flags] public enum Grp {
+			//somehow I thought [Flags] could not be trusted
+			//.. and i was riiight
+			Init = 1, 
+			Startup = 2, 
+			Unity = 4, 
+			Time = 8, 
+			Map = 16, 
+			Weather = 32,
+			Rain = 64,
+			Units = 128, 
+			Invasion = 256
+		};
+
 		private static Configuration conf = Configuration.getInstance();
 		private static GUIManager gm = AManager<GUIManager>.getInstance();
-		
-		public static void printDebug(int debugLevel,string str) {
-			if ((conf.isEnabledDebugLevel.get() == 0) || (debugLevel < conf.isEnabledDebugLevel.get()))
+
+		public static void msg(Dbg.Grp group, int dbgLvl,string str) {
+			if (((conf.isEnabledDebugGroup.get() & (int)group) == 0) || (conf.isEnabledDebugLevel.get() == 0) || (dbgLvl < conf.isEnabledDebugLevel.get()))
 				return;
 			
-			gm.AddTextLine(conf.confName+":DBG: "+str);
+			gm.AddTextLine(conf.confName+":DBG:"+group.ToString()+": "+str);
 		}
 		
-		public static void printTrace(int traceLevel, int position) {
-			if ((conf.isEnabledTraceLevel.get() == 0) || (traceLevel < conf.isEnabledTraceLevel.get()))
+		public static void msg(Dbg.Grp group, int dbgLvl,string str, params int[] parms) {
+			if (((conf.isEnabledDebugGroup.get() & (int)group) == 0) || (conf.isEnabledDebugLevel.get() == 0) || (dbgLvl < conf.isEnabledDebugLevel.get()))
+				return;
+			
+			string outStr = str;
+			foreach (int prm in parms) {
+				outStr += prm.ToString()+", ";
+			} 
+			gm.AddTextLine(conf.confName+":DBG:"+group.ToString()+": "+outStr);
+		}
+		
+		public static void msg(Dbg.Grp group, int dbgLvl,string str, params object[] parms) {
+			if (((conf.isEnabledDebugGroup.get() & (int)group) == 0) || (conf.isEnabledDebugLevel.get() == 0) || (dbgLvl < conf.isEnabledDebugLevel.get()))
+				return;
+			
+			string outStr = str;
+			foreach (object prm in parms) {
+				outStr += prm.ToString()+", ";
+			} 
+			gm.AddTextLine(conf.confName+":DBG:"+group.ToString()+": "+outStr);
+		}
+
+		public static void trc(Dbg.Grp group, int dbgLvl, int position) {
+			if (((conf.isEnabledDebugGroup.get() & (int)group) == 0) || (conf.isEnabledDebugLevel.get() == 0) || (dbgLvl < conf.isEnabledDebugLevel.get()))
 				return;
 			
 			GUIManager gm = AManager<GUIManager>.getInstance();
 			StackTrace st = new StackTrace();
 			StackFrame[] frames = st.GetFrames();
-			gm.AddTextLine(conf.confName+":TRC: " + frames[1].GetMethod().Name+": "+position.ToString());
+			gm.AddTextLine(conf.confName+":TRC:"+group.ToString()+": " + frames[1].GetMethod().Name+": "+position.ToString());
 			
 		}
 		
-		public static void printTrace(int traceLevel, string str = "") {
-			if ((conf.isEnabledTraceLevel.get() == 0) || (traceLevel < conf.isEnabledTraceLevel.get()))
+		public static void trc(Dbg.Grp group, int dbgLvl, string str = "") {
+			if (((conf.isEnabledDebugGroup.get() & (int)group) == 0) || (conf.isEnabledDebugLevel.get() == 0) || (dbgLvl < conf.isEnabledDebugLevel.get()))
 				return;
 			
 			GUIManager gm = AManager<GUIManager>.getInstance();
 			StackTrace st = new StackTrace();
 			StackFrame[] frames = st.GetFrames();
-			gm.AddTextLine(conf.confName+":TRC: " + frames[1].GetMethod().Name+": "+str);
+			gm.AddTextLine(conf.confName+":TRC:"+group.ToString()+": " + frames[1].GetMethod().Name+": "+str);
 		}
 		
-		public static void printException(Exception e) {
+		public static void dumpExc(Exception e) {
 			GUIManager gm = AManager<GUIManager>.getInstance();
 			gm.AddTextLine(conf.confName+":EXC: " + e.ToString());
 			StackTrace st = new StackTrace(e);

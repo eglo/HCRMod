@@ -49,7 +49,9 @@ namespace Plugin.HCR {
 			rainDrop.blob = Instantiate(rainDrop.blob, location, Quaternion.identity) as GameObject;
 			rainDropsOnMap.Add(rainDrop);
 			isRainOnMap = true;
-			//rainDrop.blob.SetActiveRecursively(true);
+			rainDrop.blob.SetActiveRecursively(true);
+			Dbg.trc(Dbg.Grp.Rain,1);
+			
 		} 
 
 		public void removeRainDrops() {
@@ -58,13 +60,18 @@ namespace Plugin.HCR {
 			}
 			rainDropsOnMap.Clear();
 			isRainOnMap = false;
+
+			Dbg.printMsg("The rain has stopped");
+
+			Dbg.trc(Dbg.Grp.Rain,2);
 		} 
 		
 		public void Start() {
-			Display.printDebug(5,"Rain started");
+			Dbg.msg(Dbg.Grp.Startup,1,"Rain started");
 		}
 		
 		public void Update() {
+			Dbg.trc(Dbg.Grp.Rain,1,"Rain update");
 			foreach (RainDrop rainDrop in rainDropsOnMap) {
 				rainDrop.blob.transform.Translate(new Vector3(0,-.5f,-.1f) * Time.deltaTime,Space.World);
 				if(rainDrop.blob.transform.position.y < (float)(rainDrop.location.y-10))

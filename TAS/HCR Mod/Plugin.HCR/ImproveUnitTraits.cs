@@ -18,7 +18,7 @@ namespace Plugin.HCR {
 
 		public void Start() {
 			ticks = 0;
-			Display.printDebug(5,"Improve unit traits started");		
+			Dbg.msg(Dbg.Grp.Startup,1,"Improve unit traits started");		
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
@@ -32,7 +32,7 @@ namespace Plugin.HCR {
 					ticks = 0;
 				}
 			} catch(Exception e) { 
-				Display.printException(e);
+				Dbg.dumpExc(e);
 			}
 		}
 
@@ -53,20 +53,20 @@ namespace Plugin.HCR {
 					string unitName = mc.Groups[1].Value;
 					int lvl = Int32.Parse(mc.Groups[2].Value);
 					string profession = mc.Groups[3].Value;
-					Display.printDebug(2,"unitName "+unitName);
-					Display.printDebug(2,"lvl "+lvl.ToString());
-					Display.printDebug(2,"profession "+profession);
+					Dbg.msg(Dbg.Grp.Units,2,"unitName "+unitName);
+					Dbg.msg(Dbg.Grp.Units,2,"lvl "+lvl.ToString());
+					Dbg.msg(Dbg.Grp.Units,2,"profession "+profession);
 					
 					int donelvl;
-					Display.printTrace(2,"tryLvlUp "+unitName+" "+profession);
+					Dbg.trc(Dbg.Grp.Units,2,"tryLvlUp "+unitName+" "+profession);
 					if (unitLevelUpEvents.TryGetValue(unitName+" "+profession,out donelvl) && (donelvl == lvl)) {
 						//already done this guy
 						return;
 					}
 					unitLevelUpEvents[unitName+" "+profession] = lvl;
-					Display.printTrace(2,"randomLvlUp "+unitName+" "+profession);
+					Dbg.trc(Dbg.Grp.Units,2,"randomLvlUp "+unitName+" "+profession);
 					if(UnityEngine.Random.Range(0,(20-lvl)) == 0) {
-						Display.printTrace(3,"doLvlUp "+unitName+" "+profession);
+						Dbg.trc(Dbg.Grp.Units,3,"doLvlUp "+unitName+" "+profession);
 						unitLevelUp(unitName, lvl);
 					}
 				}
@@ -76,7 +76,7 @@ namespace Plugin.HCR {
 		///////////////////////////////////////////////////////////////////////////////////////////
 		// get unit <unitName> and either remove negative traits or apply positive ones if no negatives found 
 		private void unitLevelUp(string unitName,int lvl) {
-			Display.printTrace(3);
+			Dbg.trc(Dbg.Grp.Units,3);
 			
 			UnitManager um = AManager<UnitManager>.getInstance();
 			foreach (APlayableEntity unit in um.playerUnits) {
@@ -86,13 +86,13 @@ namespace Plugin.HCR {
 					return;
 				}
 			}
-			Display.printErr("Could not find unit "+unitName+" for improving traits");
+			Dbg.printErr("Could not find unit "+unitName+" for improving traits");
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
 		//find all negative traits on unit and randomly remove one, retunr false if no negs found
 		private bool unitRemoveRandomNegativeTrait(APlayableEntity unit) {
-			Display.printTrace(3,1);
+			Dbg.trc(Dbg.Grp.Units,3);
 			
 			List<string> negPrefs = new List<string> {"trait.weakback","trait.cowardly","trait.clumsy","trait.sluggish","trait.overeater","trait.disloyal","trait.badvision","trait.lazy"};
 			List<string> hasPrefs = new List<string>();
@@ -128,7 +128,7 @@ namespace Plugin.HCR {
 		//add a new random postive trait to unit
 		
 		private bool unitAddRandomPositiveTrait(APlayableEntity unit) {
-			Display.printTrace(3,1);
+			Dbg.trc(Dbg.Grp.Units,3);
 			
 			List<string> posPrefs = new List<string> {"trait.hardworker","trait.goodvision","trait.charismatic","trait.courageous","trait.athletic","trait.quicklearner","trait.strongback"};
 			List<string> notHasPrefs = new List<string>();

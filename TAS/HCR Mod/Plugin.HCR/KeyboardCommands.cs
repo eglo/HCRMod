@@ -8,6 +8,7 @@ namespace Plugin.HCR {
 	public class KeyboardCommands : MonoBehaviour {
 
 		private static KeyCode[] cmdCombo = {KeyCode.LeftShift,KeyCode.LeftControl,KeyCode.LeftAlt};
+
 		public delegate void CmdFunc();
 		private Dictionary<KeyCode,CmdFunc> cmdDict = new Dictionary<KeyCode,CmdFunc >{ 
 			{KeyCode.H,printHelp},
@@ -56,41 +57,42 @@ namespace Plugin.HCR {
 		///////////////////////////////////////////////////////////////////////////////////////////		
 		public static void setGameSpeed1() {
 			AManager<TimeManager>.getInstance().play(1f);
-			Display.printMsg("Game speed 1x");	
+			Dbg.printMsg("Game speed 1x");	
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////		
 		public static void setGameSpeed2() {
 			AManager<TimeManager>.getInstance().play(2f);
-			Display.printMsg("Game speed 2x");	
+			Dbg.printMsg("Game speed 2x");	
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////		
 		public static void setGameSpeed3() {
 			AManager<TimeManager>.getInstance().play(3f);
-			Display.printMsg("Game speed 3x");	
+			Dbg.printMsg("Game speed 3x");	
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////
 		public static void setGameSpeed4() {
 			AManager<TimeManager>.getInstance().play(4f);
-			Display.printMsg("Game speed 4x");	
+			Dbg.printMsg("Game speed 4x");	
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////		
 		public static void setGameSpeed5() {
 			AManager<TimeManager>.getInstance().play(5f);
-			Display.printMsg("Game speed 5x");	
+			Dbg.printMsg("Game speed 5x");	
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////		
 		public static void test() {
-			Display.printMsg("Test invoked");	
+			Dbg.printMsg("Test invoked");	
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
 		
 		public void Start() {
+			Dbg.msg(Dbg.Grp.Startup,1,"Keyboard command handler started");
 			
 			string str;
 			str = "Keyboard commands active. Press ";
@@ -98,7 +100,7 @@ namespace Plugin.HCR {
 				str += (key.ToString()+"+");
 			}
 			str += "H for help.";
-			Display.printMsg(str);
+			Dbg.printMsg(str);
 		}
 		
 		public void OnGUI() {
@@ -109,7 +111,7 @@ namespace Plugin.HCR {
 						cmdDict[evt.keyCode]();
 					}
 				} catch(Exception e) { 
-					Display.printException(e);
+					Dbg.dumpExc(e);
 				}
 			}
 		}

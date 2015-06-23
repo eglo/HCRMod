@@ -1,5 +1,18 @@
 2015-06-23  tengel  <tengel@home.de>
 
+	* Plugin.userprefs:
+	* Dbg.cs:
+	* Rain.cs:
+	* Weather.cs:
+	* PluginMain.cs:
+	* Configuration.cs:
+	* KeyboardCommands.cs:
+	* ImproveUnitTraits.cs:  
+added debug group enums, fixed weather (ChunkManager not init'd)
+
+
+2015-06-23  tengel  <tengel@home.de>
+
 	* Plugin.csproj:
 	* Dbg.cs:
 	* Display.cs:  

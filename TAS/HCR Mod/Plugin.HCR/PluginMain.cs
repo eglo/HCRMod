@@ -19,31 +19,45 @@ namespace Plugin.HCR {
 		}
 
 		public override void OnLoad() {
+
 			instance = this;
+			EventManager.getInstance().Register(this);
+			
+			Configuration conf = Configuration.getInstance();
+			conf.init();
+
+//			conf.isEnabledDebugLevel.set(4);
+//			conf.isEnabledDebugGroup.set((int)(
+//				Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
+//			));
+			conf.isEnabledDebugLevel.set(1);
+			conf.isEnabledDebugGroup.set((int)(
+				Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Rain
+			));
+			
+			Dbg.trc(Dbg.Grp.Init,1);
 		}
 
 		public override void OnEnable() {
-			EventManager.getInstance().Register(this);
-
+			Dbg.msg(Dbg.Grp.Startup,1,"Mod enabled");
 			Configuration conf = Configuration.getInstance();
-			conf.init();
 			
-			Display.printMsg("- Here Comes The Rain - Mod Version "+conf.version);
-			Display.printMsg("Rain effects"+conf.isEnabledWeatherEffects.toEnabledString());
+			Dbg.printMsg("- Here Comes The Rain - Mod Version "+conf.version);
+			Dbg.printMsg("Rain effects"+conf.isEnabledWeatherEffects.toEnabledString());
 			if (conf.isEnabledWeatherEffects.getBool()) {
 				AManager<ChunkManager>.getInstance().gameObject.AddComponent(typeof(Weather));
 				//AManager<TerrainObjectManager>.getInstance().gameObject.AddComponent(typeof(Weather));
-				Display.printMsg("Rainblobs visible effect"+conf.isEnabledShowRainBlocks.toEnabledString());
+				Dbg.printMsg("Rainblobs visible effect"+conf.isEnabledShowRainBlocks.toEnabledString());
 				//AManager<ChunkManager>.getInstance().gameObject.AddComponent(typeof(Rain));
 				AManager<TerrainObjectManager>.getInstance().gameObject.AddComponent(typeof(Rain));
 				
 			}
-			Display.printMsg("Invasion configuration"+conf.isEnabledInvasionConfig.toEnabledString());
-			Display.printMsg("Improve unit traits"+conf.isEnabledImproveUnitTraits.toEnabledString());
+			Dbg.printMsg("Invasion configuration"+conf.isEnabledInvasionConfig.toEnabledString());
+			Dbg.printMsg("Improve unit traits"+conf.isEnabledImproveUnitTraits.toEnabledString());
 			if(conf.isEnabledImproveUnitTraits.getBool()) {
 				AManager<UnitManager>.getInstance().gameObject.AddComponent(typeof(ImproveUnitTraits));
 			}			
-			Display.printMsg("Keyboard commands"+conf.isEnabledKeyboardCommands.toEnabledString());
+			Dbg.printMsg("Keyboard commands"+conf.isEnabledKeyboardCommands.toEnabledString());
 			if(conf.isEnabledKeyboardCommands.getBool()) {
 				AManager<GUIManager>.getInstance().gameObject.AddComponent(typeof(KeyboardCommands));
 			}			
@@ -158,7 +172,7 @@ namespace Plugin.HCR {
 						break;
 				}
 				if (circleBreaker++ >= 99) {
-					Display.printErr("Couldn't replace monster type in invasion event. Replacement definition probably circular or invalid");
+					Dbg.printErr("Couldn't replace monster type in invasion event. Replacement definition probably circular or invalid");
 					evt.result = Result.Deny; 
 				}
 			} while (evt.result == Result.Default);
@@ -174,22 +188,6 @@ namespace Plugin.HCR {
 		}
 	}
 }
-
-
-
-
-//this.CalculateExperience();
-//AManager<GUIManager>.getInstance().AddTextLine(string.Concat(new object[]
-//                                                             {
-//	"Level Up! ",
-//	this.unit.unitName,
-//	" is now a Lv. ",
-//	this.level,
-//	" ",
-//	this.getProfessionName(),
-//	"."
-//}), this.unit.transform, false);
-
 
 
 //AManager<UnitManager>.getInstance().Migrate(Vector3.zero);

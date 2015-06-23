@@ -30,9 +30,11 @@ namespace Plugin.HCR {
 		public ConfigValue replaceSkeletonsWith = new ConfigValue(4);
 		public ConfigValue replaceGoblinsWith = new ConfigValue(4);
 		public ConfigValue replaceNecromancersWith = new ConfigValue(1);
-		
+
 		public ConfigValue isEnabledDebugLevel= new ConfigValue(4);
-		public ConfigValue isEnabledTraceLevel= new ConfigValue(4);
+		public ConfigValue isEnabledDebugGroup= new ConfigValue((int)(
+			Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
+		));
 		
 		private IniFile iniFile;
 		
