@@ -1,5 +1,17 @@
 2015-06-23  tengel  <tengel@home.de>
 
+	* Plugin.csproj:
+	* Dbg.cs:
+	* Display.cs:  
+Refactoring of class Display to class Dbg
+
+
+
+
+
+
+2015-06-23  tengel  <tengel@home.de>
+
 	* Plugin.sln:
 	* Plugin.csproj:
 	* Plugin.userprefs:
