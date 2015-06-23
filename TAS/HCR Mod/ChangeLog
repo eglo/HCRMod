@@ -1,0 +1,17 @@
+2015-06-23  tengel  <tengel@home.de>
+
+	* Plugin.sln:
+	* Plugin.csproj:
+	* Plugin.userprefs:
+	* Rain.cs:
+	* ChangeLog:
+	* IniFile.cs:
+	* Display.cs:
+	* Weather.cs:
+	* PluginMain.cs:
+	* Configuration.cs:
+	* KeyboardCommands.cs:
+	* ImproveUnitTraits.cs: 
+Rain implemented but not optimized yet, Unit traits seem to work fine but not fully tested yet
+
+

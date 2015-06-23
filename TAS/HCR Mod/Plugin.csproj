@@ -27,7 +27,7 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>..\Timber and Stone v1.6.3\saves</OutputPath>
+    <OutputPath>..\..\..\games\Timber and Stone\Timber and Stone v1.6.3\saves</OutputPath>
     <CustomCommands>
       <CustomCommands>
         <Command type="AfterBuild" />
@@ -36,7 +36,7 @@
     <Optimize>False</Optimize>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\Timber and Stone v1.6.3\saves</OutputPath>
+    <OutputPath>..\..\..\games\Timber and Stone\Timber and Stone v1.6.3\saves</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -118,8 +118,10 @@
               </NamingRule>
             </Rules>
           </NameConventionPolicy>
-          <VersionControlPolicy inheritsSet="Mono" />
-          <ChangeLogPolicy inheritsSet="Mono" />
+          <VersionControlPolicy inheritsSet="Mono">
+            <CommitMessageStyle FileSeparator=", " IncludeDirectoryPaths="True" />
+          </VersionControlPolicy>
+          <ChangeLogPolicy UpdateMode="ProjectRoot" inheritsSet="Mono" />
         </Policies>
       </Properties>
     </MonoDevelop>
@@ -127,6 +129,9 @@
   <ItemGroup>
     <None Include="..\..\..\games\Timber and Stone\Timber and Stone v1.6.3\saves\HCRMod.ini">
       <Link>HCRMod.ini</Link>
+    </None>
+    <None Include="Plugin.HCR\ChangeLog">
+      <Link>ChangeLog</Link>
     </None>
   </ItemGroup>
 </Project>

@@ -34,8 +34,7 @@ namespace Plugin.HCR {
 				AManager<ChunkManager>.getInstance().gameObject.AddComponent(typeof(Weather));
 				//AManager<TerrainObjectManager>.getInstance().gameObject.AddComponent(typeof(Weather));
 				Display.printMsg("Rainblobs visible effect"+conf.isEnabledShowRainBlocks.toEnabledString());
-				AManager<GUIManager>.getInstance().gameObject.AddComponent(typeof(Rain));
-				AManager<ChunkManager>.getInstance().gameObject.AddComponent(typeof(Rain));
+				//AManager<ChunkManager>.getInstance().gameObject.AddComponent(typeof(Rain));
 				AManager<TerrainObjectManager>.getInstance().gameObject.AddComponent(typeof(Rain));
 				
 			}
