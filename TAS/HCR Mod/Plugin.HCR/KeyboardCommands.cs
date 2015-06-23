@@ -7,6 +7,11 @@ using Timber_and_Stone;
 namespace Plugin.HCR {
 	public class KeyboardCommands : MonoBehaviour {
 
+		private static KeyboardCommands instance = new KeyboardCommands();			
+		public static KeyboardCommands getInstance() {
+			return instance; 
+		}
+		
 		private static KeyCode[] cmdCombo = {KeyCode.LeftShift,KeyCode.LeftControl,KeyCode.LeftAlt};
 
 		public delegate void CmdFunc();
@@ -92,7 +97,7 @@ namespace Plugin.HCR {
 		///////////////////////////////////////////////////////////////////////////////////////////
 		
 		public void Start() {
-			Dbg.msg(Dbg.Grp.Startup,1,"Keyboard command handler started");
+			Dbg.msg(Dbg.Grp.Startup,3,"Keyboard command handler started");
 			
 			string str;
 			str = "Keyboard commands active. Press ";

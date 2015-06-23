@@ -57,6 +57,9 @@
     <Compile Include="Plugin.HCR\KeyboardCommands.cs" />
     <Compile Include="Plugin.HCR\Rain.cs" />
     <Compile Include="Plugin.HCR\Dbg.cs" />
+    <Compile Include="Plugin.HCR\MoreImmigrants.cs" />
+    <Compile Include="Plugin.HCR\InvasionHandler.cs" />
+    <Compile Include="Plugin.HCR\TTMonoBehaviour.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -129,9 +132,6 @@
   <ItemGroup>
     <None Include="..\..\..\games\Timber and Stone\Timber and Stone v1.6.3\saves\HCRMod.ini">
       <Link>HCRMod.ini</Link>
-    </None>
-    <None Include="Plugin.HCR\ChangeLog">
-      <Link>ChangeLog</Link>
     </None>
   </ItemGroup>
 </Project>

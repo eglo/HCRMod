@@ -1,5 +1,25 @@
 2015-06-23  tengel  <tengel@home.de>
 
+	* Plugin.sln:
+	* Plugin.csproj:
+	* Plugin.userprefs:
+	* Dbg.cs:
+	* Rain.cs:
+	* Weather.cs:
+	* PluginMain.cs:
+	* Configuration.cs:
+	* MoreImmigrants.cs:
+	* TTMonoBehaviour.cs:
+	* InvasionHandler.cs:
+	* KeyboardCommands.cs:
+	* ImproveUnitTraits.cs:
+Invasion event handler code moved from plugin to own class file; 
+new class file MoreImmigrants, no impl yet; 
+TTMonobehaviour included in project, not used yet
+ 
+
+2015-06-23  tengel  <tengel@home.de>
+
 	* Plugin.userprefs:
 	* Dbg.cs:
 	* Rain.cs:

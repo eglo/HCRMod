@@ -11,13 +11,11 @@ namespace Plugin.HCR {
 	public class Dbg {
 
 		[Flags] public enum Grp {
-			//somehow I thought [Flags] could not be trusted
-			//.. and i was riiight
 			Init = 1, 
 			Startup = 2, 
 			Unity = 4, 
 			Time = 8, 
-			Map = 16, 
+			Terrain = 16, 
 			Weather = 32,
 			Rain = 64,
 			Units = 128, 
@@ -83,6 +81,7 @@ namespace Plugin.HCR {
 			StackTrace st = new StackTrace(e);
 			StackFrame[] frames = st.GetFrames();
 			foreach(StackFrame frame in frames) {
+				//cant get line numbers with MonoDevelop .. :(
 				//gm.AddTextLine(" in: " + frame.GetMethod().Name + " at line "+frame.GetFileLineNumber().ToString());
 				gm.AddTextLine(" in: " + frame.GetMethod().Name);
 			}

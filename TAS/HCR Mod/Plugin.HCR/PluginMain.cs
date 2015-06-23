@@ -26,20 +26,17 @@ namespace Plugin.HCR {
 			Configuration conf = Configuration.getInstance();
 			conf.init();
 
-//			conf.isEnabledDebugLevel.set(4);
-//			conf.isEnabledDebugGroup.set((int)(
-//				Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
-//			));
-			conf.isEnabledDebugLevel.set(1);
 			conf.isEnabledDebugGroup.set((int)(
-				Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Rain
+				//Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
+				Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Terrain|Dbg.Grp.Weather|Dbg.Grp.Rain|Dbg.Grp.Invasion
 			));
+			conf.isEnabledDebugLevel.set(3);
 			
-			Dbg.trc(Dbg.Grp.Init,1);
+			Dbg.trc(Dbg.Grp.Init,3);
 		}
 
 		public override void OnEnable() {
-			Dbg.msg(Dbg.Grp.Startup,1,"Mod enabled");
+			Dbg.msg(Dbg.Grp.Startup,3,"Mod enabled");
 			Configuration conf = Configuration.getInstance();
 			
 			Dbg.printMsg("- Here Comes The Rain - Mod Version "+conf.version);
@@ -52,15 +49,19 @@ namespace Plugin.HCR {
 				AManager<TerrainObjectManager>.getInstance().gameObject.AddComponent(typeof(Rain));
 				
 			}
-			Dbg.printMsg("Invasion configuration"+conf.isEnabledInvasionConfig.toEnabledString());
 			Dbg.printMsg("Improve unit traits"+conf.isEnabledImproveUnitTraits.toEnabledString());
 			if(conf.isEnabledImproveUnitTraits.getBool()) {
 				AManager<UnitManager>.getInstance().gameObject.AddComponent(typeof(ImproveUnitTraits));
+			}			
+			Dbg.printMsg("More immigrants"+conf.isEnabledMoreImmigrants.toEnabledString());
+			if(conf.isEnabledMoreImmigrants.getBool()) {
+				AManager<UnitManager>.getInstance().gameObject.AddComponent(typeof(MoreImmigrants));
 			}			
 			Dbg.printMsg("Keyboard commands"+conf.isEnabledKeyboardCommands.toEnabledString());
 			if(conf.isEnabledKeyboardCommands.getBool()) {
 				AManager<GUIManager>.getInstance().gameObject.AddComponent(typeof(KeyboardCommands));
 			}			
+			Dbg.printMsg("Invasion configuration"+conf.isEnabledInvasionConfig.toEnabledString());
 		}
 
 		public override void OnDisable() {
@@ -96,88 +97,13 @@ namespace Plugin.HCR {
 
 		[Timber_and_Stone.API.Event.EventHandler(Priority.Normal)]
 		public void onInvasionNormal(EventInvasion evt) {
-			TimeManager tm = AManager<TimeManager>.getInstance();
-			GUIManager gm = AManager<GUIManager>.getInstance();
+	
 			Configuration conf = Configuration.getInstance();
-
-			evt.result = Result.Default;
-			int circleBreaker = 0;
-			do {
-				switch(evt.enemyType) {
-					case 1:
-						//goblins
-						if (tm.day >= conf.noGoblinsTillDay.get()) {
-							gm.AddTextLine("Patrols found the remnants of a campfire. I wonder who's out there.");
-							evt.result = Result.Allow;
-						} else {
-							if (conf.replaceMonsters.get() != 0) {
-								evt.enemyType = conf.replaceGoblinsWith.get();
-							} else {
-								evt.result = Result.Deny;
-							}
-						}
-						break;
-					case 2:
-						//skeletons
-						if (tm.day >= conf.noSkeletonsTillDay.get()) {
-							gm.AddTextLine("The forager says he heard a spooky sound in the bushes, like bones hitting on bones");
-							evt.result = Result.Allow;
-						} else {
-							if (conf.replaceMonsters.get() != 0) {
-								evt.enemyType = conf.replaceSkeletonsWith.get();
-							} else {
-								evt.result = Result.Deny;
-							}
-						}
-						break;
-					case 3:
-						//spiders
-						if (tm.day >= conf.noSpidersTillDay.get()) {
-							gm.AddTextLine("The woodchopper said the forest is full of spider webs");
-							evt.result = Result.Allow;
-						} else {
-							evt.result = Result.Deny;
-						}
-						break;
-					case 4:
-						//wolves
-						if (tm.day >= conf.noWolvesTillDay.get()) {
-							gm.AddTextLine("The herder says the sheep seem very agitated today");
-							evt.result = Result.Allow;
-						} else {
-							if (conf.replaceMonsters.get() != 0) {
-								evt.enemyType = conf.replaceWolvesWith.get();
-							} else {
-								evt.result = Result.Deny;
-							}
-						}
-						break;
-					case 5:
-						//necromancer
-						if (tm.day >= conf.noNecromancersTillDay.get()) {
-							gm.AddTextLine("There's a forestfire over the hills.");
-							evt.result = Result.Allow;
-						} else {
-							if (conf.replaceMonsters.get() != 0) {
-								evt.enemyType = conf.replaceNecromancersWith.get();
-							} else {
-								evt.result = Result.Deny;
-							}
-						}
-						break;
-
-					default:
-						gm.AddTextLine("Something strange is coming, I can feel it... I'm afraid.");
-						evt.result = Result.Allow;
-						break;
-				}
-				if (circleBreaker++ >= 99) {
-					Dbg.printErr("Couldn't replace monster type in invasion event. Replacement definition probably circular or invalid");
-					evt.result = Result.Deny; 
-				}
-			} while (evt.result == Result.Default);
-			if (evt.result == Result.Deny) {
-				gm.AddTextLine("It's been quiet lately. Too quiet...");
+			if(!conf.isEnabledInvasionConfig.getBool()) {
+				evt.result = Result.Allow;
+				return;
+			} else {
+				InvasionHandler.processEvent(ref evt);
 			}
 		}
 

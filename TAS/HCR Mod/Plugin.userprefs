@@ -1,18 +1,16 @@
 ﻿<Properties GitUserInfo="UsingMD">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Plugin.HCR\Dbg.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="InvasionHandler.cs">
     <Files>
-      <File FileName="Plugin.HCR\Rain.cs" Line="1" Column="1" />
-      <File FileName="Plugin.HCR\Configuration.cs" Line="1" Column="1" />
-      <File FileName="Plugin.csproj" Line="1" Column="1" />
-      <File FileName="Plugin.HCR\KeyboardCommands.cs" Line="1" Column="1" />
-      <File FileName="Plugin.HCR\Weather.cs" Line="1" Column="1" />
-      <File FileName="Plugin.HCR\PluginMain.cs" Line="1" Column="1" />
-      <File FileName="Plugin.HCR\ImproveUnitTraits.cs" Line="1" Column="1" />
+      <File FileName="Plugin.HCR\PluginMain.cs" Line="34" Column="1" />
+      <File FileName="Plugin.HCR\KeyboardCommands.cs" Line="10" Column="66" />
+      <File FileName="Plugin.HCR\Configuration.cs" Line="16" Column="70" />
+      <File FileName="Plugin.HCR\Dbg.cs" Line="90" Column="44" />
+      <File FileName="Plugin.HCR\ImproveUnitTraits.cs" Line="41" Column="1" />
       <File FileName="Plugin.HCR\IniFile.cs" Line="1" Column="1" />
-      <File FileName="Plugin.HCR\ChangeLog" Line="1" Column="1" />
-      <File FileName="Plugin.HCR\Dbg.cs" Line="29" Column="1" />
-      <File FileName="..\..\..\games\Timber and Stone\Timber and Stone v1.6.3\saves\HCRMod.ini" Line="1" Column="1" />
+      <File FileName="Plugin.HCR\Weather.cs" Line="27" Column="1" />
+      <File FileName="Plugin.HCR\MoreImmigrants.cs" Line="30" Column="1" />
+      <File FileName="InvasionHandler.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

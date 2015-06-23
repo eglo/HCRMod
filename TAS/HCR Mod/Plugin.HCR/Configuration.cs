@@ -14,6 +14,7 @@ namespace Plugin.HCR {
 		public ConfigValue isEnabledShowRainBlocks = new ConfigValue(1);
 		public ConfigValue isEnabledInvasionConfig = new ConfigValue(1);
 		public ConfigValue isEnabledImproveUnitTraits = new ConfigValue(1);
+		public ConfigValue isEnabledMoreImmigrants = new ConfigValue(1);
 		public ConfigValue isEnabledKeyboardCommands = new ConfigValue(1);
 		
 		
@@ -33,7 +34,7 @@ namespace Plugin.HCR {
 
 		public ConfigValue isEnabledDebugLevel= new ConfigValue(4);
 		public ConfigValue isEnabledDebugGroup= new ConfigValue((int)(
-			Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
+			Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Terrain|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
 		));
 		
 		private IniFile iniFile;

@@ -8,17 +8,19 @@ using Timber_and_Stone;
 namespace Plugin.HCR {
 	public class ImproveUnitTraits : MonoBehaviour {
 
+		private static ImproveUnitTraits instance = new ImproveUnitTraits();			
+		public static ImproveUnitTraits getInstance() {
+			return instance; 
+		}
+		
 		private Dictionary <string,int> unitLevelUpEvents = new Dictionary <string,int>();
 		private int ticks;
 		
-		public ImproveUnitTraits() {
-		}
-
 		///////////////////////////////////////////////////////////////////////////////////////////
 
 		public void Start() {
 			ticks = 0;
-			Dbg.msg(Dbg.Grp.Startup,1,"Improve unit traits started");		
+			Dbg.msg(Dbg.Grp.Startup,3,"Improve unit traits started");		
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////

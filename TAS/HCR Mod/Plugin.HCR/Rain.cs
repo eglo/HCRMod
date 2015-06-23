@@ -11,21 +11,14 @@ namespace Plugin.HCR {
 
 		public GameObject blob;
 		public Vector3 location;
+		public Vector3 minHeight;
 		
-		public RainDrop(Vector3 _location) {
+		public RainDrop(Vector3 _location,Vector3 _minHeight) {
 			location = _location;
-			blob = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+			minHeight = _minHeight;
+			//blob = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+			blob = GameObject.CreatePrimitive(PrimitiveType.Cube);
 			blob.transform.localScale = new Vector3(0.2f,0.4f,0.2f);
-//			blob.AddComponent<Rigidbody>();
-//			blob.rigidbody.velocity = Vector3.down * .5f;
-//			blob.AddComponent(typeof(ConstantForce));
-//			blob.constantForce.relativeForce = Vector3.down * .5f;
-//			blob.constantForce.enabled = true;
-//			LineRenderer lineRenderer;
-//			lineRenderer = blob.AddComponent<LineRenderer>();
-//			lineRenderer.useWorldSpace = false;
-//			lineRenderer.material = new Material(Shader.Find("Particles/Additive"));
-//			lineRenderer.SetColors(Color.blue, Color.green);
 			blob.renderer.material = AManager<ChunkManager>.getInstance().materials[1];
 		}
 		
@@ -44,17 +37,18 @@ namespace Plugin.HCR {
 		public Rain() {
 		} 
 		
-		public void addRainDrop(Vector3 location) {
-			RainDrop rainDrop = new RainDrop(location);
+		public void addRainDrop(Vector3 location,Vector3 minHeight) {
+			RainDrop rainDrop = new RainDrop(location,minHeight);
 			rainDrop.blob = Instantiate(rainDrop.blob, location, Quaternion.identity) as GameObject;
 			rainDropsOnMap.Add(rainDrop);
 			isRainOnMap = true;
 			rainDrop.blob.SetActiveRecursively(true);
-			Dbg.trc(Dbg.Grp.Rain,1);
+			Dbg.trc(Dbg.Grp.Rain,2);
 			
 		} 
 
 		public void removeRainDrops() {
+			Dbg.trc(Dbg.Grp.Rain,3);
 			foreach (RainDrop rainDrop in rainDropsOnMap) {
 				UnityEngine.Object.Destroy(rainDrop.blob); 
 			}
@@ -62,19 +56,17 @@ namespace Plugin.HCR {
 			isRainOnMap = false;
 
 			Dbg.printMsg("The rain has stopped");
-
-			Dbg.trc(Dbg.Grp.Rain,2);
 		} 
 		
 		public void Start() {
-			Dbg.msg(Dbg.Grp.Startup,1,"Rain started");
+			Dbg.msg(Dbg.Grp.Startup,3,"Rain started");
 		}
 		
 		public void Update() {
-			Dbg.trc(Dbg.Grp.Rain,1,"Rain update");
+			//Dbg.trc(Dbg.Grp.Rain,1,"Rain update");
 			foreach (RainDrop rainDrop in rainDropsOnMap) {
 				rainDrop.blob.transform.Translate(new Vector3(0,-.5f,-.1f) * Time.deltaTime,Space.World);
-				if(rainDrop.blob.transform.position.y < (float)(rainDrop.location.y-10))
+				if(rainDrop.blob.transform.position.y < rainDrop.minHeight.y)
 					rainDrop.blob.transform.position = rainDrop.location;
 
 			}
