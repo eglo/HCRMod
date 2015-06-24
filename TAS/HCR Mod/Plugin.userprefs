@@ -1,16 +1,20 @@
 ﻿<Properties GitUserInfo="UsingMD">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="InvasionHandler.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Plugin.HCR\Configuration.cs">
     <Files>
-      <File FileName="Plugin.HCR\PluginMain.cs" Line="34" Column="1" />
-      <File FileName="Plugin.HCR\KeyboardCommands.cs" Line="10" Column="66" />
-      <File FileName="Plugin.HCR\Configuration.cs" Line="16" Column="70" />
-      <File FileName="Plugin.HCR\Dbg.cs" Line="90" Column="44" />
-      <File FileName="Plugin.HCR\ImproveUnitTraits.cs" Line="41" Column="1" />
+      <File FileName="Plugin.HCR\PluginMain.cs" Line="39" Column="84" />
+      <File FileName="Plugin.HCR\KeyboardCommands.cs" Line="1" Column="1" />
+      <File FileName="Plugin.HCR\Configuration.cs" Line="16" Column="68" />
+      <File FileName="Plugin.HCR\Dbg.cs" Line="1" Column="1" />
+      <File FileName="Plugin.HCR\ImproveUnitTraits.cs" Line="30" Column="1" />
       <File FileName="Plugin.HCR\IniFile.cs" Line="1" Column="1" />
-      <File FileName="Plugin.HCR\Weather.cs" Line="27" Column="1" />
-      <File FileName="Plugin.HCR\MoreImmigrants.cs" Line="30" Column="1" />
-      <File FileName="InvasionHandler.cs" Line="1" Column="1" />
+      <File FileName="Plugin.HCR\Weather.cs" Line="14" Column="25" />
+      <File FileName="Plugin.HCR\MoreImmigrants.cs" Line="1" Column="1" />
+      <File FileName="Plugin.HCR\InvasionHandler.cs" Line="1" Column="1" />
+      <File FileName="Plugin.HCR\TTMonoBehaviour.cs" Line="1" Column="1" />
+      <File FileName="Plugin.HCR\Exception.cs" Line="1" Column="1" />
+      <File FileName="Plugin.HCR\CoroutineData.cs" Line="348" Column="1" />
+      <File FileName="Plugin.HCR\Rain.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

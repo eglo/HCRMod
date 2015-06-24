@@ -91,7 +91,11 @@ namespace Plugin.HCR {
 
 		///////////////////////////////////////////////////////////////////////////////////////////		
 		public static void test() {
-			Dbg.printMsg("Test invoked");	
+			Dbg.printMsg("Test invoked: do weather event..");
+			TimeManager tm = AManager<TimeManager>.getInstance();
+			
+			Weather.nextRainDay = tm.day;
+			Weather.nextRainHour = tm.hour;
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////

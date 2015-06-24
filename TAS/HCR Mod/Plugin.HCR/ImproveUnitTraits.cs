@@ -1,9 +1,10 @@
-
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using Timber_and_Stone;
+
 
 namespace Plugin.HCR {
 	public class ImproveUnitTraits : MonoBehaviour {
@@ -14,29 +15,32 @@ namespace Plugin.HCR {
 		}
 		
 		private Dictionary <string,int> unitLevelUpEvents = new Dictionary <string,int>();
-		private int ticks;
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
 
 		public void Start() {
-			ticks = 0;
-			Dbg.msg(Dbg.Grp.Startup,3,"Improve unit traits started");		
+			if (!Configuration.getInstance().isEnabledImproveUnitTraits.getBool())
+				return;
+
+			Dbg.msg(Dbg.Grp.Startup,3,"Improve unit traits started");
+			StartCoroutine(CheckLevelUp(1.0F));
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
 
-		public void Update() {
-			try {
-				ticks++;
-				if ((Configuration.getInstance().isEnabledImproveUnitTraits.getBool()) && (ticks >= 128)) {
+		IEnumerator CheckLevelUp(float waitTime) {
+			while(true) {
+				yield return new WaitForSeconds(waitTime);
+				try {
+					Dbg.trc(Dbg.Grp.Units,3);
 					//AManager<GUIManager>.getInstance().AddTextLine("Level Up! Long Dong Tom is now a Lv. 20 tester");
 					unitCheckLevelUpEventUglyHack();
-					ticks = 0;
+				} catch(Exception e) { 
+					Dbg.dumpCorExc("CheckLevelUp",e);
 				}
-			} catch(Exception e) { 
-				Dbg.dumpExc(e);
 			}
 		}
+
 
 		///////////////////////////////////////////////////////////////////////////////////////////
 		// check the Notification Window for Level Up messages, when found get unit and randomly improve unit traits  

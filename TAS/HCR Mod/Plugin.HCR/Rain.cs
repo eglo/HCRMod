@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Timber_and_Stone;
@@ -16,8 +17,8 @@ namespace Plugin.HCR {
 		public RainDrop(Vector3 _location,Vector3 _minHeight) {
 			location = _location;
 			minHeight = _minHeight;
-			//blob = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-			blob = GameObject.CreatePrimitive(PrimitiveType.Cube);
+			blob = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+			//blob = GameObject.CreatePrimitive(PrimitiveType.Cube);
 			blob.transform.localScale = new Vector3(0.2f,0.4f,0.2f);
 			blob.renderer.material = AManager<ChunkManager>.getInstance().materials[1];
 		}
@@ -28,6 +29,7 @@ namespace Plugin.HCR {
 		
 		public static List<RainDrop> rainDropsOnMap = new List<RainDrop>();
 		public bool isRainOnMap = false;
+		public float timeToRemove = 0.0f;
 		
 		private static Rain instance = new Rain();			
 		public static Rain getInstance() {
@@ -41,8 +43,12 @@ namespace Plugin.HCR {
 			RainDrop rainDrop = new RainDrop(location,minHeight);
 			rainDrop.blob = Instantiate(rainDrop.blob, location, Quaternion.identity) as GameObject;
 			rainDropsOnMap.Add(rainDrop);
-			isRainOnMap = true;
-			rainDrop.blob.SetActiveRecursively(true);
+			if (!isRainOnMap) {
+				//stay on map for about 2-3 mins, doesn't care about game speed setting ..(?)
+				timeToRemove = Time.time+UnityEngine.Random.Range(120.0f,180.0f);
+				isRainOnMap = true;
+			}
+			rainDrop.blob.SetActiveRecursively(true);	//needed?
 			Dbg.trc(Dbg.Grp.Rain,2);
 			
 		} 
@@ -65,7 +71,7 @@ namespace Plugin.HCR {
 		public void Update() {
 			//Dbg.trc(Dbg.Grp.Rain,1,"Rain update");
 			foreach (RainDrop rainDrop in rainDropsOnMap) {
-				rainDrop.blob.transform.Translate(new Vector3(0,-.5f,-.1f) * Time.deltaTime,Space.World);
+				rainDrop.blob.transform.Translate(new Vector3(0,-1f,-.2f) * Time.deltaTime,Space.World);
 				if(rainDrop.blob.transform.position.y < rainDrop.minHeight.y)
 					rainDrop.blob.transform.position = rainDrop.location;
 

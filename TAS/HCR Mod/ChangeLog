@@ -1,3 +1,16 @@
+2015-06-24  tengel  <tengel@home.de>
+
+	* Plugin.csproj:
+	* Plugin.userprefs:
+	* Dbg.cs:
+	* Rain.cs:
+	* Weather.cs:
+	* PluginMain.cs:
+	* Configuration.cs:
+	* KeyboardCommands.cs:
+	* ImproveUnitTraits.cs: 
+Changed Update logic to Coroutine in class Weather and UnitTraits
+
 2015-06-23  tengel  <tengel@home.de>
 
 	* Plugin.sln:

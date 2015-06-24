@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Timber_and_Stone;
@@ -13,61 +14,58 @@ namespace Plugin.HCR {
 	
 	public class Weather : MonoBehaviour {
 		private bool isInitialized = false;
-		private int nextRainDay = 0;
-		private int nextRainHour = 0;
-		private int ticks;
+		public static int nextRainDay = 0;
+		public static int nextRainHour = 0;
 		public Vector3i worldSize3i;
-		//public List<Coordinate> rainDrops = new List<Coordinate>();
-		//public bool isRainOnMap = false;
 		
 		private static Weather instance = new Weather();			
 		public static Weather getInstance() {
 			return instance; 
 		}
 		
-		private Weather() {
-		}
-
 		public void Start() {
-			//ChunkManager apparently not yet initialized at this point(?), init defered
-			ticks = 0;
-
-			this.gameObject.AddComponent(typeof(Rain));
+			if (!Configuration.getInstance().isEnabledWeatherEffects.getBool())
+				return;
 			
-			Dbg.msg(Dbg.Grp.Startup,3,"Weather started");
+			Dbg.msg(Dbg.Grp.Startup,3,"Weather effects started");
+			StartCoroutine(doWeather(5.0F));
 		}
 		
-		public void Update() {
+		///////////////////////////////////////////////////////////////////////////////////////////
+				
+		IEnumerator doWeather(float waitTime) {
 			int cDay, cHour;
-			
+			float lastTime;
+
 			GUIManager gm = AManager<GUIManager>.getInstance();
 			TimeManager tm = AManager<TimeManager>.getInstance();
 
-
-			try {
-				ticks++;
-				if (!isInitialized && (ticks >= 32)) {
-					ChunkManager cm = AManager<ChunkManager>.getInstance();
-					worldSize3i = new Vector3i(((cm.worldSize.x) * cm.chunkSize.x),cm.worldSize.y,(cm.worldSize.z) * cm.chunkSize.z);
-					
-					tm = AManager<TimeManager>.getInstance();
-					nextRainDay = tm.day+UnityEngine.Random.Range(0, 1);
-					nextRainHour = tm.hour+UnityEngine.Random.Range(0, 12);
-					ticks = 0;
-
-					if(worldSize3i.x > 1) {
-						isInitialized = true;
-					}
-				}	
-					
-				if((ticks >= 512) && Rain.getInstance().isRainOnMap) {
-					Rain.getInstance().removeRainDrops();
+			while (!isInitialized) {
+				ChunkManager cm = AManager<ChunkManager>.getInstance();
+				worldSize3i = new Vector3i(((cm.worldSize.x) * cm.chunkSize.x),cm.worldSize.y,(cm.worldSize.z) * cm.chunkSize.z);
+				
+				tm = AManager<TimeManager>.getInstance();
+				nextRainDay = tm.day+UnityEngine.Random.Range(0, 1);
+				nextRainHour = tm.hour+UnityEngine.Random.Range(0, 12);
+				
+				if(worldSize3i.x > 1) {
+					isInitialized = true;
+					Dbg.trc(Dbg.Grp.Weather|Dbg.Grp.Terrain,3,"WorldSize init'd");
 				}
-				if(ticks >= 512) {
+				yield return new WaitForSeconds(1.0f);
+			}	
+
+			while (true) {
+				lastTime = Time.time;
+				yield return new WaitForSeconds(waitTime);
+				try {		
 					cDay = tm.day;
 					cHour = tm.hour;
-					if((!Rain.getInstance().isRainOnMap) && ((cDay > nextRainDay) || (cDay >= nextRainDay && cHour >= nextRainHour))) {
-						
+					if(Rain.getInstance().isRainOnMap && (Time.time >= Rain.getInstance().timeToRemove)) {
+						Rain.getInstance().removeRainDrops();
+					}
+
+					if((cDay >= nextRainDay) && (cHour >= nextRainHour)) {						
 						nextRainDay = cDay;
 						//nextRainDay += cDay+UnityEngine.Random.Range(0,2);
 						nextRainHour = cHour+UnityEngine.Random.Range(1,3);
@@ -120,16 +118,14 @@ namespace Plugin.HCR {
 								
 								
 							default:
-								gm.AddTextLine("Look's like rain is coming ");
-								
+								gm.AddTextLine("Look's like rain is coming ");								
 								break;
 						}
 					}
-					ticks = 0;
 					Dbg.msg(Dbg.Grp.Time|Dbg.Grp.Weather,3,"Next weather event at " + nextRainDay.ToString() + ":" + nextRainHour.ToString());
+				} catch(Exception e) { 
+					Dbg.dumpCorExc("doWeather",e);
 				}
-			} catch(Exception e) { 
-				Dbg.dumpExc(e);
 			}
 		}
 		

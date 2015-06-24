@@ -8,15 +8,14 @@ namespace Plugin.HCR {
 	public class Configuration {
 
 		public string confName = "HCR";
-		public string version = "0.2.12";
+		public string version = "0.2.13";
 		
 		public ConfigValue isEnabledWeatherEffects = new ConfigValue(1);
 		public ConfigValue isEnabledShowRainBlocks = new ConfigValue(1);
 		public ConfigValue isEnabledInvasionConfig = new ConfigValue(1);
 		public ConfigValue isEnabledImproveUnitTraits = new ConfigValue(1);
 		public ConfigValue isEnabledMoreImmigrants = new ConfigValue(1);
-		public ConfigValue isEnabledKeyboardCommands = new ConfigValue(1);
-		
+		public ConfigValue isEnabledKeyboardCommands = new ConfigValue(1);		
 		
 		//;block invasions until day x..
 		public ConfigValue noSpidersTillDay = new ConfigValue(3);

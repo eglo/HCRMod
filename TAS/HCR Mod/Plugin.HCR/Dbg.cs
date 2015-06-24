@@ -87,6 +87,18 @@ namespace Plugin.HCR {
 			}
 		}
 		
+		public static void dumpCorExc(string corName,Exception e) {
+			GUIManager gm = AManager<GUIManager>.getInstance();
+			gm.AddTextLine(conf.confName+":COREXC:" +corName+": " + e.ToString());
+			StackTrace st = new StackTrace(e);
+			StackFrame[] frames = st.GetFrames();
+			foreach(StackFrame frame in frames) {
+				//cant get line numbers with MonoDevelop .. :(
+				//gm.AddTextLine(" in: " + frame.GetMethod().Name + " at line "+frame.GetFileLineNumber().ToString());
+				gm.AddTextLine(" in: " + frame.GetMethod().Name);
+			}
+		}
+		
 		public static void printErr(string str) {
 			GUIManager gm = AManager<GUIManager>.getInstance();
 			gm.AddTextLine(conf.confName+":ERROR: " + str);

@@ -36,6 +36,8 @@ namespace Plugin.HCR {
 		}
 
 		public override void OnEnable() {
+			//this comes to early, some parts of the game are not uite init'd at this time..
+
 			Dbg.msg(Dbg.Grp.Startup,3,"Mod enabled");
 			Configuration conf = Configuration.getInstance();
 			
