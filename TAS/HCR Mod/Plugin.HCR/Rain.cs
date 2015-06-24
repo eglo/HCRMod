@@ -44,8 +44,8 @@ namespace Plugin.HCR {
 			rainDrop.blob = Instantiate(rainDrop.blob, location, Quaternion.identity) as GameObject;
 			rainDropsOnMap.Add(rainDrop);
 			if (!isRainOnMap) {
-				//stay on map for about 2-3 mins, doesn't care about game speed setting ..(?)
-				timeToRemove = Time.time+UnityEngine.Random.Range(120.0f,180.0f);
+				//stay on map for about 5-10 mins, this doesn't care about game speed settings ..(?)
+				timeToRemove = Time.time+UnityEngine.Random.Range(300.0f,600.0f);
 				isRainOnMap = true;
 			}
 			rainDrop.blob.SetActiveRecursively(true);	//needed?

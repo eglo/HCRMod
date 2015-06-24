@@ -1,5 +1,19 @@
 2015-06-24  tengel  <tengel@home.de>
 
+	* Dbg.cs:
+	* Rain.cs:
+	* Weather.cs:
+	* PluginMain.cs:
+	* Configuration.cs:
+	* MoreImmigrants.cs:
+	* InvasionHandler.cs:
+	* KeyboardCommands.cs:
+	* ImproveUnitTraits.cs: 
+static UI.print wrapper for gm.AddTextLine
+
+
+2015-06-24  tengel  <tengel@home.de>
+
 	* Plugin.userprefs:
 	* Dbg.cs:
 	* Weather.cs:

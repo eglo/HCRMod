@@ -18,7 +18,7 @@ namespace Plugin.HCR {
 		public ConfigValue isEnabledKeyboardCommands = new ConfigValue(1);		
 		
 		//;block invasions until day x..
-		public ConfigValue noSpidersTillDay = new ConfigValue(3);
+		public ConfigValue noSpidersTillDay = new ConfigValue(7);
 		public ConfigValue noSkeletonsTillDay = new ConfigValue(14);
 		public ConfigValue noWolvesTillDay = new ConfigValue(14);
 		public ConfigValue noGoblinsTillDay = new ConfigValue(14);
@@ -55,14 +55,14 @@ namespace Plugin.HCR {
 			foreach (FieldInfo fi in fl) {
 				if (fi.FieldType.ToString().Contains("ConfigValue")) {
 					//GUIManager gm = AManager<GUIManager>.getInstance();
-					//gm.AddTextLine("fi.FieldType : "+fi.FieldType.ToString());
-					//gm.AddTextLine("fi.Name "+fi.Name.ToString());
+					//UI.print("fi.FieldType : "+fi.FieldType.ToString());
+					//UI.print("fi.Name "+fi.Name.ToString());
 					FieldInfo[] flCv = fi.FieldType.GetFields();
 					object configValue = fi.GetValue(this);
 					foreach (FieldInfo fiCv in flCv) {
 						object value = fiCv.GetValue(configValue);
 						if (fiCv.Name.ToString().Contains("_value")) {
-							//gm.AddTextLine("fiCv.GetValue "+fiCv.GetValue(configValue).ToString());
+							//UI.print("fiCv.GetValue "+fiCv.GetValue(configValue).ToString());
 						}
 					}
 				}

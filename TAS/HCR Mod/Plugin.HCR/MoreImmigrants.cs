@@ -23,7 +23,7 @@ namespace Plugin.HCR {
 				return;
 			
 			Dbg.msg(Dbg.Grp.Startup,3,"More migrants started");		
-			StartCoroutine(doImmigrants(5.0F));
+			StartCoroutine(doImmigrants(10.0F));
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
@@ -39,7 +39,7 @@ namespace Plugin.HCR {
 					cHour = tm.hour;
 					
 					if(
-						(cDay >= nextImmigrantDay) //&& (cHour >= (UnityEngine.Random.Range(8,14)) && (cHour <= (UnityEngine.Random.Range(10,18))))
+						(cDay >= nextImmigrantDay) && (cHour >= (UnityEngine.Random.Range(8,14)) && (cHour <= (UnityEngine.Random.Range(10,18))))
 					) {
 						UnitManager um = AManager<UnitManager>.getInstance();
 						int settlers = um.LiveUnitCount();
@@ -62,7 +62,7 @@ namespace Plugin.HCR {
 		
 		public static void processEvent(ref EventMigrant evt) {
 			TimeManager tm = AManager<TimeManager>.getInstance();
-			nextImmigrantDay = tm.day+UnityEngine.Random.Range(0,2);
+			nextImmigrantDay = tm.day+UnityEngine.Random.Range(1,3);
 			Dbg.printMsg("Someone's coming over the hills. I think it's one of us..");
 
 			Dbg.msg(Dbg.Grp.Units,3,"Immigrant event processed, new immigrant day set to: "+nextImmigrantDay);

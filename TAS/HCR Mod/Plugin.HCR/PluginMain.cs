@@ -33,8 +33,8 @@ namespace Plugin.HCR {
 				
 				conf.isEnabledDebugGroup.set((int)(
 					//Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
-					Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Rain|Dbg.Grp.Invasion|Dbg.Grp.Units
-					));
+					Dbg.Grp.Init|Dbg.Grp.Startup
+				));
 				conf.isEnabledDebugLevel.set(3);
 				Dbg.trc(Dbg.Grp.Init,3);
 

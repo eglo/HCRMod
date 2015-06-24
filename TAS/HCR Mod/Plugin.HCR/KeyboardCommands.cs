@@ -31,21 +31,20 @@ namespace Plugin.HCR {
 		///////////////////////////////////////////////////////////////////////////////////////////
 		
 		public static void printHelp() {
-			GUIManager gm = AManager<GUIManager>.getInstance();
 			string str = "All commands use a combination of ";
 			foreach (KeyCode key in cmdCombo) {
 				str += (key.ToString()+"+");
 			}
 			str += "<key> for activation.";
-			gm.AddTextLine(str);
-			gm.AddTextLine("Command+H: help");
-			gm.AddTextLine("Command+X: kill all enemies");
-			gm.AddTextLine("Command+R: rain over full map");
-			gm.AddTextLine("Command+F1: Game speed normal");
-			gm.AddTextLine("Command+F2: Game speed 2x");
-			gm.AddTextLine("Command+F3: Game speed 3x");
-			gm.AddTextLine("Command+F4: Game speed 4x");
-			gm.AddTextLine("Command+F5: Game speed 5x");
+			UI.print(str);
+			UI.print("Command+H: help");
+			UI.print("Command+X: kill all enemies");
+			UI.print("Command+R: rain over full map");
+			UI.print("Command+F1: Game speed normal");
+			UI.print("Command+F2: Game speed 2x");
+			UI.print("Command+F3: Game speed 3x");
+			UI.print("Command+F4: Game speed 4x");
+			UI.print("Command+F5: Game speed 5x");
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////

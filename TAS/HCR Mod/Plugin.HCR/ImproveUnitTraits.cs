@@ -119,10 +119,9 @@ namespace Plugin.HCR {
 				};
 				int remove = UnityEngine.Random.Range(0,hasPrefs.Count-1);
 				unit.preferences[hasPrefs[remove]] = false;
-				GUIManager gm = AManager<GUIManager>.getInstance();
 				string outString;
 				traitsChangedStrings.TryGetValue(hasPrefs[remove],out outString);
-				gm.AddTextLine("All this training paid off! "+unit.unitName+ " no longer "+outString+"!");
+				UI.print("All this training paid off! "+unit.unitName+ " no longer "+outString+"!");
 				return true;
 			}
 			return false;
@@ -154,10 +153,9 @@ namespace Plugin.HCR {
 				};
 				int add = UnityEngine.Random.Range(0,notHasPrefs.Count-1);
 				unit.preferences[notHasPrefs[add]] = true;
-				GUIManager gm = AManager<GUIManager>.getInstance();
 				string outString;
 				traitsChangedStrings.TryGetValue(notHasPrefs[add],out outString);
-				gm.AddTextLine("All this training paid off! "+unit.unitName+ " now "+outString+"!");
+				UI.print("All this training paid off! "+unit.unitName+ " now "+outString+"!");
 				return true;
 			}
 			
