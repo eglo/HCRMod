@@ -9,6 +9,7 @@ using System.Collections.Generic;
 /// 
 /// 2013 Tim Tregubov
 /// </summary>
+
 public class TTMonoBehaviour : MonoBehaviour {
 	private LockQueue LockedCoroutineQueue { get; set; }
           
