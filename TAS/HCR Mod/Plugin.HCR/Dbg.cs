@@ -15,7 +15,7 @@ namespace Plugin.HCR {
 			Startup = 2, 
 			Unity = 4, 
 			Time = 8, 
-			Terrain = 16, 
+			Map = 16, 
 			Weather = 32,
 			Rain = 64,
 			Units = 128, 

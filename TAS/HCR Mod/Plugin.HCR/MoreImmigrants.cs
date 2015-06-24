@@ -1,8 +1,11 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using UnityEngine;
 using Timber_and_Stone;
+using Timber_and_Stone.API.Event;
+using Timber_and_Stone.Event;
+
 
 namespace Plugin.HCR {
 	public class MoreImmigrants : MonoBehaviour {
@@ -12,29 +15,58 @@ namespace Plugin.HCR {
 			return instance; 
 		}
 
-		int ticks = 0;
+		public static int nextImmigrantDay = 0;
 
 		///////////////////////////////////////////////////////////////////////////////////////////
-
 		public void Start() {
-			ticks = 0;
+			if (!Configuration.getInstance().isEnabledMoreImmigrants.getBool())
+				return;
+			
 			Dbg.msg(Dbg.Grp.Startup,3,"More migrants started");		
+			StartCoroutine(doImmigrants(5.0F));
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
 		
-		public void Update() {
-			try {
-				ticks++;
-				if ((Configuration.getInstance().isEnabledMoreImmigrants.getBool()) && (ticks >= 128)) {
-					ticks = 0;
+		IEnumerator doImmigrants(float waitTime) {
+			int cDay, cHour;
+			TimeManager tm = AManager<TimeManager>.getInstance();
+			
+			while (true) {
+				yield return new WaitForSeconds(waitTime);
+				try {		
+					cDay = tm.day;
+					cHour = tm.hour;
+					
+					if(
+						(cDay >= nextImmigrantDay) //&& (cHour >= (UnityEngine.Random.Range(8,14)) && (cHour <= (UnityEngine.Random.Range(10,18))))
+					) {
+						UnitManager um = AManager<UnitManager>.getInstance();
+						int settlers = um.LiveUnitCount();
+						ResourceManager rm = AManager<ResourceManager>.getInstance();
+						int food = rm.materials[4];
+
+						Dbg.msg(Dbg.Grp.Units,1,"Checking immigration:"+food.ToString()+"food for "+settlers.ToString()+" settlers");
+						if (food/settlers >= 50) {
+							Dbg.msg(Dbg.Grp.Units,1,"Trying immigrant");
+							um.Migrate(Vector3.zero);	//chance of 1/4, ugh
+						}
+					}
+				} catch(Exception e) { 
+					Dbg.dumpCorExc("doImmigrants",e);
 				}
-			} catch(Exception e) { 
-				Dbg.dumpExc(e);
-			}
-		}
+			}	
+		}			
+
+		///////////////////////////////////////////////////////////////////////////////////////////
 		
-		
+		public static void processEvent(ref EventMigrant evt) {
+			TimeManager tm = AManager<TimeManager>.getInstance();
+			nextImmigrantDay = tm.day+UnityEngine.Random.Range(0,2);
+			Dbg.printMsg("Someone's coming over the hills. I think it's one of us..");
+
+			Dbg.msg(Dbg.Grp.Units,3,"Immigrant event processed, new immigrant day set to: "+nextImmigrantDay);
+		}		
 	}
 }
 

@@ -32,7 +32,6 @@ namespace Plugin.HCR {
 			while(true) {
 				yield return new WaitForSeconds(waitTime);
 				try {
-					Dbg.trc(Dbg.Grp.Units,3);
 					//AManager<GUIManager>.getInstance().AddTextLine("Level Up! Long Dong Tom is now a Lv. 20 tester");
 					unitCheckLevelUpEventUglyHack();
 				} catch(Exception e) { 

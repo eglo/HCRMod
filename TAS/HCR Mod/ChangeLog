@@ -1,5 +1,18 @@
 2015-06-24  tengel  <tengel@home.de>
 
+	* Plugin.userprefs:
+	* Dbg.cs:
+	* Weather.cs:
+	* PluginMain.cs:
+	* Configuration.cs:
+	* MoreImmigrants.cs:
+	* InvasionHandler.cs:
+	* KeyboardCommands.cs:
+	* ImproveUnitTraits.cs: 
+added Immigration handler
+
+2015-06-24  tengel  <tengel@home.de>
+
 	* Plugin.csproj:
 	* Plugin.userprefs:
 	* Dbg.cs:

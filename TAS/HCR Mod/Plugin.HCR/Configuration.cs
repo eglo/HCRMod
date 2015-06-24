@@ -8,7 +8,7 @@ namespace Plugin.HCR {
 	public class Configuration {
 
 		public string confName = "HCR";
-		public string version = "0.2.13";
+		public string version = "0.2.15";
 		
 		public ConfigValue isEnabledWeatherEffects = new ConfigValue(1);
 		public ConfigValue isEnabledShowRainBlocks = new ConfigValue(1);
@@ -33,7 +33,7 @@ namespace Plugin.HCR {
 
 		public ConfigValue isEnabledDebugLevel= new ConfigValue(4);
 		public ConfigValue isEnabledDebugGroup= new ConfigValue((int)(
-			Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Terrain|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
+			Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
 		));
 		
 		private IniFile iniFile;

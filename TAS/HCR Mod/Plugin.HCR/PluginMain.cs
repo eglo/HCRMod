@@ -23,47 +23,49 @@ namespace Plugin.HCR {
 			instance = this;
 			EventManager.getInstance().Register(this);
 			
-			Configuration conf = Configuration.getInstance();
-			conf.init();
-
-			conf.isEnabledDebugGroup.set((int)(
-				//Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
-				Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Terrain|Dbg.Grp.Weather|Dbg.Grp.Rain|Dbg.Grp.Invasion
-			));
-			conf.isEnabledDebugLevel.set(3);
-			
-			Dbg.trc(Dbg.Grp.Init,3);
 		}
 
 		public override void OnEnable() {
-			//this comes to early, some parts of the game are not uite init'd at this time..
-
-			Dbg.msg(Dbg.Grp.Startup,3,"Mod enabled");
-			Configuration conf = Configuration.getInstance();
-			
-			Dbg.printMsg("- Here Comes The Rain - Mod Version "+conf.version);
-			Dbg.printMsg("Rain effects"+conf.isEnabledWeatherEffects.toEnabledString());
-			if (conf.isEnabledWeatherEffects.getBool()) {
-				AManager<ChunkManager>.getInstance().gameObject.AddComponent(typeof(Weather));
-				//AManager<TerrainObjectManager>.getInstance().gameObject.AddComponent(typeof(Weather));
-				Dbg.printMsg("Rainblobs visible effect"+conf.isEnabledShowRainBlocks.toEnabledString());
-				//AManager<ChunkManager>.getInstance().gameObject.AddComponent(typeof(Rain));
-				AManager<TerrainObjectManager>.getInstance().gameObject.AddComponent(typeof(Rain));
+			//this comes to early, some parts of the game are not quite init'd at this time..
+			try {
+				Configuration conf = Configuration.getInstance();
+				conf.init();
 				
+				conf.isEnabledDebugGroup.set((int)(
+					//Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
+					Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Rain|Dbg.Grp.Invasion|Dbg.Grp.Units
+					));
+				conf.isEnabledDebugLevel.set(3);
+				Dbg.trc(Dbg.Grp.Init,3);
+
+				Dbg.msg(Dbg.Grp.Startup,3,"Mod enabled");
+				Dbg.printMsg("- Here Comes The Rain - Mod Version "+conf.version);
+				Dbg.printMsg("Rain effects"+conf.isEnabledWeatherEffects.toEnabledString());
+				if (conf.isEnabledWeatherEffects.getBool()) {
+					AManager<ChunkManager>.getInstance().gameObject.AddComponent(typeof(Weather));
+					//AManager<TerrainObjectManager>.getInstance().gameObject.AddComponent(typeof(Weather));
+					Dbg.printMsg("Rainblobs visible effect"+conf.isEnabledShowRainBlocks.toEnabledString());
+					//AManager<ChunkManager>.getInstance().gameObject.AddComponent(typeof(Rain));
+					AManager<TerrainObjectManager>.getInstance().gameObject.AddComponent(typeof(Rain));
+					
+				}
+				Dbg.printMsg("Improve unit traits"+conf.isEnabledImproveUnitTraits.toEnabledString());
+				if(conf.isEnabledImproveUnitTraits.getBool()) {
+					AManager<UnitManager>.getInstance().gameObject.AddComponent(typeof(ImproveUnitTraits));
+				}			
+				Dbg.printMsg("More immigrants"+conf.isEnabledMoreImmigrants.toEnabledString());
+				if(conf.isEnabledMoreImmigrants.getBool()) {
+					AManager<UnitManager>.getInstance().gameObject.AddComponent(typeof(MoreImmigrants));
+				}			
+				Dbg.printMsg("Keyboard commands"+conf.isEnabledKeyboardCommands.toEnabledString());
+				if(conf.isEnabledKeyboardCommands.getBool()) {
+					AManager<GUIManager>.getInstance().gameObject.AddComponent(typeof(KeyboardCommands));
+				}			
+				Dbg.printMsg("Invasion configuration"+conf.isEnabledInvasionConfig.toEnabledString());
+			}  catch(Exception e) {
+				//does not work at this time, text windows isnt open yet.. 
+				Dbg.dumpExc(e);
 			}
-			Dbg.printMsg("Improve unit traits"+conf.isEnabledImproveUnitTraits.toEnabledString());
-			if(conf.isEnabledImproveUnitTraits.getBool()) {
-				AManager<UnitManager>.getInstance().gameObject.AddComponent(typeof(ImproveUnitTraits));
-			}			
-			Dbg.printMsg("More immigrants"+conf.isEnabledMoreImmigrants.toEnabledString());
-			if(conf.isEnabledMoreImmigrants.getBool()) {
-				AManager<UnitManager>.getInstance().gameObject.AddComponent(typeof(MoreImmigrants));
-			}			
-			Dbg.printMsg("Keyboard commands"+conf.isEnabledKeyboardCommands.toEnabledString());
-			if(conf.isEnabledKeyboardCommands.getBool()) {
-				AManager<GUIManager>.getInstance().gameObject.AddComponent(typeof(KeyboardCommands));
-			}			
-			Dbg.printMsg("Invasion configuration"+conf.isEnabledInvasionConfig.toEnabledString());
 		}
 
 		public override void OnDisable() {
@@ -71,6 +73,10 @@ namespace Plugin.HCR {
 
 		[Timber_and_Stone.API.Event.EventHandler(Priority.Normal)]
 		public void onMigrant(EventMigrant evt) {
+			Configuration conf = Configuration.getInstance();
+			if(conf.isEnabledMoreImmigrants.getBool()) {
+				MoreImmigrants.processEvent(ref evt);
+			}			
 		}
 
 		[Timber_and_Stone.API.Event.EventHandler(Priority.Normal)]
@@ -118,7 +124,7 @@ namespace Plugin.HCR {
 }
 
 
-//AManager<UnitManager>.getInstance().Migrate(Vector3.zero);
+
 
 
 

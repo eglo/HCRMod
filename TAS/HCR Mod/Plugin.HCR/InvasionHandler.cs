@@ -99,9 +99,9 @@ namespace Plugin.HCR {
 			if (evt.result == Result.Deny) {
 				Dbg.msg(Dbg.Grp.Invasion,3,"Invasion of enemy type "+evt.enemyType.ToString()+" denied");								
 				gm.AddTextLine("It's been quiet lately. Too quiet...");
-			}
-			Dbg.msg(Dbg.Grp.Invasion,3,"Invasion of enemy type "+evt.enemyType.ToString()+" allowed");								
-			
+			} else {
+				Dbg.msg(Dbg.Grp.Invasion,3,"Invasion of enemy type "+evt.enemyType.ToString()+" allowed");								
+			}		
 		}
 
 	}

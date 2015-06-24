@@ -24,7 +24,8 @@ namespace Plugin.HCR {
 			{KeyCode.F3,setGameSpeed3},
 			{KeyCode.F4,setGameSpeed4},
 			{KeyCode.F5,setGameSpeed5},
-			{KeyCode.T,test}
+			{KeyCode.T,test1},
+			{KeyCode.Z,test2}
 		};
 
 		///////////////////////////////////////////////////////////////////////////////////////////
@@ -90,12 +91,19 @@ namespace Plugin.HCR {
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////		
-		public static void test() {
+		public static void test1() {
 			Dbg.printMsg("Test invoked: do weather event..");
+
 			TimeManager tm = AManager<TimeManager>.getInstance();
-			
 			Weather.nextRainDay = tm.day;
 			Weather.nextRainHour = tm.hour;
+		}
+		
+		///////////////////////////////////////////////////////////////////////////////////////////		
+		public static void test2() {
+			Dbg.printMsg("Test invoked: try immigrant..");
+			TimeManager tm = AManager<TimeManager>.getInstance();
+			MoreImmigrants.nextImmigrantDay = tm.day;
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
@@ -110,6 +118,9 @@ namespace Plugin.HCR {
 			}
 			str += "H for help.";
 			Dbg.printMsg(str);
+		}
+
+		public void Update() {
 		}
 		
 		public void OnGUI() {
