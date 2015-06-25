@@ -47,7 +47,8 @@ namespace Plugin.HCR {
 						int food = rm.materials[4];
 
 						Dbg.msg(Dbg.Grp.Units,1,"Checking immigration:"+food.ToString()+"food for "+settlers.ToString()+" settlers");
-						if (food/settlers >= 50) {
+						//given food spoilage it's kinda hard to have over 3000 food so this will stop at about 30 settlers
+						if ((food/settlers) >= (50+settlers*1.5)) {
 							Dbg.msg(Dbg.Grp.Units,1,"Trying immigrant");
 							um.Migrate(Vector3.zero);	//chance of 1/4, ugh
 						}
@@ -62,10 +63,14 @@ namespace Plugin.HCR {
 		
 		public static void processEvent(ref EventMigrant evt) {
 			TimeManager tm = AManager<TimeManager>.getInstance();
-			nextImmigrantDay = tm.day+UnityEngine.Random.Range(1,3);
-			Dbg.printMsg("Someone's coming over the hills. I think it's one of us..");
+			if (nextImmigrantDay <= tm.day) {
+				nextImmigrantDay = tm.day+UnityEngine.Random.Range(1,3);
+			} else {
+				nextImmigrantDay = nextImmigrantDay+UnityEngine.Random.Range(1,3);
+			}
+			UI.print("Someone's coming over the hills. I think it's one of us..");
 
-			Dbg.msg(Dbg.Grp.Units,3,"Immigrant event processed, new immigrant day set to: "+nextImmigrantDay);
+			Dbg.msg(Dbg.Grp.Units,3,"Immigrant event processed, new immigrant check set to day: "+nextImmigrantDay);
 		}		
 	}
 }

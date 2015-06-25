@@ -14,7 +14,7 @@ namespace Plugin.HCR {
 			return instance; 
 		}
 		
-		private Dictionary <string,int> unitLevelUpEvents = new Dictionary <string,int>();
+		public static Dictionary <string,int> unitLevelUpEvents = new Dictionary <string,int>();
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
 
@@ -49,7 +49,7 @@ namespace Plugin.HCR {
 			
 			List<string> text;
 			text = nw.textLines;
-			for(int i = 0; i < text.Count; i++) {
+			for(int i = text.Count-1; i >= 0; i--) {
 				string line = text[i];
 				if (!line.StartsWith("Level Up!"))
 					continue;
@@ -61,17 +61,17 @@ namespace Plugin.HCR {
 					Dbg.msg(Dbg.Grp.Units,2,"unitName "+unitName);
 					Dbg.msg(Dbg.Grp.Units,2,"lvl "+lvl.ToString());
 					Dbg.msg(Dbg.Grp.Units,2,"profession "+profession);
-					
-					int donelvl;
-					Dbg.trc(Dbg.Grp.Units,2,"tryLvlUp "+unitName+" "+profession);
-					if (unitLevelUpEvents.TryGetValue(unitName+" "+profession,out donelvl) && (donelvl == lvl)) {
-						//already done this guy
-						return;
+					string unitNameAndProfession = unitName+" "+profession;
+					int donelvl = 0;
+					Dbg.trc(Dbg.Grp.Units,2,"tryLvlUp "+unitNameAndProfession);
+					if (unitLevelUpEvents.TryGetValue(unitNameAndProfession,out donelvl)) {
+						if (donelvl >= lvl)	//wtf?..
+							continue;
 					}
-					unitLevelUpEvents[unitName+" "+profession] = lvl;
-					Dbg.trc(Dbg.Grp.Units,2,"randomLvlUp "+unitName+" "+profession);
+					unitLevelUpEvents[unitNameAndProfession] = lvl;
+					Dbg.trc(Dbg.Grp.Units,2,"randomLvlUp "+unitNameAndProfession);
 					if(UnityEngine.Random.Range(0,(20-lvl)) == 0) {
-						Dbg.trc(Dbg.Grp.Units,3,"doLvlUp "+unitName+" "+profession);
+						Dbg.trc(Dbg.Grp.Units,3,"doLvlUp "+unitNameAndProfession);
 						unitLevelUp(unitName, lvl);
 					}
 				}
@@ -86,8 +86,9 @@ namespace Plugin.HCR {
 			UnitManager um = AManager<UnitManager>.getInstance();
 			foreach (APlayableEntity unit in um.playerUnits) {
 				if (unit.unitName == unitName) {
-					if(!unitRemoveRandomNegativeTrait(unit)) 
+					if(!unitRemoveRandomNegativeTrait(unit)) {
 						unitAddRandomPositiveTrait(unit);
+					}
 					return;
 				}
 			}
@@ -157,11 +158,9 @@ namespace Plugin.HCR {
 				traitsChangedStrings.TryGetValue(notHasPrefs[add],out outString);
 				UI.print("All this training paid off! "+unit.unitName+ " now "+outString+"!");
 				return true;
-			}
-			
-			return true;
+			}			
+			return false;
 		}
-		
 	}
 }
 

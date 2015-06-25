@@ -26,14 +26,14 @@ namespace Plugin.HCR {
 		}
 
 		public override void OnEnable() {
-			//this comes to early, some parts of the game are not quite init'd at this time..
+			//seems this comes a little too early, apparently some parts of the game are not quite init'ed at this time..
 			try {
 				Configuration conf = Configuration.getInstance();
 				conf.init();
 				
 				conf.isEnabledDebugGroup.set((int)(
 					//Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
-					Dbg.Grp.Init|Dbg.Grp.Startup
+					Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Units
 				));
 				conf.isEnabledDebugLevel.set(3);
 				Dbg.trc(Dbg.Grp.Init,3);
@@ -63,7 +63,6 @@ namespace Plugin.HCR {
 				}			
 				Dbg.printMsg("Invasion configuration"+conf.isEnabledInvasionConfig.toEnabledString());
 			}  catch(Exception e) {
-				//does not work at this time, text windows isnt open yet.. 
 				Dbg.dumpExc(e);
 			}
 		}

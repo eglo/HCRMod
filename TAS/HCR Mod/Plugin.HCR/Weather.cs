@@ -209,24 +209,25 @@ namespace Plugin.HCR {
 		///////////////////////////////////////////////////////////////////////////////////////////
 		private void regrowTrees(int x, int y, int z) {
 			
-			ChunkManager cm = AManager<ChunkManager>.getInstance();			
-			BlockProperties checkProps = BlockProperties.BlockTreeBase;
-			BlockProperties replaceProps = BlockProperties.BlockTreeBaseBurnt;
-			IBlock topBlk;
-						
-			Dbg.trc(Dbg.Grp.Map,1);
-			topBlk = cm.GetBlockOnTop(Coordinate.FromBlock(x, 0, z));
-			if(topBlk.properties == checkProps) {
-				cm.SetBlock(topBlk.coordinate, BlockProperties.BlockTreeBase);
-				Dbg.msg(Dbg.Grp.Map,2,"Replaced type " + topBlk.properties.ToString() + " with " + replaceProps.ToString() + " at " + x.ToString() + "," + z.ToString());
-				Transform transform = UnityEngine.Object.Instantiate(AManager<AssetManager>.getInstance().tree, base.transform.position, Quaternion.identity) as Transform;
-				transform.transform.parent = AManager<ChunkManager>.getInstance().chunkArray[topBlk.coordinate.chunk.x, topBlk.coordinate.chunk.y, topBlk.coordinate.chunk.z].chunkObj.transform;
-				transform.GetComponent<TreeFlora>().blockPos = topBlk.coordinate.block;
-				transform.GetComponent<TreeFlora>().chunkPos = topBlk.coordinate.chunk;
-				AManager<TerrainObjectManager>.getInstance().AddTree(transform.GetComponent<TreeFlora>());
-				transform.GetComponent<TreeFlora>().health = 61f;
-				transform.GetComponent<TreeFlora>().Init();
-			}
+//		ChunkManager cm = AManager<ChunkManager>.getInstance();			
+//			BlockProperties checkProps = BlockProperties.BlockTreeBase;
+//			BlockProperties replaceProps = BlockProperties.BlockTreeBaseBurnt;
+//			IBlock topBlk;
+//						
+//			Dbg.trc(Dbg.Grp.Map,1);
+//			topBlk = cm.GetBlockOnTop(Coordinate.FromBlock(x, 0, z));
+//			if(topBlk.properties == checkProps) {
+//				cm.SetBlock(topBlk.coordinate, BlockProperties.BlockTreeBase);
+//				Dbg.msg(Dbg.Grp.Map,2,"Replaced type " + topBlk.properties.ToString() + " with " + replaceProps.ToString() + " at " + x.ToString() + "," + z.ToString());
+//
+//				Transform transform = UnityEngine.Object.Instantiate(AManager<AssetManager>.getInstance().tree, base.transform.position, Quaternion.identity) as Transform;
+//				transform.transform.parent = AManager<ChunkManager>.getInstance().chunkArray[topBlk.coordinate.chunk.x, topBlk.coordinate.chunk.y, topBlk.coordinate.chunk.z].chunkObj.transform;
+//				transform.GetComponent<TreeFlora>().blockPos = topBlk.coordinate.block;
+//				transform.GetComponent<TreeFlora>().chunkPos = topBlk.coordinate.chunk;
+//				AManager<TerrainObjectManager>.getInstance().AddTree(transform.GetComponent<TreeFlora>());
+//				transform.GetComponent<TreeFlora>().health = 61f;
+//				transform.GetComponent<TreeFlora>().Init();
+//			}
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////

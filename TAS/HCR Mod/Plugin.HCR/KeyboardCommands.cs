@@ -24,8 +24,12 @@ namespace Plugin.HCR {
 			{KeyCode.F3,setGameSpeed3},
 			{KeyCode.F4,setGameSpeed4},
 			{KeyCode.F5,setGameSpeed5},
-			{KeyCode.T,test1},
-			{KeyCode.Z,test2}
+			{KeyCode.Alpha1,test1},
+			{KeyCode.Alpha2,test2},
+			{KeyCode.Alpha3,test3},
+			{KeyCode.Alpha4,test4},
+			{KeyCode.Alpha5,test5},
+			{KeyCode.Alpha6,test6}
 		};
 
 		///////////////////////////////////////////////////////////////////////////////////////////
@@ -103,6 +107,46 @@ namespace Plugin.HCR {
 			Dbg.printMsg("Test invoked: try immigrant..");
 			TimeManager tm = AManager<TimeManager>.getInstance();
 			MoreImmigrants.nextImmigrantDay = tm.day;
+		}
+		
+		///////////////////////////////////////////////////////////////////////////////////////////		
+		public static void test3() {
+			Dbg.printMsg("Test invoked: dump traits dict..");
+			foreach (var kvp in ImproveUnitTraits.unitLevelUpEvents) {
+				UI.print(kvp.Key.ToString()+"="+kvp.Value.ToString());
+			}
+		}
+		
+		///////////////////////////////////////////////////////////////////////////////////////////		
+		public static void test4() {
+			Dbg.printMsg("Test invoked: dump tree data..");
+			foreach (var kvp in ImproveUnitTraits.unitLevelUpEvents) {
+				UI.print(kvp.Key.ToString()+"="+kvp.Value.ToString());
+			}
+		}
+		
+		///////////////////////////////////////////////////////////////////////////////////////////		
+		public static void test5() {
+			Dbg.printMsg("Test invoked: show trade/sell resources..");
+			ResourceManager rm = AManager<ResourceManager>.getInstance();
+			foreach (Resource res in rm.sellList) {
+				Dbg.printMsg(res.name.ToString());
+			}
+			Dbg.printMsg("Test invoked: show trade/buy resources..");
+			foreach (Resource res in rm.buyList) {
+				Dbg.printMsg(res.name.ToString());
+			}
+		}
+
+		///////////////////////////////////////////////////////////////////////////////////////////		
+		public static void test6() {
+			Dbg.printMsg("Test invoked: show tracked resources..");
+			
+			GUIManager gm = AManager<GUIManager>.getInstance();
+			ResourceManager rm = AManager<ResourceManager>.getInstance();
+			foreach (int resId in gm.watchedResources) {
+				Dbg.printMsg(resId.ToString("D3")+":"+rm.resources[resId].name.ToString());
+			}
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////

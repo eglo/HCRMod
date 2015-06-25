@@ -8,7 +8,7 @@ namespace Plugin.HCR {
 	public class Configuration {
 
 		public string confName = "HCR";
-		public string version = "0.2.15";
+		public string version = "0.2.16";
 		
 		public ConfigValue isEnabledWeatherEffects = new ConfigValue(1);
 		public ConfigValue isEnabledShowRainBlocks = new ConfigValue(1);

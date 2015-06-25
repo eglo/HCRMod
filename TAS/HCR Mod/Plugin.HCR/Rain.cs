@@ -61,7 +61,7 @@ namespace Plugin.HCR {
 			rainDropsOnMap.Clear();
 			isRainOnMap = false;
 
-			Dbg.printMsg("The rain has stopped");
+			UI.print("The rain has stopped");
 		} 
 		
 		public void Start() {
