@@ -8,7 +8,7 @@ namespace Plugin.HCR {
 	public class Configuration {
 
 		public string confName = "HCR";
-		public string version = "0.2.16";
+		public string version = "0.2.18";
 		
 		public ConfigValue isEnabledWeatherEffects = new ConfigValue(1);
 		public ConfigValue isEnabledShowRainBlocks = new ConfigValue(1);
@@ -23,6 +23,7 @@ namespace Plugin.HCR {
 		public ConfigValue noWolvesTillDay = new ConfigValue(14);
 		public ConfigValue noGoblinsTillDay = new ConfigValue(14);
 		public ConfigValue noNecromancersTillDay = new ConfigValue(30);
+
 		//;..or replace invasion monsters if they come before the time defined
 		public ConfigValue replaceMonsters = new ConfigValue(1);
 		//;1 = goblins,2 = skeletons, 3 = spiders, 4 = wolves, 5 = necro
@@ -31,6 +32,11 @@ namespace Plugin.HCR {
 		public ConfigValue replaceGoblinsWith = new ConfigValue(4);
 		public ConfigValue replaceNecromancersWith = new ConfigValue(1);
 
+		//set tracked Resources. selects all between IdxFirst und IdxLast
+		//this will activate only when a new game is started
+		public ConfigValue trackResourcesIdxFirst = new ConfigValue(1);
+		public ConfigValue trackResourcesIdxLast = new ConfigValue(59);	//60+ is tools, 90+ is weapons
+		
 		public ConfigValue isEnabledDebugLevel= new ConfigValue(4);
 		public ConfigValue isEnabledDebugGroup= new ConfigValue((int)(
 			Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion

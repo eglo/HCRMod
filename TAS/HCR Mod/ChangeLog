@@ -1,3 +1,14 @@
+2015-06-26  tengel  <tengel@home.de>
+
+	* Plugin.csproj:
+	* Plugin.userprefs:
+	* PluginMain.cs:
+	* Configuration.cs:
+	* TestFunctions.cs:
+	* KeyboardCommands.cs: 
+added tracked resources init and new module test functions
+
+
 2015-06-25  tengel  <tengel@home.de>
 
 	* Plugin.userprefs:

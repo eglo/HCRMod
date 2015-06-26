@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,17 +18,21 @@ namespace Plugin.HCR {
 			{KeyCode.H,printHelp},
 			{KeyCode.X,killAllEnemies},
 			{KeyCode.R,letItRain},
-			{KeyCode.F1,setGameSpeed1},
-			{KeyCode.F2,setGameSpeed2},
-			{KeyCode.F3,setGameSpeed3},
-			{KeyCode.F4,setGameSpeed4},
-			{KeyCode.F5,setGameSpeed5},
-			{KeyCode.Alpha1,test1},
-			{KeyCode.Alpha2,test2},
-			{KeyCode.Alpha3,test3},
-			{KeyCode.Alpha4,test4},
-			{KeyCode.Alpha5,test5},
-			{KeyCode.Alpha6,test6}
+			{KeyCode.Alpha1,setGameSpeed1},
+			{KeyCode.Alpha2,setGameSpeed2},
+			{KeyCode.Alpha3,setGameSpeed3},
+			{KeyCode.Alpha4,setGameSpeed4},
+			{KeyCode.Alpha5,setGameSpeed5},
+			{KeyCode.F1,TestFunctions.tf[0]},
+			{KeyCode.F2,TestFunctions.tf[1]},
+			{KeyCode.F3,TestFunctions.tf[2]},
+			{KeyCode.F4,TestFunctions.tf[3]},
+			{KeyCode.F5,TestFunctions.tf[4]},
+			{KeyCode.F6,TestFunctions.tf[5]},
+			{KeyCode.F7,TestFunctions.tf[6]},
+			{KeyCode.F8,TestFunctions.tf[7]},
+			{KeyCode.F9,TestFunctions.tf[8]},
+			{KeyCode.F10,TestFunctions.tf[9]}
 		};
 
 		///////////////////////////////////////////////////////////////////////////////////////////
@@ -44,11 +47,11 @@ namespace Plugin.HCR {
 			UI.print("Command+H: help");
 			UI.print("Command+X: kill all enemies");
 			UI.print("Command+R: rain over full map");
-			UI.print("Command+F1: Game speed normal");
-			UI.print("Command+F2: Game speed 2x");
-			UI.print("Command+F3: Game speed 3x");
-			UI.print("Command+F4: Game speed 4x");
-			UI.print("Command+F5: Game speed 5x");
+			UI.print("Command+1: Game speed normal");
+			UI.print("Command+2: Game speed 2x");
+			UI.print("Command+3: Game speed 3x");
+			UI.print("Command+4: Game speed 4x");
+			UI.print("Command+5: Game speed 5x");
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
@@ -93,62 +96,6 @@ namespace Plugin.HCR {
 			Dbg.printMsg("Game speed 5x");	
 		}
 
-		///////////////////////////////////////////////////////////////////////////////////////////		
-		public static void test1() {
-			Dbg.printMsg("Test invoked: do weather event..");
-
-			TimeManager tm = AManager<TimeManager>.getInstance();
-			Weather.nextRainDay = tm.day;
-			Weather.nextRainHour = tm.hour;
-		}
-		
-		///////////////////////////////////////////////////////////////////////////////////////////		
-		public static void test2() {
-			Dbg.printMsg("Test invoked: try immigrant..");
-			TimeManager tm = AManager<TimeManager>.getInstance();
-			MoreImmigrants.nextImmigrantDay = tm.day;
-		}
-		
-		///////////////////////////////////////////////////////////////////////////////////////////		
-		public static void test3() {
-			Dbg.printMsg("Test invoked: dump traits dict..");
-			foreach (var kvp in ImproveUnitTraits.unitLevelUpEvents) {
-				UI.print(kvp.Key.ToString()+"="+kvp.Value.ToString());
-			}
-		}
-		
-		///////////////////////////////////////////////////////////////////////////////////////////		
-		public static void test4() {
-			Dbg.printMsg("Test invoked: dump tree data..");
-			foreach (var kvp in ImproveUnitTraits.unitLevelUpEvents) {
-				UI.print(kvp.Key.ToString()+"="+kvp.Value.ToString());
-			}
-		}
-		
-		///////////////////////////////////////////////////////////////////////////////////////////		
-		public static void test5() {
-			Dbg.printMsg("Test invoked: show trade/sell resources..");
-			ResourceManager rm = AManager<ResourceManager>.getInstance();
-			foreach (Resource res in rm.sellList) {
-				Dbg.printMsg(res.name.ToString());
-			}
-			Dbg.printMsg("Test invoked: show trade/buy resources..");
-			foreach (Resource res in rm.buyList) {
-				Dbg.printMsg(res.name.ToString());
-			}
-		}
-
-		///////////////////////////////////////////////////////////////////////////////////////////		
-		public static void test6() {
-			Dbg.printMsg("Test invoked: show tracked resources..");
-			
-			GUIManager gm = AManager<GUIManager>.getInstance();
-			ResourceManager rm = AManager<ResourceManager>.getInstance();
-			foreach (int resId in gm.watchedResources) {
-				Dbg.printMsg(resId.ToString("D3")+":"+rm.resources[resId].name.ToString());
-			}
-		}
-		
 		///////////////////////////////////////////////////////////////////////////////////////////
 		
 		public void Start() {

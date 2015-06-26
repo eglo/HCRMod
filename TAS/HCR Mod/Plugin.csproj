@@ -60,6 +60,7 @@
     <Compile Include="Plugin.HCR\Dbg.cs" />
     <Compile Include="Plugin.HCR\MoreImmigrants.cs" />
     <Compile Include="Plugin.HCR\InvasionHandler.cs" />
+    <Compile Include="Plugin.HCR\TestFunctions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

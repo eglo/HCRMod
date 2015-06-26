@@ -38,7 +38,6 @@ namespace Plugin.HCR {
 				conf.isEnabledDebugLevel.set(3);
 				Dbg.trc(Dbg.Grp.Init,3);
 
-				Dbg.msg(Dbg.Grp.Startup,3,"Mod enabled");
 				Dbg.printMsg("- Here Comes The Rain - Mod Version "+conf.version);
 				Dbg.printMsg("Rain effects"+conf.isEnabledWeatherEffects.toEnabledString());
 				if (conf.isEnabledWeatherEffects.getBool()) {
@@ -62,6 +61,20 @@ namespace Plugin.HCR {
 					AManager<GUIManager>.getInstance().gameObject.AddComponent(typeof(KeyboardCommands));
 				}			
 				Dbg.printMsg("Invasion configuration"+conf.isEnabledInvasionConfig.toEnabledString());
+
+				if(conf.trackResourcesIdxFirst.getBool() && conf.trackResourcesIdxLast.getBool()) {
+					GUIManager gm = AManager<GUIManager>.getInstance();
+					ResourceManager rm = AManager<ResourceManager>.getInstance();
+					if(gm.watchedResources.Count == 0) {
+						for (int i = conf.trackResourcesIdxFirst.get(); i <= conf.trackResourcesIdxLast.get(); i++) {
+							if ((i >= 0) && (i < rm.resources.Length)) {
+								gm.watchedResources.Add(i);
+							}
+						}
+					}						
+				}
+
+				Dbg.msg(Dbg.Grp.Startup,3,"Mod enabled");
 			}  catch(Exception e) {
 				Dbg.dumpExc(e);
 			}
@@ -113,7 +126,6 @@ namespace Plugin.HCR {
 				InvasionHandler.processEvent(ref evt);
 			}
 		}
-
 
 		[Timber_and_Stone.API.Event.EventHandler(Priority.Monitor)]
 		public void onInvasionMonitor(EventInvasion evt) {
