@@ -1,24 +1,38 @@
 
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using System.Text;
-using System.Media;
 
 namespace Plugin.HCR {
 
 	public class UI {
-
 		private static GUIManager gm = AManager<GUIManager>.getInstance();
-
+		private static Configuration conf = Configuration.getInstance();
+		private static StreamWriter sw;
+				
 		public static void print(string str) {
 			gm.AddTextLine(str);
+
+			if (conf.IsEnabledLogFile.getBool()) {
+				try {
+					if (sw == null) {
+						sw = new StreamWriter("conf.confName"+".log");
+						sw.AutoFlush = true;
+					}
+					sw.WriteLine(str);
+				} catch {
+					gm.AddTextLine("HCR:Exception: Couldn't create/write to log file");
+				}
+			}
 		}
 	}
 	
 	public class Dbg {
 
 		[Flags] public enum Grp {
+			None = 0,
 			Init = 1, 
 			Startup = 2, 
 			Unity = 4, 
@@ -27,7 +41,8 @@ namespace Plugin.HCR {
 			Weather = 32,
 			Rain = 64,
 			Units = 128, 
-			Invasion = 256
+			Invasion = 256,
+			All = -1
 		};
 
 		private static Configuration conf = Configuration.getInstance();
@@ -87,7 +102,8 @@ namespace Plugin.HCR {
 			foreach(StackFrame frame in frames) {
 				//cant get line numbers with MonoDevelop .. :(
 				//UI.print(" in: " + frame.GetMethod().Name + " at line "+frame.GetFileLineNumber().ToString());
-				UI.print(" in: " + frame.GetMethod().Name);
+				//UI.print(" in: " + frame.GetMethod().Name);
+				UI.print(" in: " + frame.ToString());
 			}
 		}
 		

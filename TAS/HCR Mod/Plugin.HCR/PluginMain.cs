@@ -19,17 +19,22 @@ namespace Plugin.HCR {
 		}
 
 		public override void OnLoad() {
-
 			instance = this;
-			EventManager.getInstance().Register(this);
-			
+			EventManager.getInstance().Register(this);			
 		}
 
 		public override void OnEnable() {
 			//seems this comes a little too early, apparently some parts of the game are not quite init'ed at this time..
+			//(I'm looking at you, worldSize member in ChunkManager..)
 			try {
+				GUIManager gm = AManager<GUIManager>.getInstance();
 				Configuration conf = Configuration.getInstance();
-				conf.init();
+				
+				gm.AddTextLine("HCR - Here Comes The Rain - Mod Version "+conf.version);
+				if (!conf.init()) {
+					Dbg.printErr("Error in configuration init, mod is NOT enabled");
+					return;
+				}
 				
 				conf.isEnabledDebugGroup.set((int)(
 					//Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
@@ -38,13 +43,11 @@ namespace Plugin.HCR {
 				conf.isEnabledDebugLevel.set(3);
 				Dbg.trc(Dbg.Grp.Init,3);
 
-				Dbg.printMsg("- Here Comes The Rain - Mod Version "+conf.version);
 				Dbg.printMsg("Rain effects"+conf.isEnabledWeatherEffects.toEnabledString());
 				if (conf.isEnabledWeatherEffects.getBool()) {
+					//what to add where? most things seem to work the same whereever I hooked them in ... 
 					AManager<ChunkManager>.getInstance().gameObject.AddComponent(typeof(Weather));
-					//AManager<TerrainObjectManager>.getInstance().gameObject.AddComponent(typeof(Weather));
 					Dbg.printMsg("Rainblobs visible effect"+conf.isEnabledShowRainBlocks.toEnabledString());
-					//AManager<ChunkManager>.getInstance().gameObject.AddComponent(typeof(Rain));
 					AManager<TerrainObjectManager>.getInstance().gameObject.AddComponent(typeof(Rain));
 					
 				}
@@ -63,8 +66,9 @@ namespace Plugin.HCR {
 				Dbg.printMsg("Invasion configuration"+conf.isEnabledInvasionConfig.toEnabledString());
 
 				if(conf.trackResourcesIdxFirst.getBool() && conf.trackResourcesIdxLast.getBool()) {
-					GUIManager gm = AManager<GUIManager>.getInstance();
+					gm = AManager<GUIManager>.getInstance();
 					ResourceManager rm = AManager<ResourceManager>.getInstance();
+					//this will only happen for a game started anew, not for a saved game
 					if(gm.watchedResources.Count == 0) {
 						for (int i = conf.trackResourcesIdxFirst.get(); i <= conf.trackResourcesIdxLast.get(); i++) {
 							if ((i >= 0) && (i < rm.resources.Length)) {
@@ -74,6 +78,8 @@ namespace Plugin.HCR {
 					}						
 				}
 
+				AManager<GUIManager>.getInstance().gameObject.AddComponent(typeof(Hack));
+				
 				Dbg.msg(Dbg.Grp.Startup,3,"Mod enabled");
 			}  catch(Exception e) {
 				Dbg.dumpExc(e);

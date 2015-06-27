@@ -58,7 +58,7 @@ namespace Plugin.HCR {
 					cDay = tm.day;
 					cHour = tm.hour;
 
-					if ((cDay == 1) && !cheatDone && (UnityEngine.Random.Range(0,30) == 0)) {
+					if ((cDay == 1) && !cheatDone && (UnityEngine.Random.Range(0,200) == 0)) {
 						ResourceManager rm = AManager<ResourceManager>.getInstance();
 						rm.AddResource(11,5);
 						Dbg.printMsg("The woodchopper found some pieces of animal fur. Have any use for these?");
@@ -208,6 +208,17 @@ namespace Plugin.HCR {
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
 		private void regrowTrees(int x, int y, int z) {
+
+//			TerrainObjectManager tm = AManager<TerrainObjectManager>.getInstance();			
+//			foreach (TreeFlora treeObj in tm.treeObjects) {
+//				if(
+//					(treeObj.transform.position.x == x) 
+//					(treeObj.transform.position.y == y) 
+//				)
+//					treeObj.onFire = false;
+//						
+//			}
+			
 			
 //		ChunkManager cm = AManager<ChunkManager>.getInstance();			
 //			BlockProperties checkProps = BlockProperties.BlockTreeBase;

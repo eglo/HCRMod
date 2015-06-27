@@ -33,7 +33,7 @@ namespace Plugin.HCR {
 				yield return new WaitForSeconds(waitTime);
 				try {
 					//AManager<GUIManager>.getInstance().AddTextLine("Level Up! Long Dong Tom is now a Lv. 20 tester");
-					unitCheckLevelUpEventUglyHack();
+					checkLevelUpEventUglyHack();
 				} catch(Exception e) { 
 					Dbg.dumpCorExc("CheckLevelUp",e);
 				}
@@ -43,7 +43,7 @@ namespace Plugin.HCR {
 
 		///////////////////////////////////////////////////////////////////////////////////////////
 		// check the Notification Window for Level Up messages, when found get unit and randomly improve unit traits  
-		private void unitCheckLevelUpEventUglyHack() {
+		private void checkLevelUpEventUglyHack() {
 			GUIManager gm = AManager<GUIManager>.getInstance();
 			NotificationWindow nw = gm.GetComponent<NotificationWindow>();
 			
@@ -72,7 +72,7 @@ namespace Plugin.HCR {
 					Dbg.trc(Dbg.Grp.Units,2,"randomLvlUp "+unitNameAndProfession);
 					if(UnityEngine.Random.Range(0,(20-lvl)) == 0) {
 						Dbg.trc(Dbg.Grp.Units,3,"doLvlUp "+unitNameAndProfession);
-						unitLevelUp(unitName, lvl);
+						processLevelUp(unitName, lvl);
 					}
 				}
 			}
@@ -80,14 +80,14 @@ namespace Plugin.HCR {
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
 		// get unit <unitName> and either remove negative traits or apply positive ones if no negatives found 
-		private void unitLevelUp(string unitName,int lvl) {
+		private void processLevelUp(string unitName,int lvl) {
 			Dbg.trc(Dbg.Grp.Units,3);
 			
 			UnitManager um = AManager<UnitManager>.getInstance();
 			foreach (APlayableEntity unit in um.playerUnits) {
 				if (unit.unitName == unitName) {
-					if(!unitRemoveRandomNegativeTrait(unit)) {
-						unitAddRandomPositiveTrait(unit);
+					if(!removeNegativeTrait(unit)) {
+						addPositiveTrait(unit);
 					}
 					return;
 				}
@@ -97,7 +97,7 @@ namespace Plugin.HCR {
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
 		//find all negative traits on unit and randomly remove one, retunr false if no negs found
-		private bool unitRemoveRandomNegativeTrait(APlayableEntity unit) {
+		private bool removeNegativeTrait(APlayableEntity unit) {
 			Dbg.trc(Dbg.Grp.Units,3);
 			
 			List<string> negPrefs = new List<string> {"trait.weakback","trait.cowardly","trait.clumsy","trait.sluggish","trait.overeater","trait.disloyal","trait.badvision","trait.lazy"};
@@ -132,7 +132,7 @@ namespace Plugin.HCR {
 		///////////////////////////////////////////////////////////////////////////////////////////
 		//add a new random postive trait to unit
 		
-		private bool unitAddRandomPositiveTrait(APlayableEntity unit) {
+		private bool addPositiveTrait(APlayableEntity unit) {
 			Dbg.trc(Dbg.Grp.Units,3);
 			
 			List<string> posPrefs = new List<string> {"trait.hardworker","trait.goodvision","trait.charismatic","trait.courageous","trait.athletic","trait.quicklearner","trait.strongback"};

@@ -14,14 +14,31 @@ namespace Plugin.HCR {
 			dumpTreeData,
 			dumpTradeResources,
 			dumpTrackedResources,
-			unassignedTestFunc,
-			unassignedTestFunc,
+			dumpDeadEnemies,
+			toggleDesignations,
 			unassignedTestFunc,
 			unassignedTestFunc,
 			unassignedTestFunc,
 			unassignedTestFunc			
 		};
 
+
+		///////////////////////////////////////////////////////////////////////////////////////////		
+		public static void incDebugLvl() {
+
+			Configuration conf = Configuration.getInstance();
+			conf.isEnabledDebugLevel.set(conf.isEnabledDebugLevel.get()+1);			
+			Dbg.printMsg("Debug level increased, now set to: "+conf.isEnabledDebugLevel.get().ToString());
+		}
+
+		///////////////////////////////////////////////////////////////////////////////////////////		
+		public static void decDebugLvl() {
+			
+			Configuration conf = Configuration.getInstance();
+			conf.isEnabledDebugLevel.set(conf.isEnabledDebugLevel.get()-1);			
+			Dbg.printMsg("Debug level decreased , now set to: "+conf.isEnabledDebugLevel.get().ToString());
+		}
+		
 		///////////////////////////////////////////////////////////////////////////////////////////		
 		public static void weatherEvent() {
 			Dbg.printMsg("Test invoked: "+MethodBase.GetCurrentMethod().Name);
@@ -52,9 +69,11 @@ namespace Plugin.HCR {
 		///////////////////////////////////////////////////////////////////////////////////////////		
 		public static void dumpTreeData() {
 			Dbg.printMsg("Test invoked: "+MethodBase.GetCurrentMethod().Name);
+
+			TerrainObjectManager tm = AManager<TerrainObjectManager>.getInstance();
 			
-			foreach (var kvp in ImproveUnitTraits.unitLevelUpEvents) {
-				UI.print(kvp.Key.ToString()+"="+kvp.Value.ToString());
+			foreach (TreeFlora treeObj in tm.treeObjects) {
+				UI.print(treeObj.treeIndex.ToString("D3")+":"+treeObj.transform.position.ToString()+":"+treeObj.onFire.ToString()+":"+treeObj.health.ToString());
 			}
 		}
 		
@@ -80,7 +99,7 @@ namespace Plugin.HCR {
 			GUIManager gm = AManager<GUIManager>.getInstance();
 			ResourceManager rm = AManager<ResourceManager>.getInstance();
 			foreach (int resId in gm.watchedResources) {
-				Dbg.printMsg(resId.ToString("D3")+":"+rm.resources[resId].name.ToString());
+				Dbg.printMsg(resId.ToString("D3")+":"+rm.resources[resId].name.ToString()+rm.materials[resId].ToString());
 			}
 		}
 		
@@ -102,10 +121,57 @@ namespace Plugin.HCR {
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////		
+
+		static Color roadDesColor = Color.clear;
+		static float hallColorAlpha = 0.0f;
+		public static void toggleDesignations() {
+			Dbg.printMsg("Test invoked: "+MethodBase.GetCurrentMethod().Name);
+
+			DesignManager dm = AManager<DesignManager>.getInstance();
+			dm.roadDesignation.renderer.enabled = !dm.roadDesignation.renderer.enabled;
+			if( roadDesColor == Color.clear) {
+//				roadDesColor = dm.roadDesignation.transform.GetComponent<Material>.colo;
+			} else { 
+//				dm.roadTexture.color = roadTextureColor;
+			}
+			if (hallColorAlpha == 0.0) {
+				//hallColorAlpha = dm.HallColor.a = 0;
+				//dm.HallColor.a = hallColorAlpha;
+				
+			}
+ 		}		
+
+		///////////////////////////////////////////////////////////////////////////////////////////		
 		public static void unassignedTestFunc() {
 			Dbg.printMsg("Test invoked: "+MethodBase.GetCurrentMethod().Name);
 			
 		}		
 	}
+
+	public class Hack : MonoBehaviour {
+		
+		public bool isHackOnMap = false;
+		
+		private static Hack instance = new Hack();			
+		public static Hack getInstance() {
+			return instance; 
+		}
+		
+		public Hack() {
+		} 
+		
+		public void Start() {
+			Dbg.msg(Dbg.Grp.Startup,3,"Hack started");
+		}
+
+		public void Update() {
+			Dbg.msg(Dbg.Grp.Startup,3,".");
+			DesignManager dm = AManager<DesignManager>.getInstance();
+			dm.roadDesignation.renderer.enabled = false;
+			dm.roadTexture.color = Color.clear;
+		}
+		
+	}
+
 }
 

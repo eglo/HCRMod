@@ -130,9 +130,4 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
-  <ItemGroup>
-    <None Include="..\..\..\games\Timber and Stone\Timber and Stone v1.6.3\saves\HCR.ini">
-      <Link>HCR.ini</Link>
-    </None>
-  </ItemGroup>
 </Project>

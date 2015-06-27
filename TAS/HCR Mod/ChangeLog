@@ -1,3 +1,19 @@
+2015-06-27  tengel  <tengel@home.de>
+
+	* Plugin.csproj:
+	* Plugin.userprefs:
+	* Dbg.cs:
+	* Weather.cs:
+	* PluginMain.cs:
+	* TestFunctions.cs:
+	* Configuration.cs:
+	* MoreImmigrants.cs:
+	* KeyboardCommands.cs:
+	* ImproveUnitTraits.cs:
+added configuration load, merchant and tree regrow WIP 
+
+
+
 2015-06-26  tengel  <tengel@home.de>
 
 	* Plugin.csproj:

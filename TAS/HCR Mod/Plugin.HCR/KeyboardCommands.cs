@@ -23,6 +23,8 @@ namespace Plugin.HCR {
 			{KeyCode.Alpha3,setGameSpeed3},
 			{KeyCode.Alpha4,setGameSpeed4},
 			{KeyCode.Alpha5,setGameSpeed5},
+			{KeyCode.KeypadPlus,TestFunctions.incDebugLvl},
+			{KeyCode.KeypadMinus,TestFunctions.decDebugLvl},			
 			{KeyCode.F1,TestFunctions.tf[0]},
 			{KeyCode.F2,TestFunctions.tf[1]},
 			{KeyCode.F3,TestFunctions.tf[2]},
@@ -69,31 +71,31 @@ namespace Plugin.HCR {
 		///////////////////////////////////////////////////////////////////////////////////////////		
 		public static void setGameSpeed1() {
 			AManager<TimeManager>.getInstance().play(1f);
-			Dbg.printMsg("Game speed 1x");	
+			//UI.print("Game speed 1x");	
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////		
 		public static void setGameSpeed2() {
 			AManager<TimeManager>.getInstance().play(2f);
-			Dbg.printMsg("Game speed 2x");	
+			//UI.print("Game speed 2x");	
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////		
 		public static void setGameSpeed3() {
 			AManager<TimeManager>.getInstance().play(3f);
-			Dbg.printMsg("Game speed 3x");	
+			UI.print("Game speed 3x");	
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////
 		public static void setGameSpeed4() {
 			AManager<TimeManager>.getInstance().play(4f);
-			Dbg.printMsg("Game speed 4x");	
+			UI.print("Game speed 4x");	
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////		
 		public static void setGameSpeed5() {
 			AManager<TimeManager>.getInstance().play(5f);
-			Dbg.printMsg("Game speed 5x");	
+			UI.print("Game speed 5x");	
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////
