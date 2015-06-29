@@ -13,8 +13,8 @@ namespace Plugin.HCR {
 		public static ImproveUnitTraits getInstance() {
 			return instance; 
 		}
-		
-		public static Dictionary <string,int> unitLevelUpEvents = new Dictionary <string,int>();
+		private static bool isInitialized = false;
+		public static Dictionary <string,int> unitProfessionLevels = new Dictionary <string,int>();
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
 
@@ -22,61 +22,107 @@ namespace Plugin.HCR {
 			if (!Configuration.getInstance().isEnabledImproveUnitTraits.getBool())
 				return;
 
-			Dbg.msg(Dbg.Grp.Startup,3,"Improve unit traits started");
+			Dbg.trc(Dbg.Grp.Startup,3,"Improve unit traits started");
+
+			UnitManager um = AManager<UnitManager>.getInstance();
+			if(um.playerUnits.Count == 0)
+				Dbg.printErr("UnitManager not initialized"); //farg..
+			
 			StartCoroutine(CheckLevelUp(1.0F));
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
 
 		IEnumerator CheckLevelUp(float waitTime) {
+			UnitManager um = AManager<UnitManager>.getInstance();
+
 			while(true) {
 				yield return new WaitForSeconds(waitTime);
+				while(um.playerUnits.Count == 0) {
+					Dbg.trc(Dbg.Grp.Units,1,"UnitManager not initialized");
+					yield return new WaitForSeconds(waitTime);
+				}
 				try {
-					//AManager<GUIManager>.getInstance().AddTextLine("Level Up! Long Dong Tom is now a Lv. 20 tester");
-					checkLevelUpEventUglyHack();
+	
+					if(!isInitialized) {
+						foreach (APlayableEntity unit in um.playerUnits) {
+							Dbg.trc(Dbg.Grp.Units,1,"unit "+unit.unitName);
+							foreach(AProfession prof in unit.getProfessions()) {
+								string unitNameAndProfession = unit.unitName+" "+prof.getProfessionName();
+								unitProfessionLevels[unitNameAndProfession] = prof.getLevel();
+							}
+						}
+						isInitialized = true;			
+					}
+
+					Dbg.trc(Dbg.Grp.Units,1);
+					checkLevelUp();
 				} catch(Exception e) { 
 					Dbg.dumpCorExc("CheckLevelUp",e);
 				}
 			}
 		}
 
-
-		///////////////////////////////////////////////////////////////////////////////////////////
-		// check the Notification Window for Level Up messages, when found get unit and randomly improve unit traits  
-		private void checkLevelUpEventUglyHack() {
-			GUIManager gm = AManager<GUIManager>.getInstance();
-			NotificationWindow nw = gm.GetComponent<NotificationWindow>();
-			
-			List<string> text;
-			text = nw.textLines;
-			for(int i = text.Count-1; i >= 0; i--) {
-				string line = text[i];
-				if (!line.StartsWith("Level Up!"))
-					continue;
-				Match mc = Regex.Match(line,@"Level Up! (.+) is now a Lv. (\d+)\s(\w+)");
-				if (mc.Success) {
-					string unitName = mc.Groups[1].Value;
-					int lvl = Int32.Parse(mc.Groups[2].Value);
-					string profession = mc.Groups[3].Value;
-					Dbg.msg(Dbg.Grp.Units,2,"unitName "+unitName);
-					Dbg.msg(Dbg.Grp.Units,2,"lvl "+lvl.ToString());
-					Dbg.msg(Dbg.Grp.Units,2,"profession "+profession);
-					string unitNameAndProfession = unitName+" "+profession;
+		private void checkLevelUp () {
+			UnitManager um = AManager<UnitManager>.getInstance();
+			foreach (APlayableEntity unit in um.playerUnits) {
+				Dbg.trc(Dbg.Grp.Units,1,"unit "+unit.unitName);
+				foreach(AProfession prof in unit.getProfessions()) {
+					string unitNameAndProfession = unit.unitName+" "+prof.getProfessionName();
+					int lvl = prof.getLevel();
 					int donelvl = 0;
-					Dbg.trc(Dbg.Grp.Units,2,"tryLvlUp "+unitNameAndProfession);
-					if (unitLevelUpEvents.TryGetValue(unitNameAndProfession,out donelvl)) {
+					Dbg.trc(Dbg.Grp.Units,1,"tryLvlUp "+unitNameAndProfession);
+					if (unitProfessionLevels.TryGetValue(unitNameAndProfession,out donelvl)) {
 						if (donelvl >= lvl)	//wtf?..
 							continue;
 					}
-					unitLevelUpEvents[unitNameAndProfession] = lvl;
+					unitProfessionLevels[unitNameAndProfession] = lvl;
 					Dbg.trc(Dbg.Grp.Units,2,"randomLvlUp "+unitNameAndProfession);
 					if(UnityEngine.Random.Range(0,(20-lvl)) == 0) {
 						Dbg.trc(Dbg.Grp.Units,3,"doLvlUp "+unitNameAndProfession);
-						processLevelUp(unitName, lvl);
+						processLevelUp(unit.unitName, lvl);
 					}
 				}
-			}
+			}	
 		}
+
+		///////////////////////////////////////////////////////////////////////////////////////////
+		// check the Notification Window for Level Up messages, when found get unit and randomly improve unit traits  
+//		public static Dictionary <string,int> unitLevelUpEvents = new Dictionary <string,int>();
+//		private void checkLevelUpEventUglyHack() {
+//			GUIManager gm = AManager<GUIManager>.getInstance();
+//			NotificationWindow nw = gm.GetComponent<NotificationWindow>();
+//			
+//			List<string> text;
+//			text = nw.textLines;
+//			for(int i = text.Count-1; i >= 0; i--) {
+//				string line = text[i];
+//				if (!line.StartsWith("Level Up!"))
+//					continue;
+//				Match mc = Regex.Match(line,@"Level Up! (.+) is now a Lv. (\d+)\s(\w+)");
+//				if (mc.Success) {
+//					string unitName = mc.Groups[1].Value;
+//					int lvl = Int32.Parse(mc.Groups[2].Value);
+//					string profession = mc.Groups[3].Value;
+//					Dbg.msg(Dbg.Grp.Units,2,"unitName "+unitName);
+//					Dbg.msg(Dbg.Grp.Units,2,"lvl "+lvl.ToString());
+//					Dbg.msg(Dbg.Grp.Units,2,"profession "+profession);
+//					string unitNameAndProfession = unitName+" "+profession;
+//					int donelvl = 0;
+//					Dbg.trc(Dbg.Grp.Units,2,"tryLvlUp "+unitNameAndProfession);
+//					if (unitLevelUpEvents.TryGetValue(unitNameAndProfession,out donelvl)) {
+//						if (donelvl >= lvl)	//wtf?..
+//							continue;
+//					}
+//					unitLevelUpEvents[unitNameAndProfession] = lvl;
+//					Dbg.trc(Dbg.Grp.Units,2,"randomLvlUp "+unitNameAndProfession);
+//					if(UnityEngine.Random.Range(0,(20-lvl)) == 0) {
+//						Dbg.trc(Dbg.Grp.Units,3,"doLvlUp "+unitNameAndProfession);
+//						processLevelUp(unitName, lvl);
+//					}
+//				}
+//			}
+//		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
 		// get unit <unitName> and either remove negative traits or apply positive ones if no negatives found 
@@ -96,7 +142,7 @@ namespace Plugin.HCR {
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
-		//find all negative traits on unit and randomly remove one, retunr false if no negs found
+		//find all negative traits on unit and randomly remove one, return false if no negs found
 		private bool removeNegativeTrait(APlayableEntity unit) {
 			Dbg.trc(Dbg.Grp.Units,3);
 			

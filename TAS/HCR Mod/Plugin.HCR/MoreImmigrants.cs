@@ -25,15 +25,17 @@ namespace Plugin.HCR {
 			if (!Configuration.getInstance().isEnabledMoreImmigrants.getBool())
 				return;
 			
-			Dbg.msg(Dbg.Grp.Startup,3,"More migrants started");		
+			Dbg.trc(Dbg.Grp.Startup,3);		
 			StartCoroutine(doImmigrants(10.0F));
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
 		
 		IEnumerator doImmigrants(float waitTime) {
-			int cDay, cHour;
 			TimeManager tm = AManager<TimeManager>.getInstance();
+			UnitManager um = AManager<UnitManager>.getInstance();
+			ResourceManager rm = AManager<ResourceManager>.getInstance();
+			int cDay, cHour;
 			
 			while (true) {
 				yield return new WaitForSeconds(waitTime);
@@ -43,16 +45,14 @@ namespace Plugin.HCR {
 					if(
 						(cDay >= nextImmigrantDay) && (cHour >= (UnityEngine.Random.Range(8,14)) && (cHour <= (UnityEngine.Random.Range(10,18))))
 					) {
-						UnitManager um = AManager<UnitManager>.getInstance();
 						int settlers = um.LiveUnitCount();
-						ResourceManager rm = AManager<ResourceManager>.getInstance();
 						int food = rm.materials[4];
 
-						Dbg.msg(Dbg.Grp.Units,1,"Checking immigration:"+food.ToString()+"food for "+settlers.ToString()+" settlers");
-						//never had much over 3000 food in my games so I guess this will stop at about 30 settlers
-						//might stil get some from in game logic
+						Dbg.msg(Dbg.Grp.Units,3,"Checking immigration: "+food.ToString()+" food for "+settlers.ToString()+" settlers");
+						//never had much over 3000 food in my games so I guess this will normally stop at about 30 settlers
+						//might stil get some more from in game logic
 						if ((food/settlers) >= (50+settlers*1.5)) {
-							Dbg.msg(Dbg.Grp.Units,1,"Trying immigrant");
+							Dbg.msg(Dbg.Grp.Units,3,"Trying immigrant");
 							um.Migrate(Vector3.zero);	//chance of 1/4, ugh
 						}
 					}
@@ -63,24 +63,32 @@ namespace Plugin.HCR {
 				try {		
 					cDay = tm.day;
 					cHour = tm.hour;
+
+					if(um.MerchantOnMap()) {
+						//called here every 10secs atm, but hardly possible to miss .. or is it?
+						lastMerchantDay = cDay;
+						nextMerchantDay = cDay+1;
+					}
+
 					if(
 						(cDay >= nextMerchantDay) && (cHour >= (UnityEngine.Random.Range(8,14)) && (cHour <= (UnityEngine.Random.Range(10,18))))
 					) {
 						//check amount and value of material marked for sale
-						//the more you offer the higher the chance for a merchant coming
-						//it's obviously highly exploitable as you can always deny the trade, but whatever.. ;)
-						UnitManager um = AManager<UnitManager>.getInstance();
-						ResourceManager rm = AManager<ResourceManager>.getInstance();
+						//the more value is for trade the higher the chance for a merchant spawn
+						//the chance is pretty good though since this is called every 10secs anyway hah
+						//TODO: something better..
 						float sellValue = 0.0f;
 						foreach (Resource res in rm.sellList) {
 							sellValue += rm.materials[res.index]* res.value;
-							Dbg.printMsg(res.name.ToString());
+							Dbg.trc(Dbg.Grp.Units,2,res.name+":"+(rm.materials[res.index]*res.value).ToString());
 						}
 						
-						Dbg.msg(Dbg.Grp.Units,1,"Checking merchant: "+sellValue.ToString());
-						if ((sellValue) >= UnityEngine.Random.Range(50.0f,300.0f)) {
-							Dbg.msg(Dbg.Grp.Units,1,"Trying immigrant");
+						//seeds valued at 10.0f..
+						Dbg.msg(Dbg.Grp.Units,3,"Checking merchant: sellValue="+sellValue.ToString());
+						if ((sellValue) >= UnityEngine.Random.Range(100.0f,2000.0f)) {
+							Dbg.msg(Dbg.Grp.Units,3,"Trying merchant");
 							um.SpawnMerchant(Vector3.zero);
+							
 						}
 					}
 					
@@ -103,7 +111,8 @@ namespace Plugin.HCR {
 			UI.print("Someone's coming over the hills. I think it's one of us..");
 
 			Dbg.msg(Dbg.Grp.Units,3,"Immigrant event processed, new immigrant check set to day: "+nextImmigrantDay);
-		}		
+		}
+		
 	}
 }
 

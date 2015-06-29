@@ -18,7 +18,7 @@ namespace Plugin.HCR {
 			if (conf.IsEnabledLogFile.getBool()) {
 				try {
 					if (sw == null) {
-						sw = new StreamWriter("conf.confName"+".log");
+						sw = new StreamWriter("saves\\"+conf.confName+".log");
 						sw.AutoFlush = true;
 					}
 					sw.WriteLine(str);
@@ -82,7 +82,7 @@ namespace Plugin.HCR {
 			
 			StackTrace st = new StackTrace();
 			StackFrame[] frames = st.GetFrames();
-			UI.print(conf.confName+":TRC:"+group.ToString()+": " + frames[1].GetMethod().Name+": "+position.ToString());
+			UI.print(conf.confName+":TRC:"+group.ToString()+": "+frames[1].GetMethod().DeclaringType.ToString()+"."+frames[1].GetMethod().Name+": "+position.ToString());
 			
 		}
 		
@@ -92,7 +92,7 @@ namespace Plugin.HCR {
 			
 			StackTrace st = new StackTrace();
 			StackFrame[] frames = st.GetFrames();
-			UI.print(conf.confName+":TRC:"+group.ToString()+": " + frames[1].GetMethod().Name+": "+str);
+			UI.print(conf.confName+":TRC:"+group.ToString()+": "+frames[1].GetMethod().DeclaringType.ToString()+"."+frames[1].GetMethod().Name+": "+str);
 		}
 		
 		public static void dumpExc(Exception e) {
@@ -102,8 +102,7 @@ namespace Plugin.HCR {
 			foreach(StackFrame frame in frames) {
 				//cant get line numbers with MonoDevelop .. :(
 				//UI.print(" in: " + frame.GetMethod().Name + " at line "+frame.GetFileLineNumber().ToString());
-				//UI.print(" in: " + frame.GetMethod().Name);
-				UI.print(" in: " + frame.ToString());
+				UI.print(" in: "+frame.GetMethod().DeclaringType.ToString()+"."+frame.GetMethod().Name);
 			}
 		}
 		
@@ -114,7 +113,7 @@ namespace Plugin.HCR {
 			foreach(StackFrame frame in frames) {
 				//cant get line numbers with MonoDevelop .. :(
 				//UI.print(" in: " + frame.GetMethod().Name + " at line "+frame.GetFileLineNumber().ToString());
-				UI.print(" in: " + frame.GetMethod().Name);
+				UI.print(" in: "+frame.GetMethod().DeclaringType.ToString()+"."+frame.GetMethod().Name);
 			}
 		}
 		

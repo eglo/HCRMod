@@ -35,18 +35,19 @@ namespace Plugin.HCR {
 					Dbg.printErr("Error in configuration init, mod is NOT enabled");
 					return;
 				}
-				
-				conf.isEnabledDebugGroup.set((int)(
-					//Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
-					Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Units
-				));
-				conf.isEnabledDebugLevel.set(3);
-				Dbg.trc(Dbg.Grp.Init,3);
+
+//TODO: delete this
+conf.isEnabledDebugLevel.set(3);
+conf.isEnabledDebugGroup.set((int)(
+	//Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
+	Dbg.Grp.Startup|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Rain|Dbg.Grp.Units
+));
+				Dbg.trc(Dbg.Grp.Init,1);
 
 				Dbg.printMsg("Rain effects"+conf.isEnabledWeatherEffects.toEnabledString());
 				if (conf.isEnabledWeatherEffects.getBool()) {
 					//what to add where? most things seem to work the same whereever I hooked them in ... 
-					AManager<ChunkManager>.getInstance().gameObject.AddComponent(typeof(Weather));
+					AManager<TerrainObjectManager>.getInstance().gameObject.AddComponent(typeof(Weather));
 					Dbg.printMsg("Rainblobs visible effect"+conf.isEnabledShowRainBlocks.toEnabledString());
 					AManager<TerrainObjectManager>.getInstance().gameObject.AddComponent(typeof(Rain));
 					
@@ -78,7 +79,11 @@ namespace Plugin.HCR {
 					}						
 				}
 
-				AManager<GUIManager>.getInstance().gameObject.AddComponent(typeof(Hack));
+				if (conf.isEnabledDebugLevel.getBool()) {
+					Dbg.printMsg("Debug enabled level:"+conf.isEnabledDebugLevel.get().ToString());
+					Dbg.Grp grp = (Dbg.Grp) conf.isEnabledDebugGroup.get();
+					Dbg.printMsg("Debug enabled groups:"+grp.ToString());
+				}
 				
 				Dbg.msg(Dbg.Grp.Startup,3,"Mod enabled");
 			}  catch(Exception e) {

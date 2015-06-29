@@ -101,7 +101,7 @@ namespace Plugin.HCR {
 		///////////////////////////////////////////////////////////////////////////////////////////
 		
 		public void Start() {
-			Dbg.msg(Dbg.Grp.Startup,3,"Keyboard command handler started");
+			Dbg.trc(Dbg.Grp.Startup,3);
 			
 			string str;
 			str = "Keyboard commands active. Press ";
@@ -116,8 +116,9 @@ namespace Plugin.HCR {
 		}
 		
 		public void OnGUI() {
+
 			Event evt = Event.current;
-			if (evt.isKey && checkPressed(cmdCombo)) {
+			if ((Event.current.type == EventType.KeyDown) && evt.isKey && checkPressed(cmdCombo)) {
 				try {
 					if(cmdDict.ContainsKey(evt.keyCode)) {
 						cmdDict[evt.keyCode]();

@@ -16,8 +16,8 @@ namespace Plugin.HCR {
 		private bool isInitialized = false;
 		public static int nextRainDay = 0;
 		public static int nextRainHour = 0;
-		public static bool cheatDone = false;
 		public Vector3i worldSize3i;
+		public static bool cheatDone = false;
 		
 		private static Weather instance = new Weather();			
 		public static Weather getInstance() {
@@ -27,27 +27,36 @@ namespace Plugin.HCR {
 		public void Start() {
 			if (!Configuration.getInstance().isEnabledWeatherEffects.getBool())
 				return;
+
+			gameObject.AddComponent(typeof(Rain));
+			gameObject.AddComponent(typeof(RainSound));
 			
-			Dbg.msg(Dbg.Grp.Startup,3,"Weather effects started");
+			Dbg.trc(Dbg.Grp.Startup,3);
 			StartCoroutine(doWeather(5.0F));
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
 				
 		IEnumerator doWeather(float waitTime) {
-			int cDay, cHour;
+			int cDay, cHour,secs = 0;
 
+			ChunkManager cm = AManager<ChunkManager>.getInstance();
 			while (!isInitialized) {
-				ChunkManager cm = AManager<ChunkManager>.getInstance();
-				worldSize3i = new Vector3i(((cm.worldSize.x) * cm.chunkSize.x),cm.worldSize.y,(cm.worldSize.z) * cm.chunkSize.z);
-				
+				worldSize3i = new Vector3i(((cm.worldSize.x) * cm.chunkSize.x),cm.worldSize.y,(cm.worldSize.z) * cm.chunkSize.z);				
 				if(worldSize3i.x > 1) {
-					isInitialized = true;
-					Dbg.trc(Dbg.Grp.Weather|Dbg.Grp.Map,3,"WorldSize init'd");
-
-					nextRainDay = tm.day+UnityEngine.Random.Range(0, 3);
+					Dbg.trc(Dbg.Grp.Weather|Dbg.Grp.Map,1,"worldSize initialized");
+					
+					gameObject.transform.position = worldSize3i/2;		//TODO: something better
+	
+					nextRainDay = tm.day+UnityEngine.Random.Range(0,2);
 					nextRainHour = tm.hour+UnityEngine.Random.Range(4, 12);
-					nextRainHour %= 24;					
+					nextRainHour %= 24;	
+
+					isInitialized = true;
+					
+				} else {
+					Dbg.trc(Dbg.Grp.Weather|Dbg.Grp.Map,1,"worldSize not initialized"+secs.ToString());
+					secs++;
 				}
 				yield return new WaitForSeconds(1.0f);
 			}	
@@ -70,7 +79,7 @@ namespace Plugin.HCR {
 
 					if((cDay >= nextRainDay) && (cHour >= nextRainHour)) {						
 						nextRainDay = cDay;
-						nextRainDay += cDay+UnityEngine.Random.Range(0,3);
+						nextRainDay += cDay+UnityEngine.Random.Range(0,2);
 						nextRainHour = cHour+UnityEngine.Random.Range(4,12);
 						nextRainHour %= 24;
 						
@@ -100,6 +109,26 @@ namespace Plugin.HCR {
 							Rain.getInstance().removeRainDrops();
 						}						
 						Dbg.msg(Dbg.Grp.Weather,3,"start weather effect over: ", xpos, zpos, xext, zext);
+						RainSound rs = (RainSound) gameObject.GetComponent(typeof(RainSound));
+						if (rs == null) 
+							Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+"rs == null");
+						if (rs.audio == null)
+							Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+"audo == null");
+						if (rs.audio.clip == null)
+							Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+"clip == null");
+						
+						if ((rs == null) || (rs.audio == null) || (rs.audio.clip == null)) {
+							Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+"clip == null");
+						} else {
+							Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+audio.clip.ToString());						
+							if (!rs.audio.isPlaying && rs.audio.clip.isReadyToPlay) {
+								rs.audio.volume = 1.0f;
+								rs.audio.loop = true;
+								rs.audio.Play();
+							}			
+						}
+						
+						rs.isActive = true;
 						switch(UnityEngine.Random.Range(1,8)) {
 							case 1:	
 							case 2:	

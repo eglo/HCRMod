@@ -25,6 +25,7 @@ namespace Plugin.HCR {
 		public ConfigValue noNecromancersTillDay = new ConfigValue(30);
 
 		//;..or replace invasion monsters if they come before the time defined
+		//careful not define something circular, happened to me heh
 		public ConfigValue replaceMonsters = new ConfigValue(1);
 		//;1 = goblins,2 = skeletons, 3 = spiders, 4 = wolves, 5 = necro
 		public ConfigValue replaceWolvesWith = new ConfigValue(3);
@@ -35,7 +36,7 @@ namespace Plugin.HCR {
 		//set tracked Resources. selects all between IdxFirst und IdxLast
 		//this will activate only when a new game is started
 		public ConfigValue trackResourcesIdxFirst = new ConfigValue(1);
-		public ConfigValue trackResourcesIdxLast = new ConfigValue(59);	//60+ is tools, 90+ is weapons
+		public ConfigValue trackResourcesIdxLast = new ConfigValue(79);	//60+ is tools, 90+ is weapons
 		
 		public ConfigValue IsEnabledLogFile = new ConfigValue(1);
 		public ConfigValue isEnabledDebugLevel= new ConfigValue(4);

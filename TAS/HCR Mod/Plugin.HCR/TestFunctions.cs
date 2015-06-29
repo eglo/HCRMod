@@ -27,7 +27,8 @@ namespace Plugin.HCR {
 		public static void incDebugLvl() {
 
 			Configuration conf = Configuration.getInstance();
-			conf.isEnabledDebugLevel.set(conf.isEnabledDebugLevel.get()+1);			
+			if (conf.isEnabledDebugLevel.get() < 10)
+				conf.isEnabledDebugLevel.set(conf.isEnabledDebugLevel.get()+1);			
 			Dbg.printMsg("Debug level increased, now set to: "+conf.isEnabledDebugLevel.get().ToString());
 		}
 
@@ -35,8 +36,10 @@ namespace Plugin.HCR {
 		public static void decDebugLvl() {
 			
 			Configuration conf = Configuration.getInstance();
-			conf.isEnabledDebugLevel.set(conf.isEnabledDebugLevel.get()-1);			
-			Dbg.printMsg("Debug level decreased , now set to: "+conf.isEnabledDebugLevel.get().ToString());
+			if (conf.isEnabledDebugLevel.get() > 0) {
+				conf.isEnabledDebugLevel.set(conf.isEnabledDebugLevel.get()-1);			
+				Dbg.printMsg("Debug level decreased , now set to: "+conf.isEnabledDebugLevel.get().ToString());
+			}
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////		
@@ -60,10 +63,9 @@ namespace Plugin.HCR {
 		public static void dumpTraitsDict() {
 			Dbg.printMsg("Test invoked: "+MethodBase.GetCurrentMethod().Name);
 
-			Dbg.printMsg("Test invoked: dump traits dict");
-			foreach (var kvp in ImproveUnitTraits.unitLevelUpEvents) {
-				UI.print(kvp.Key.ToString()+"="+kvp.Value.ToString());
-			}
+//			foreach (var kvp in ImproveUnitTraits.unitLevelUpEvents) {
+//				UI.print(kvp.Key.ToString()+"="+kvp.Value.ToString());
+//			}
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////		
@@ -122,56 +124,49 @@ namespace Plugin.HCR {
 		
 		///////////////////////////////////////////////////////////////////////////////////////////		
 
-		static Color roadDesColor = Color.clear;
-		static float hallColorAlpha = 0.0f;
+		public class Hack : MonoBehaviour {
+			
+			public bool isHackOnMap = false;
+			
+			private static Hack instance = new Hack();			
+			public static Hack getInstance() {
+				return instance; 
+			}
+			
+			public Hack() {
+			} 
+			
+			public void Start() {
+				Dbg.trc(Dbg.Grp.Startup,3,"Toogle road designation Hack started");
+			}
+			
+			public void Update() {
+				Dbg.msg(Dbg.Grp.Startup,3,".");
+				DesignManager dm = AManager<DesignManager>.getInstance();
+				dm.roadDesignation.renderer.enabled = false;
+				dm.roadTexture.color = Color.clear;
+				//dm.roadDesignation.transform.GetComponent<Material>().color = Color.clear;
+			}			
+		}
+		
 		public static void toggleDesignations() {
 			Dbg.printMsg("Test invoked: "+MethodBase.GetCurrentMethod().Name);
 
+			AManager<GUIManager>.getInstance().gameObject.AddComponent(typeof(Hack));
+	
 			DesignManager dm = AManager<DesignManager>.getInstance();
-			dm.roadDesignation.renderer.enabled = !dm.roadDesignation.renderer.enabled;
-			if( roadDesColor == Color.clear) {
-//				roadDesColor = dm.roadDesignation.transform.GetComponent<Material>.colo;
-			} else { 
-//				dm.roadTexture.color = roadTextureColor;
-			}
-			if (hallColorAlpha == 0.0) {
-				//hallColorAlpha = dm.HallColor.a = 0;
-				//dm.HallColor.a = hallColorAlpha;
-				
-			}
+			dm.roadDesignation.renderer.enabled = false;
+			//dm.roadDesignation.transform.GetComponent<Material>().color = Color.clear;
  		}		
 
 		///////////////////////////////////////////////////////////////////////////////////////////		
 		public static void unassignedTestFunc() {
 			Dbg.printMsg("Test invoked: "+MethodBase.GetCurrentMethod().Name);
+			throw new ArgumentException();
 			
 		}		
 	}
 
-	public class Hack : MonoBehaviour {
-		
-		public bool isHackOnMap = false;
-		
-		private static Hack instance = new Hack();			
-		public static Hack getInstance() {
-			return instance; 
-		}
-		
-		public Hack() {
-		} 
-		
-		public void Start() {
-			Dbg.msg(Dbg.Grp.Startup,3,"Hack started");
-		}
-
-		public void Update() {
-			Dbg.msg(Dbg.Grp.Startup,3,".");
-			DesignManager dm = AManager<DesignManager>.getInstance();
-			dm.roadDesignation.renderer.enabled = false;
-			dm.roadTexture.color = Color.clear;
-		}
-		
-	}
 
 }
 
