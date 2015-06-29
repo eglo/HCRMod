@@ -6,7 +6,7 @@ namespace Plugin.HCR {
 
 	public class HCRMod : MonoBehaviour {
 
-		public static GameObject go;
+		public static GameObject go  = new GameObject();
 
 		private static HCRMod instance = new HCRMod();			
 		public static HCRMod getInstance() {
@@ -20,8 +20,8 @@ namespace Plugin.HCR {
 			//seems this comes a little too early, apparently some parts of the game are not quite init'ed at this time..
 			//(I'm looking at you, worldSize member in ChunkManager..)
 			try {
-				GUIManager gm = AManager<GUIManager>.getInstance();
 				Configuration conf = Configuration.getInstance();
+				GUIManager gm = AManager<GUIManager>.getInstance();
 				
 				gm.AddTextLine("HCR - Here Comes The Rain - Mod Version "+conf.version+" Build "+conf.build);
 				if (!conf.init()) {
@@ -42,27 +42,25 @@ namespace Plugin.HCR {
 					//what to add where? most things seem to work the same where ever I hooked them in ... 
 					//the more I learn about Unity the more I think this doesnt make any sense at all haha
 					//at least it doesn't seem to break anything in game.. (yet)
-					AManager<TerrainObjectManager>.getInstance().gameObject.AddComponent(typeof(Weather));
+					go.AddComponent(typeof(Weather));
 					Dbg.printMsg("Rainblobs visible effect"+conf.isEnabledShowRainBlocks.toEnabledString());
-					AManager<TerrainObjectManager>.getInstance().gameObject.AddComponent(typeof(Rain));
 					
 				}
 				Dbg.printMsg("Improve unit traits"+conf.isEnabledImproveUnitTraits.toEnabledString());
 				if(conf.isEnabledImproveUnitTraits.getBool()) {
-					AManager<UnitManager>.getInstance().gameObject.AddComponent(typeof(ImproveUnitTraits));
+					go.AddComponent(typeof(ImproveUnitTraits));
 				}			
 				Dbg.printMsg("More immigrants"+conf.isEnabledMoreImmigrants.toEnabledString());
 				if(conf.isEnabledMoreImmigrants.getBool()) {
-					AManager<UnitManager>.getInstance().gameObject.AddComponent(typeof(MoreImmigrants));
+					go.AddComponent(typeof(MoreImmigrants));
 				}			
 				Dbg.printMsg("Keyboard commands"+conf.isEnabledKeyboardCommands.toEnabledString());
 				if(conf.isEnabledKeyboardCommands.getBool()) {
-					AManager<GUIManager>.getInstance().gameObject.AddComponent(typeof(KeyboardCommands));
+					go.AddComponent(typeof(KeyboardCommands));
 				}			
 				Dbg.printMsg("Invasion configuration"+conf.isEnabledInvasionConfig.toEnabledString());
 				
 				if(conf.trackResourcesIdxFirst.getBool() && conf.trackResourcesIdxLast.getBool()) {
-					gm = AManager<GUIManager>.getInstance();
 					ResourceManager rm = AManager<ResourceManager>.getInstance();
 					//this will only happen for a game started anew, not for a saved game
 					if(gm.watchedResources.Count == 0) {

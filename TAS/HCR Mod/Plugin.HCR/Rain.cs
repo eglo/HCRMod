@@ -9,8 +9,11 @@ using Timber_and_Stone;
 namespace Plugin.HCR {
 	
 	public class RainSound : MonoBehaviour {
-		public string filePath = "file:///"+Application.dataPath+"/StreamingAssets/rain.ogg";
+		private static string filePath = "file:///"+Application.dataPath+"/StreamingAssets/rain.ogg";
+		private static WWW www = new WWW(filePath);
 		public bool isActive = false;
+		public static GameObject go = new GameObject();
+		public static AudioSource ass;
 		
 		private static RainSound instance = new RainSound();			
 		public static RainSound getInstance() {
@@ -19,33 +22,45 @@ namespace Plugin.HCR {
 
 		public void Start() {
 			Dbg.trc(Dbg.Grp.Startup,3,"RainSound started");
-			Dbg.msg(Dbg.Grp.Rain,3,"Using rain sound :"+filePath);
-			StartCoroutine(rainSoundPlay());
+			Dbg.msg(Dbg.Grp.Rain,3,"Using rain sound file:"+filePath);
+			ass = (AudioSource) go.AddComponent(typeof(AudioSource));
+			StartCoroutine(rainSoundLoad());
 		}
 
-		IEnumerator rainSoundPlay() {
-			WWW www = new WWW(filePath);
+		IEnumerator rainSoundLoad() {
 			yield return www;
 			if(www.error != null)
-				Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+www.error);
+				Dbg.trc(Dbg.Grp.Rain,3,www.error);
 
-			audio.clip = www.GetAudioClip(false,false);
-			if (audio.clip == null) {
-				Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+"clip == null");
+			ass.clip = www.GetAudioClip(false,false);
+			if (ass.clip == null) {
+				Dbg.trc(Dbg.Grp.Rain,3,"clip == null");
 			} else {
-				Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+audio.clip.ToString());
+				Dbg.trc(Dbg.Grp.Rain,3,"clip == "+ass.clip.ToString());
 			}
-
-//			if(!isActive) {
-//				audio.Pause();
-//			} else {
-//				if (!audio.isPlaying && audio.clip.isReadyToPlay) {
-//					audio.volume = 1.0f;
-//					audio.loop = true;
-//					audio.Play();
-//				}			
-//			}
+			Dbg.trc(Dbg.Grp.Rain,3,"done");
+//			if (!ass.isPlaying && ass.clip.isReadyToPlay) {
+//				ass.volume = 1.0f;
+//				ass.loop = true;
+//				ass.Play();
+//			}			
 		}
+
+		public void rainSoundPlay() {
+			Dbg.trc(Dbg.Grp.Rain,3,ass.ToString());
+
+			if (!ass.isPlaying && ass.clip.isReadyToPlay) {
+				ass.volume = 1.0f;
+				ass.loop = true;
+				ass.Play();
+			}			
+		}
+
+		public void rainSoundStop() {
+			Dbg.trc(Dbg.Grp.Rain,3,ass.ToString());
+			ass.Pause();
+		}
+		
 	}
 
 	public class RainDrop {
@@ -65,6 +80,7 @@ namespace Plugin.HCR {
 
 	public class Rain : MonoBehaviour {
 
+		public static GameObject go = new GameObject();
 		public static List<RainDrop> rainDropsOnMap = new List<RainDrop>();
 		public bool isRainOnMap = false;
 		public float timeToRemove = 0.0f;
@@ -79,29 +95,13 @@ namespace Plugin.HCR {
 
 			//shouldnt happen
 			if(isRainOnMap)
-				removeRain();
+				return;
 
-			if (gameObject == null) 
-				Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+"go == null");
-//			RainSound rs = (RainSound) gameObject.GetComponent(typeof(RainSound));
-//			if (rs == null) 
-//				Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+"rs == null");
-//			if (rs.audio == null)
-//				Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+"audo == null");
-//			if (rs.audio.clip == null)
-//				Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+"clip == null");
-//			
-//			if ((rs == null) || (rs.audio == null) || (rs.audio.clip == null)) {
-//				Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+"clip == null");
-//			} else {
-//				Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+audio.clip.ToString());						
-//				if (!rs.audio.isPlaying && rs.audio.clip.isReadyToPlay) {
-//					rs.audio.volume = 1.0f;
-//					rs.audio.loop = true;
-//					rs.audio.Play();
-//				}			
-//			}						
-//			rs.isActive = true;
+			RainSound rs = RainSound.getInstance();
+			rs.rainSoundPlay();
+			//stay on map for about 5-10 mins, this doesn't care about game speed settings ..(?)
+			timeToRemove = Time.time+UnityEngine.Random.Range(300.0f,600.0f);
+			
 			isRainOnMap = true;
 		} 
 
@@ -109,20 +109,21 @@ namespace Plugin.HCR {
 			RainDrop rainDrop = new RainDrop(location,minHeight);
 			rainDrop.blob = Instantiate(rainDrop.blob, location, Quaternion.identity) as GameObject;
 			rainDropsOnMap.Add(rainDrop);
-			if (!isRainOnMap) {
-				//stay on map for about 5-10 mins, this doesn't care about game speed settings ..(?)
-				timeToRemove = Time.time+UnityEngine.Random.Range(300.0f,600.0f);
-			}
 			rainDrop.blob.SetActiveRecursively(true);	//TODO: is this needed?
 			Dbg.trc(Dbg.Grp.Rain,2);			
 		} 
 
 		public void removeRain() {
 			Dbg.trc(Dbg.Grp.Rain,3);
+
 			foreach (RainDrop rainDrop in rainDropsOnMap) {
 				UnityEngine.Object.Destroy(rainDrop.blob); 
 			}
 			rainDropsOnMap.Clear();
+
+			RainSound rs = RainSound.getInstance();
+			rs.rainSoundStop();
+
 			isRainOnMap = false;
 
 			UI.print("The rain has stopped");

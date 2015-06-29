@@ -24,7 +24,7 @@ namespace Plugin.HCR {
 		}
 
 		public override void OnEnable() {
-			AManager<WorldManager>.getInstance().gameObject.AddComponent(typeof(HCRMod));
+			AManager<GUIManager>.getInstance().gameObject.AddComponent(typeof(HCRMod));
 		}
 
 		public override void OnDisable() {

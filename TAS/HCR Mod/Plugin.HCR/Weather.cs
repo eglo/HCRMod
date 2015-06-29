@@ -18,6 +18,7 @@ namespace Plugin.HCR {
 		public static int nextRainHour = 0;
 		public Vector3i worldSize3i;
 		public static bool cheatDone = false;
+		public static GameObject go = new GameObject();
 		
 		private static Weather instance = new Weather();			
 		public static Weather getInstance() {
@@ -25,11 +26,14 @@ namespace Plugin.HCR {
 		}
 		
 		public void Start() {
+
 			if (!Configuration.getInstance().isEnabledWeatherEffects.getBool())
+				//TODO: check
 				return;
 
-			gameObject.AddComponent(typeof(Rain));
-			gameObject.AddComponent(typeof(RainSound));
+			if(Configuration.getInstance().isEnabledShowRainBlocks.getBool())
+				go.AddComponent(typeof(Rain));
+			//go.AddComponent(typeof(RainSound));
 			
 			Dbg.trc(Dbg.Grp.Startup,3);
 			StartCoroutine(doWeather(5.0F));
@@ -105,29 +109,7 @@ namespace Plugin.HCR {
 								zext = worldSize3i.z;
 								break;
 						}
-						if(Rain.getInstance().isRainOnMap) {
-							Rain.getInstance().removeRain();
-						}						
 						Dbg.msg(Dbg.Grp.Weather,3,"start weather effect over: ", xpos, zpos, xext, zext);
-						RainSound rs = (RainSound) gameObject.GetComponent(typeof(RainSound));
-//						if (rs == null) 
-//							Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+"rs == null");
-//						if (rs.audio == null)
-//							Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+"audo == null");
-//						if (rs.audio.clip == null)
-//							Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+"clip == null");
-//						
-//						if ((rs == null) || (rs.audio == null) || (rs.audio.clip == null)) {
-//							Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+"clip == null");
-//						} else {
-//							Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+audio.clip.ToString());						
-//							if (!rs.audio.isPlaying && rs.audio.clip.isReadyToPlay) {
-//								rs.audio.volume = 1.0f;
-//								rs.audio.loop = true;
-//								rs.audio.Play();
-//							}			
-//						}						
-//						rs.isActive = true;
 						switch(UnityEngine.Random.Range(1,8)) {
 							case 1:	
 							case 2:	

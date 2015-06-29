@@ -1,5 +1,14 @@
 2015-06-29  tengel  <tengel@home.de>
 
+	* Rain.cs:
+	* HCRMod.cs:
+	* Weather.cs:
+	* PluginMain.cs: 
+Rain sound working
+
+
+2015-06-29  tengel  <tengel@home.de>
+
 	* Plugin.csproj:
 	* Plugin.userprefs:
 	* Dbg.cs:
