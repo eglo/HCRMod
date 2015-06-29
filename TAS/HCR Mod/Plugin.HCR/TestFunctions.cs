@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
@@ -162,11 +163,10 @@ namespace Plugin.HCR {
 		///////////////////////////////////////////////////////////////////////////////////////////		
 		public static void unassignedTestFunc() {
 			Dbg.printMsg("Test invoked: "+MethodBase.GetCurrentMethod().Name);
-			throw new ArgumentException();
-			
+			Debugger.Launch();		
 		}		
+
+
 	}
-
-
 }
 

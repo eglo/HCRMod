@@ -1,5 +1,19 @@
 2015-06-29  tengel  <tengel@home.de>
 
+	* Plugin.csproj:
+	* Plugin.userprefs:
+	* Dbg.cs:
+	* Rain.cs:
+	* HCRMod.cs:
+	* Weather.cs:
+	* PluginMain.cs:
+	* AssemblyInfo.cs:
+	* TestFunctions.cs:
+	* Configuration.cs: 
+added HCRMod as a container GameObject, WIP
+
+2015-06-29  tengel  <tengel@home.de>
+
 	* Plugin.userprefs:
 	* Dbg.cs:
 	* Rain.cs:

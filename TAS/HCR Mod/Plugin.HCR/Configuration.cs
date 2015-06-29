@@ -4,11 +4,14 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 
+[assembly: AssemblyVersion("0.3.*")] 
+
 namespace Plugin.HCR {
 	public class Configuration {
 
 		public string confName = "HCR";
-		public Version version = new Version("0.2.19");
+		public Version version = new Version("0.3.21");
+		public Version build = new Version(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
 		
 		public ConfigValue isEnabledWeatherEffects = new ConfigValue(1);
 		public ConfigValue isEnabledShowRainBlocks = new ConfigValue(1);

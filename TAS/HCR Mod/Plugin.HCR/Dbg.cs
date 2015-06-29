@@ -1,3 +1,6 @@
+#if !TRACE_ON
+#warning Trace info not active
+#endif
 
 using System;
 using System.Diagnostics;
@@ -5,8 +8,10 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 
+
 namespace Plugin.HCR {
 
+	
 	public class UI {
 		private static GUIManager gm = AManager<GUIManager>.getInstance();
 		private static Configuration conf = Configuration.getInstance();
@@ -31,6 +36,7 @@ namespace Plugin.HCR {
 	
 	public class Dbg {
 
+		
 		[Flags] public enum Grp {
 			None = 0,
 			Init = 1, 
@@ -47,6 +53,7 @@ namespace Plugin.HCR {
 
 		private static Configuration conf = Configuration.getInstance();
 
+		[Conditional("TRACE_ON")]
 		public static void msg(Dbg.Grp group, int dbgLvl,string str) {
 			if (((conf.isEnabledDebugGroup.get() & (int)group) == 0) || (conf.isEnabledDebugLevel.get() == 0) || (dbgLvl < conf.isEnabledDebugLevel.get()))
 				return;
@@ -54,6 +61,7 @@ namespace Plugin.HCR {
 			UI.print(conf.confName+":DBG:"+group.ToString()+": "+str);
 		}
 		
+		[Conditional("TRACE_ON")]
 		public static void msg(Dbg.Grp group, int dbgLvl,string str, params int[] parms) {
 			if (((conf.isEnabledDebugGroup.get() & (int)group) == 0) || (conf.isEnabledDebugLevel.get() == 0) || (dbgLvl < conf.isEnabledDebugLevel.get()))
 				return;
@@ -65,6 +73,7 @@ namespace Plugin.HCR {
 			UI.print(conf.confName+":DBG:"+group.ToString()+": "+outStr);
 		}
 		
+		[Conditional("TRACE_ON")]		
 		public static void msg(Dbg.Grp group, int dbgLvl,string str, params object[] parms) {
 			if (((conf.isEnabledDebugGroup.get() & (int)group) == 0) || (conf.isEnabledDebugLevel.get() == 0) || (dbgLvl < conf.isEnabledDebugLevel.get()))
 				return;
@@ -76,6 +85,7 @@ namespace Plugin.HCR {
 			UI.print(conf.confName+":DBG:"+group.ToString()+": "+outStr);
 		}
 
+		[Conditional("TRACE_ON")]
 		public static void trc(Dbg.Grp group, int dbgLvl, int position) {
 			if (((conf.isEnabledDebugGroup.get() & (int)group) == 0) || (conf.isEnabledDebugLevel.get() == 0) || (dbgLvl < conf.isEnabledDebugLevel.get()))
 				return;
@@ -86,6 +96,7 @@ namespace Plugin.HCR {
 			
 		}
 		
+		[Conditional("TRACE_ON")]
 		public static void trc(Dbg.Grp group, int dbgLvl, string str = "") {
 			if (((conf.isEnabledDebugGroup.get() & (int)group) == 0) || (conf.isEnabledDebugLevel.get() == 0) || (dbgLvl < conf.isEnabledDebugLevel.get()))
 				return;

@@ -74,7 +74,7 @@ namespace Plugin.HCR {
 						cheatDone = true;
 					}
 					if(Rain.getInstance().isRainOnMap && (Time.time >= Rain.getInstance().timeToRemove)) {
-						Rain.getInstance().removeRainDrops();
+						Rain.getInstance().removeRain();
 					}
 
 					if((cDay >= nextRainDay) && (cHour >= nextRainHour)) {						
@@ -106,29 +106,28 @@ namespace Plugin.HCR {
 								break;
 						}
 						if(Rain.getInstance().isRainOnMap) {
-							Rain.getInstance().removeRainDrops();
+							Rain.getInstance().removeRain();
 						}						
 						Dbg.msg(Dbg.Grp.Weather,3,"start weather effect over: ", xpos, zpos, xext, zext);
 						RainSound rs = (RainSound) gameObject.GetComponent(typeof(RainSound));
-						if (rs == null) 
-							Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+"rs == null");
-						if (rs.audio == null)
-							Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+"audo == null");
-						if (rs.audio.clip == null)
-							Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+"clip == null");
-						
-						if ((rs == null) || (rs.audio == null) || (rs.audio.clip == null)) {
-							Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+"clip == null");
-						} else {
-							Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+audio.clip.ToString());						
-							if (!rs.audio.isPlaying && rs.audio.clip.isReadyToPlay) {
-								rs.audio.volume = 1.0f;
-								rs.audio.loop = true;
-								rs.audio.Play();
-							}			
-						}
-						
-						rs.isActive = true;
+//						if (rs == null) 
+//							Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+"rs == null");
+//						if (rs.audio == null)
+//							Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+"audo == null");
+//						if (rs.audio.clip == null)
+//							Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+"clip == null");
+//						
+//						if ((rs == null) || (rs.audio == null) || (rs.audio.clip == null)) {
+//							Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+"clip == null");
+//						} else {
+//							Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+audio.clip.ToString());						
+//							if (!rs.audio.isPlaying && rs.audio.clip.isReadyToPlay) {
+//								rs.audio.volume = 1.0f;
+//								rs.audio.loop = true;
+//								rs.audio.Play();
+//							}			
+//						}						
+//						rs.isActive = true;
 						switch(UnityEngine.Random.Range(1,8)) {
 							case 1:	
 							case 2:	
@@ -282,6 +281,7 @@ namespace Plugin.HCR {
 			IBlock newBlk;
 			
 			Dbg.trc(Dbg.Grp.Map,2,1);			
+			Rain.getInstance().startRain();
 			for(int x = xpos; x < xext; x++) {
 				for(int z = zpos; z < zext; z++) {
 					if(UnityEngine.Random.Range(0, 200-dropRate) != 1)
@@ -295,10 +295,8 @@ namespace Plugin.HCR {
 					newBlk = topBlk.relative(0, height, 0);
 					Dbg.msg(Dbg.Grp.Map,1,"New raindrop over" + topBlk.coordinate.ToString());
 					Rain.getInstance().addRainDrop(newBlk.coordinate.world,topBlk.coordinate.world);
-					//rainDrops.Add(newBlk.coordinate);
 				}
 			}
-			//isRainOnMap = true;
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////

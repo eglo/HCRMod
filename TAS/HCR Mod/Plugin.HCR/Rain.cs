@@ -58,7 +58,6 @@ namespace Plugin.HCR {
 			location = _location;
 			minHeight = _minHeight;
 			blob = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-			//blob = GameObject.CreatePrimitive(PrimitiveType.Cube);
 			blob.transform.localScale = new Vector3(0.15f,0.3f,0.15f);
 			blob.renderer.material = AManager<ChunkManager>.getInstance().materials[1];
 		}		
@@ -69,12 +68,43 @@ namespace Plugin.HCR {
 		public static List<RainDrop> rainDropsOnMap = new List<RainDrop>();
 		public bool isRainOnMap = false;
 		public float timeToRemove = 0.0f;
-		
+	
 		private static Rain instance = new Rain();			
 		public static Rain getInstance() {
 			return instance; 
 		}
 		
+		public void startRain() {
+			Dbg.trc(Dbg.Grp.Rain,3);
+
+			//shouldnt happen
+			if(isRainOnMap)
+				removeRain();
+
+			if (gameObject == null) 
+				Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+"go == null");
+//			RainSound rs = (RainSound) gameObject.GetComponent(typeof(RainSound));
+//			if (rs == null) 
+//				Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+"rs == null");
+//			if (rs.audio == null)
+//				Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+"audo == null");
+//			if (rs.audio.clip == null)
+//				Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+"clip == null");
+//			
+//			if ((rs == null) || (rs.audio == null) || (rs.audio.clip == null)) {
+//				Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+"clip == null");
+//			} else {
+//				Dbg.trc(Dbg.Grp.Rain,3,"RainSound :"+audio.clip.ToString());						
+//				if (!rs.audio.isPlaying && rs.audio.clip.isReadyToPlay) {
+//					rs.audio.volume = 1.0f;
+//					rs.audio.loop = true;
+//					rs.audio.Play();
+//				}			
+//			}						
+//			rs.isActive = true;
+			isRainOnMap = true;
+		} 
+
 		public void addRainDrop(Vector3 location,Vector3 minHeight) {
 			RainDrop rainDrop = new RainDrop(location,minHeight);
 			rainDrop.blob = Instantiate(rainDrop.blob, location, Quaternion.identity) as GameObject;
@@ -82,13 +112,12 @@ namespace Plugin.HCR {
 			if (!isRainOnMap) {
 				//stay on map for about 5-10 mins, this doesn't care about game speed settings ..(?)
 				timeToRemove = Time.time+UnityEngine.Random.Range(300.0f,600.0f);
-				isRainOnMap = true;
 			}
-			rainDrop.blob.SetActiveRecursively(true);	//TODO: needed?
+			rainDrop.blob.SetActiveRecursively(true);	//TODO: is this needed?
 			Dbg.trc(Dbg.Grp.Rain,2);			
 		} 
 
-		public void removeRainDrops() {
+		public void removeRain() {
 			Dbg.trc(Dbg.Grp.Rain,3);
 			foreach (RainDrop rainDrop in rainDropsOnMap) {
 				UnityEngine.Object.Destroy(rainDrop.blob); 
@@ -102,6 +131,8 @@ namespace Plugin.HCR {
 		public void Start() {
 			gameObject.AddComponent(typeof(AudioSource));
 			gameObject.transform.position = Weather.getInstance().worldSize3i/2;
+			gameObject.AddComponent(typeof(RainSound));
+			
 			Dbg.trc(Dbg.Grp.Startup,3,"Rain started");
 		}
 		
