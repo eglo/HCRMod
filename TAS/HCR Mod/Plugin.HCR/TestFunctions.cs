@@ -57,7 +57,7 @@ namespace Plugin.HCR {
 			Dbg.printMsg("Test invoked: "+MethodBase.GetCurrentMethod().Name);
 
 			TimeManager tm = AManager<TimeManager>.getInstance();
-			MoreImmigrants.nextImmigrantDay = tm.day;
+			Immigrants.nextImmigrantDay = tm.day;
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////		
@@ -163,7 +163,7 @@ namespace Plugin.HCR {
 		///////////////////////////////////////////////////////////////////////////////////////////		
 		public static void unassignedTestFunc() {
 			Dbg.printMsg("Test invoked: "+MethodBase.GetCurrentMethod().Name);
-			Debugger.Launch();		
+			//Debugger.Launch();		
 		}		
 
 

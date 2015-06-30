@@ -54,15 +54,20 @@
     <Compile Include="Plugin.HCR\PluginMain.cs" />
     <Compile Include="Plugin.HCR\Configuration.cs" />
     <Compile Include="Plugin.HCR\IniFile.cs" />
-    <Compile Include="Plugin.HCR\ImproveUnitTraits.cs" />
-    <Compile Include="Plugin.HCR\Weather.cs" />
+    <Compile Include="Plugin.HCR\Weather.cs">
+      <DependentUpon>HCRMod.cs</DependentUpon>
+    </Compile>
     <Compile Include="Plugin.HCR\KeyboardCommands.cs" />
     <Compile Include="Plugin.HCR\Rain.cs" />
     <Compile Include="Plugin.HCR\Dbg.cs" />
-    <Compile Include="Plugin.HCR\MoreImmigrants.cs" />
     <Compile Include="Plugin.HCR\InvasionHandler.cs" />
-    <Compile Include="Plugin.HCR\TestFunctions.cs" />
+    <Compile Include="Plugin.HCR\TestFunctions.cs">
+      <DependentUpon>Weather.cs</DependentUpon>
+    </Compile>
     <Compile Include="Plugin.HCR\HCRMod.cs" />
+    <Compile Include="Plugin.HCR\UnitTraits.cs" />
+    <Compile Include="Plugin.HCR\Immigrants.cs" />
+    <Compile Include="Plugin.HCR\Merchants.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
@@ -134,7 +139,7 @@
   </ProjectExtensions>
   <ItemGroup>
     <None Include="..\..\..\games\Timber and Stone\Timber and Stone v1.6.3\saves\HCR.ini">
-      <Link>Properties\HCR.ini</Link>
+      <Link>Properties\old.ini</Link>
     </None>
   </ItemGroup>
 </Project>

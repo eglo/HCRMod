@@ -48,16 +48,13 @@ namespace Plugin.HCR {
 			while (!isInitialized) {
 				worldSize3i = new Vector3i(((cm.worldSize.x) * cm.chunkSize.x),cm.worldSize.y,(cm.worldSize.z) * cm.chunkSize.z);				
 				if(worldSize3i.x > 1) {
-					Dbg.trc(Dbg.Grp.Weather|Dbg.Grp.Map,1,"worldSize initialized");
-					
-					gameObject.transform.position = worldSize3i/2;		//TODO: something better
-	
+					Dbg.trc(Dbg.Grp.Weather|Dbg.Grp.Map,1,"worldSize initialized");					
+					gameObject.transform.position = worldSize3i/2;		//TODO: something better	
 					nextRainDay = tm.day+UnityEngine.Random.Range(0,2);
 					nextRainHour = tm.hour+UnityEngine.Random.Range(4, 12);
 					nextRainHour %= 24;	
 
-					isInitialized = true;
-					
+					isInitialized = true;					
 				} else {
 					Dbg.trc(Dbg.Grp.Weather|Dbg.Grp.Map,1,"worldSize not initialized"+secs.ToString());
 					secs++;
@@ -82,33 +79,33 @@ namespace Plugin.HCR {
 					}
 
 					if((cDay >= nextRainDay) && (cHour >= nextRainHour)) {						
-						nextRainDay = cDay;
-						nextRainDay += cDay+UnityEngine.Random.Range(0,2);
+						nextRainDay = cDay+UnityEngine.Random.Range(0,2);
 						nextRainHour = cHour+UnityEngine.Random.Range(4,12);
 						nextRainHour %= 24;
 						
-						int x1 = UnityEngine.Random.Range(1, worldSize3i.x);
-						int x2 = UnityEngine.Random.Range(1, worldSize3i.x);
-						int z1 = UnityEngine.Random.Range(1, worldSize3i.z);
-						int z2 = UnityEngine.Random.Range(1, worldSize3i.z);
-						int xpos = Math.Min(x1,x2);
-						int xext = Math.Max(x1,x2);
-						int zpos = Math.Min(z1,z2);
-						int zext = Math.Max(z1,z2);
-						switch(UnityEngine.Random.Range(1, 4)) {
-							case 1 :
-								xpos = 1;
-								break;
-							case 2 :
-								xext = worldSize3i.x;
-								break;
-							case 3 :
-								zpos = 1;
-								break;
-							case 4 :
-								zext = worldSize3i.z;
-								break;
-						}
+//						int x1 = UnityEngine.Random.Range(1, worldSize3i.x);
+//						int x2 = UnityEngine.Random.Range(1, worldSize3i.x);
+//						int z1 = UnityEngine.Random.Range(1, worldSize3i.z);
+//						int z2 = UnityEngine.Random.Range(1, worldSize3i.z);
+//						int xpos = Math.Min(x1,x2);
+//						int xext = Math.Max(x1,x2);
+//						int zpos = Math.Min(z1,z2);
+//						int zext = Math.Max(z1,z2);
+//						switch(UnityEngine.Random.Range(1, 4)) {
+//							case 1 :
+//								xpos = 1;
+//								break;
+//							case 2 :
+//								xext = worldSize3i.x;
+//								break;
+//							case 3 :
+//								zpos = 1;
+//								break;
+//							case 4 :
+//								zext = worldSize3i.z;
+//								break;
+//						}
+						int xpos = 1, zpos = 1, xext = worldSize3i.x, zext = worldSize3i.z;
 						Dbg.msg(Dbg.Grp.Weather,3,"start weather effect over: ", xpos, zpos, xext, zext);
 						switch(UnityEngine.Random.Range(1,8)) {
 							case 1:	
@@ -127,7 +124,7 @@ namespace Plugin.HCR {
 								break;
 								
 							case 6:	
-								UI.print("It's pouring. There's puddles of mud everywhere");
+								UI.print("It's pouring. Torrents of muddy water fill up puddles everywhere");
 								createRainDrops(xpos, zpos, xext, zext,40);
 								rainStorm(xpos, zpos, xext, zext);
 								break;

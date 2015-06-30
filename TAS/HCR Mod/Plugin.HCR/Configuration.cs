@@ -10,7 +10,7 @@ namespace Plugin.HCR {
 	public class Configuration {
 
 		public string confName = "HCR";
-		public Version version = new Version("0.3.21");
+		public Version version = new Version("0.3.22");
 		public Version build = new Version(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
 		
 		public ConfigValue isEnabledWeatherEffects = new ConfigValue(1);
@@ -18,6 +18,8 @@ namespace Plugin.HCR {
 		public ConfigValue isEnabledInvasionConfig = new ConfigValue(1);
 		public ConfigValue isEnabledImproveUnitTraits = new ConfigValue(1);
 		public ConfigValue isEnabledMoreImmigrants = new ConfigValue(1);
+		public ConfigValue isEnabledMoreMerchants = new ConfigValue(1);
+		public ConfigValue isEnabledCheats = new ConfigValue(1);
 		public ConfigValue isEnabledKeyboardCommands = new ConfigValue(1);		
 		
 		//;block invasions until day x..

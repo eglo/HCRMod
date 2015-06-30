@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using Timber_and_Stone;
 
@@ -17,42 +18,55 @@ namespace Plugin.HCR {
 		}
 
 		public void Start() {
-			//seems this comes a little too early, apparently some parts of the game are not quite init'ed at this time..
+			StartCoroutine(initHCRMod(0.1F));
+		}
+
+		IEnumerator initHCRMod(float waitTime) {
+			
+			//seems OnEnable comes a little too early, apparently some parts of the game are not quite init'ed at this time.
 			//(I'm looking at you, worldSize member in ChunkManager..)
+			GUIManager gm = AManager<GUIManager>.getInstance();
+			while(!gm.inGame)
+				yield return new WaitForSeconds(0.1f);
+
 			try {
 				Configuration conf = Configuration.getInstance();
-				GUIManager gm = AManager<GUIManager>.getInstance();
 				
 				gm.AddTextLine("HCR - Here Comes The Rain - Mod Version "+conf.version+" Build "+conf.build);
 				if (!conf.init()) {
 					Dbg.printErr("Error in configuration init, mod is NOT enabled");
-					return;
+					yield break;
 				}
 				
-				//TODO: delete this
+				//overrides ini config...
 				conf.isEnabledDebugLevel.set(3);
 				conf.isEnabledDebugGroup.set((int)(
 					//Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
 					Dbg.Grp.Startup|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Rain|Dbg.Grp.Units
-					));
-				Dbg.trc(Dbg.Grp.Init,1);
-				
+				));
+
+				Dbg.trc(Dbg.Grp.Init,1);				
 				Dbg.printMsg("Rain effects"+conf.isEnabledWeatherEffects.toEnabledString());
 				if (conf.isEnabledWeatherEffects.getBool()) {
-					//what to add where? most things seem to work the same where ever I hooked them in ... 
-					//the more I learn about Unity the more I think this doesnt make any sense at all haha
-					//at least it doesn't seem to break anything in game.. (yet)
 					go.AddComponent(typeof(Weather));
 					Dbg.printMsg("Rainblobs visible effect"+conf.isEnabledShowRainBlocks.toEnabledString());
 					
 				}
 				Dbg.printMsg("Improve unit traits"+conf.isEnabledImproveUnitTraits.toEnabledString());
 				if(conf.isEnabledImproveUnitTraits.getBool()) {
-					go.AddComponent(typeof(ImproveUnitTraits));
+					go.AddComponent(typeof(UnitTraits));
 				}			
 				Dbg.printMsg("More immigrants"+conf.isEnabledMoreImmigrants.toEnabledString());
 				if(conf.isEnabledMoreImmigrants.getBool()) {
-					go.AddComponent(typeof(MoreImmigrants));
+					go.AddComponent(typeof(Immigrants));
+				}			
+				Dbg.printMsg("More merchants"+conf.isEnabledMoreMerchants.toEnabledString());
+				if(conf.isEnabledMoreMerchants.getBool()) {
+					go.AddComponent(typeof(Merchants));
+				}			
+				Dbg.printMsg("Cheats"+conf.isEnabledCheats.toEnabledString());
+				if(conf.isEnabledCheats.getBool()) {
+					//go.AddComponent(typeof(Immigrants));
 				}			
 				Dbg.printMsg("Keyboard commands"+conf.isEnabledKeyboardCommands.toEnabledString());
 				if(conf.isEnabledKeyboardCommands.getBool()) {
@@ -80,7 +94,7 @@ namespace Plugin.HCR {
 				
 				Dbg.msg(Dbg.Grp.Startup,3,"Mod enabled");
 			}  catch(Exception e) {
-				Dbg.dumpExc(e);
+				Dbg.dumpCorExc("initHCRMod",e);
 			}			
 		}
 

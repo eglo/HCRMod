@@ -34,7 +34,7 @@ namespace Plugin.HCR {
 		public void onMigrant(EventMigrant evt) {
 			Configuration conf = Configuration.getInstance();
 			if(conf.isEnabledMoreImmigrants.getBool()) {
-				MoreImmigrants.processEvent(ref evt);
+				Immigrants.processEvent(ref evt);
 			}			
 		}
 

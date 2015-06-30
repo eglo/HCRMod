@@ -112,9 +112,6 @@ namespace Plugin.HCR {
 			Dbg.printMsg(str);
 		}
 
-		public void Update() {
-		}
-		
 		public void OnGUI() {
 
 			Event evt = Event.current;

@@ -7,10 +7,10 @@ using Timber_and_Stone;
 
 
 namespace Plugin.HCR {
-	public class ImproveUnitTraits : MonoBehaviour {
+	public class UnitTraits : MonoBehaviour {
 
-		private static ImproveUnitTraits instance = new ImproveUnitTraits();			
-		public static ImproveUnitTraits getInstance() {
+		private static UnitTraits instance = new UnitTraits();			
+		public static UnitTraits getInstance() {
 			return instance; 
 		}
 		private static bool isInitialized = false;

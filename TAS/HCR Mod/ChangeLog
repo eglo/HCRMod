@@ -1,3 +1,21 @@
+2015-06-30  tengel  <tengel@home.de>
+
+	* Plugin.csproj:
+	* Plugin.userprefs:
+	* HCRMod.cs:
+	* Weather.cs:
+	* Merchants.cs:
+	* PluginMain.cs:
+	* Immigrants.cs:
+	* UnitTraits.cs:
+	* TestFunctions.cs:
+
+	* Configuration.cs:
+	* MoreImmigrants.cs:
+	* KeyboardCommands.cs:
+	* ImproveUnitTraits.cs:
+Refactoring MoreMerchants -> Merchants, Immigrants; ImproveUnitTraits -> UnitTraits 
+
 2015-06-29  tengel  <tengel@home.de>
 
 	* Rain.cs:
