@@ -16,7 +16,8 @@ namespace Plugin.HCR {
 			dumpTradeResources,
 			dumpTrackedResources,
 			dumpDeadEnemies,
-			toggleDesignations,
+			stuffDeadEnemies,
+			unassignedTestFunc,
 			unassignedTestFunc,
 			unassignedTestFunc,
 			unassignedTestFunc,
@@ -102,7 +103,7 @@ namespace Plugin.HCR {
 			GUIManager gm = AManager<GUIManager>.getInstance();
 			ResourceManager rm = AManager<ResourceManager>.getInstance();
 			foreach (int resId in gm.watchedResources) {
-				Dbg.printMsg(resId.ToString("D3")+":"+rm.resources[resId].name.ToString()+rm.materials[resId].ToString());
+				Dbg.printMsg(resId.ToString("D3")+":"+rm.resources[resId].name.ToString()+"= "+rm.materials[resId].ToString());
 			}
 		}
 		
@@ -124,41 +125,60 @@ namespace Plugin.HCR {
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////		
-
-		public class Hack : MonoBehaviour {
-			
-			public bool isHackOnMap = false;
-			
-			private static Hack instance = new Hack();			
-			public static Hack getInstance() {
-				return instance; 
-			}
-			
-			public Hack() {
-			} 
-			
-			public void Start() {
-				Dbg.trc(Dbg.Grp.Startup,3,"Toogle road designation Hack started");
-			}
-			
-			public void Update() {
-				Dbg.msg(Dbg.Grp.Startup,3,".");
-				DesignManager dm = AManager<DesignManager>.getInstance();
-				dm.roadDesignation.renderer.enabled = false;
-				dm.roadTexture.color = Color.clear;
-				//dm.roadDesignation.transform.GetComponent<Material>().color = Color.clear;
-			}			
-		}
-		
-		public static void toggleDesignations() {
+		//  10 animal hide, 18 scrap metal, 47 leather, 55 coin
+		public static void stuffDeadEnemies() {
 			Dbg.printMsg("Test invoked: "+MethodBase.GetCurrentMethod().Name);
+			
+			UnitManager um = AManager<UnitManager>.getInstance();
+			ResourceManager rm = AManager<ResourceManager>.getInstance();
+			
+			for (int i = 0; i < um.enemyUnits.Count; i++) {
+				Enemy enemy = um.enemyUnits[i].GetComponent<Enemy>();
+				if (enemy.unitName.StartsWith("Skele") && !enemy.inventory.Contains(18)) {
+					enemy.inventory.Add(18,UnityEngine.Random.Range(0,3));
+				}
+				if (enemy.unitName.StartsWith("Goblin") && !enemy.inventory.Contains(47)) {
+					enemy.inventory.Add(47,UnityEngine.Random.Range(0,3));
+				}
+			}
+		}
 
-			AManager<GUIManager>.getInstance().gameObject.AddComponent(typeof(Hack));
-	
-			DesignManager dm = AManager<DesignManager>.getInstance();
-			dm.roadDesignation.renderer.enabled = false;
-			//dm.roadDesignation.transform.GetComponent<Material>().color = Color.clear;
- 		}		
+		///////////////////////////////////////////////////////////////////////////////////////////		
+
+//		public class Hack : MonoBehaviour {
+//			
+//			public bool isHackOnMap = false;
+//			
+//			private static Hack instance = new Hack();			
+//			public static Hack getInstance() {
+//				return instance; 
+//			}
+//			
+//			public Hack() {
+//			} 
+//			
+//			public void Start() {
+//				Dbg.trc(Dbg.Grp.Startup,3,"Toogle road designation Hack started");
+//			}
+//			
+//			public void Update() {
+//				Dbg.msg(Dbg.Grp.Startup,3,".");
+//				DesignManager dm = AManager<DesignManager>.getInstance();
+//				dm.roadDesignation.renderer.enabled = false;
+//				dm.roadTexture.color = Color.clear;
+//				//dm.roadDesignation.transform.GetComponent<Material>().color = Color.clear;
+//			}			
+//		}
+//		
+//		public static void toggleDesignations() {
+//			Dbg.printMsg("Test invoked: "+MethodBase.GetCurrentMethod().Name);
+//
+//			AManager<GUIManager>.getInstance().gameObject.AddComponent(typeof(Hack));
+//	
+//			DesignManager dm = AManager<DesignManager>.getInstance();
+//			dm.roadDesignation.renderer.enabled = false;
+//			//dm.roadDesignation.transform.GetComponent<Material>().color = Color.clear;
+// 		}		
 
 		///////////////////////////////////////////////////////////////////////////////////////////		
 		public static void unassignedTestFunc() {

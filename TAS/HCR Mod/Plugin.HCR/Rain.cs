@@ -7,6 +7,64 @@ using Timber_and_Stone;
 
 
 namespace Plugin.HCR {
+
+	public class RainTest : ExtMonoBehaviour<RainTest> {
+		private static string filePath = "file:///"+Application.dataPath+"/StreamingAssets/rain.ogg";
+		private static WWW www = new WWW(filePath);
+//		public bool isActive = false;
+//		public static GameObject go = new GameObject();
+		public static AudioSource ass;
+		
+
+		public RainTest(GameObject parent) : base (parent,true) {
+			
+		}
+		
+		public override void Start() {
+			Dbg.trc(Dbg.Grp.Startup,3,"RainSound started");
+			Dbg.msg(Dbg.Grp.Rain,3,"Using rain sound file:"+filePath);
+			ass = (AudioSource) go.AddComponent(typeof(AudioSource));
+			StartCoroutine(rainSoundLoad());
+		}
+		
+		IEnumerator rainSoundLoad() {
+			yield return www;
+			if(www.error != null)
+				Dbg.trc(Dbg.Grp.Rain,3,www.error);
+			
+			ass.clip = www.GetAudioClip(false,false);
+			if (ass.clip == null) {
+				Dbg.trc(Dbg.Grp.Rain,3,"clip == null");
+			} else {
+				Dbg.trc(Dbg.Grp.Rain,3,"clip == "+ass.clip.ToString());
+			}
+			Dbg.trc(Dbg.Grp.Rain,3,"done");
+			//			if (!ass.isPlaying && ass.clip.isReadyToPlay) {
+			//				ass.volume = 1.0f;
+			//				ass.loop = true;
+			//				ass.Play();
+			//			}			
+		}
+		
+		public void rainSoundPlay() {
+			Dbg.trc(Dbg.Grp.Rain,3,ass.ToString());
+			
+			if (!ass.isPlaying && ass.clip.isReadyToPlay) {
+				ass.volume = 1.0f;
+				ass.loop = true;
+				ass.Play();
+			}			
+		}
+		
+		public void rainSoundStop() {
+			Dbg.trc(Dbg.Grp.Rain,3,ass.ToString());
+			ass.Pause();
+		}
+		
+		
+	}
+		
+
 	
 	public class RainSound : MonoBehaviour {
 		private static string filePath = "file:///"+Application.dataPath+"/StreamingAssets/rain.ogg";
@@ -80,10 +138,11 @@ namespace Plugin.HCR {
 
 	public class Rain : MonoBehaviour {
 
-		public static GameObject go = new GameObject();
+		//public static GameObject go = new GameObject();
 		public static List<RainDrop> rainDropsOnMap = new List<RainDrop>();
 		public bool isRainOnMap = false;
 		public float timeToRemove = 0.0f;
+		public RainTest rt;
 	
 		private static Rain instance = new Rain();			
 		public static Rain getInstance() {
@@ -132,8 +191,9 @@ namespace Plugin.HCR {
 		public void Start() {
 			gameObject.AddComponent(typeof(AudioSource));
 			gameObject.transform.position = Weather.getInstance().worldSize3i/2;
-			gameObject.AddComponent(typeof(RainSound));
-			
+			//gameObject.AddComponent(typeof(RainSound));
+			rt = new RainTest(gameObject);
+						
 			Dbg.trc(Dbg.Grp.Startup,3,"Rain started");
 		}
 		

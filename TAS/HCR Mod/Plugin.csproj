@@ -68,6 +68,7 @@
     <Compile Include="Plugin.HCR\UnitTraits.cs" />
     <Compile Include="Plugin.HCR\Immigrants.cs" />
     <Compile Include="Plugin.HCR\Merchants.cs" />
+    <Compile Include="Plugin.HCR\ExtMonoBehaviour.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

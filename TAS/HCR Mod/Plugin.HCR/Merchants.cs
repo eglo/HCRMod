@@ -63,7 +63,7 @@ namespace Plugin.HCR {
 						
 						//seeds valued at 10.0f..
 						Dbg.msg(Dbg.Grp.Units,3,"Checking merchant: sellValue="+sellValue.ToString());
-						if ((sellValue) >= UnityEngine.Random.Range(100.0f,2000.0f)) {
+						if ((sellValue) >= UnityEngine.Random.Range(300.0f,3000.0f)) {
 							Dbg.msg(Dbg.Grp.Units,3,"Trying merchant");
 							um.SpawnMerchant(Vector3.zero);
 							

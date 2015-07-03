@@ -1,3 +1,15 @@
+2015-07-03  tengel  <tengel@home.de>
+
+	* Plugin.csproj:
+	* Plugin.userprefs:
+	* Rain.cs:
+	* HCRMod.cs:
+	* Merchants.cs:
+	* UnitTraits.cs:
+	* TestFunctions.cs:
+	* ExtMonoBehaviour.cs: 
+added ExtMonoBehaviour, prepared stuffUnits, various fixes
+
 2015-06-30  tengel  <tengel@home.de>
 
 	* Plugin.csproj:

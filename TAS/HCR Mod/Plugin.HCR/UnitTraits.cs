@@ -55,36 +55,37 @@ namespace Plugin.HCR {
 						isInitialized = true;			
 					}
 
+					foreach (APlayableEntity unit in um.playerUnits) {
+						Dbg.trc(Dbg.Grp.Units,1,"unit "+unit.unitName);
+						foreach(AProfession prof in unit.getProfessions()) {
+							string unitNameAndProfession = unit.unitName+" "+prof.getProfessionName();
+							int lvl = prof.getLevel();
+							int donelvl = 0;
+							Dbg.trc(Dbg.Grp.Units,1,"tryLvlUp "+unitNameAndProfession);
+							if (unitProfessionLevels.TryGetValue(unitNameAndProfession,out donelvl)) {
+								if (donelvl >= lvl)
+									continue;
+							} else {
+								//either noob or name edit
+								unitProfessionLevels[unitNameAndProfession] = prof.getLevel();
+								continue;
+							}
+							unitProfessionLevels[unitNameAndProfession] = lvl;
+							Dbg.trc(Dbg.Grp.Units,2,"randomLvlUp "+unitNameAndProfession);
+							if(UnityEngine.Random.Range(0,(20-lvl)) == 0) {
+								Dbg.trc(Dbg.Grp.Units,3,"doLvlUp "+unitNameAndProfession);
+								processLevelUp(unit.unitName, lvl);
+							}
+						}
+					}	
+					
 					Dbg.trc(Dbg.Grp.Units,1);
-					checkLevelUp();
 				} catch(Exception e) { 
 					Dbg.dumpCorExc("CheckLevelUp",e);
 				}
 			}
 		}
 
-		private void checkLevelUp () {
-			UnitManager um = AManager<UnitManager>.getInstance();
-			foreach (APlayableEntity unit in um.playerUnits) {
-				Dbg.trc(Dbg.Grp.Units,1,"unit "+unit.unitName);
-				foreach(AProfession prof in unit.getProfessions()) {
-					string unitNameAndProfession = unit.unitName+" "+prof.getProfessionName();
-					int lvl = prof.getLevel();
-					int donelvl = 0;
-					Dbg.trc(Dbg.Grp.Units,1,"tryLvlUp "+unitNameAndProfession);
-					if (unitProfessionLevels.TryGetValue(unitNameAndProfession,out donelvl)) {
-						if (donelvl >= lvl)	//wtf?..
-							continue;
-					}
-					unitProfessionLevels[unitNameAndProfession] = lvl;
-					Dbg.trc(Dbg.Grp.Units,2,"randomLvlUp "+unitNameAndProfession);
-					if(UnityEngine.Random.Range(0,(20-lvl)) == 0) {
-						Dbg.trc(Dbg.Grp.Units,3,"doLvlUp "+unitNameAndProfession);
-						processLevelUp(unit.unitName, lvl);
-					}
-				}
-			}	
-		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////
 		// check the Notification Window for Level Up messages, when found get unit and randomly improve unit traits  

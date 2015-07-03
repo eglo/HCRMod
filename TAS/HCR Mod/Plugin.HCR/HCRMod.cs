@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Diagnostics;
 using UnityEngine;
 using Timber_and_Stone;
 
@@ -21,13 +22,17 @@ namespace Plugin.HCR {
 			StartCoroutine(initHCRMod(0.1F));
 		}
 
+
 		IEnumerator initHCRMod(float waitTime) {
-			
+
 			//seems OnEnable comes a little too early, apparently some parts of the game are not quite init'ed at this time.
 			//(I'm looking at you, worldSize member in ChunkManager..)
 			GUIManager gm = AManager<GUIManager>.getInstance();
-			while(!gm.inGame)
+			int ticks = 0;
+			while(!gm.inGame) {
+				Dbg.msg(Dbg.Grp.Init,1,"Not in game:"+ticks.ToString());
 				yield return new WaitForSeconds(0.1f);
+			}
 
 			try {
 				Configuration conf = Configuration.getInstance();
@@ -37,13 +42,14 @@ namespace Plugin.HCR {
 					Dbg.printErr("Error in configuration init, mod is NOT enabled");
 					yield break;
 				}
-				
-				//overrides ini config...
-				conf.isEnabledDebugLevel.set(3);
-				conf.isEnabledDebugGroup.set((int)(
-					//Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
-					Dbg.Grp.Startup|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Rain|Dbg.Grp.Units
-				));
+	
+//TODO_ delete this			
+//overrides ini config...
+conf.isEnabledDebugLevel.set(1);
+conf.isEnabledDebugGroup.set((int)(
+	//Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
+					Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Rain|Dbg.Grp.Units
+));
 
 				Dbg.trc(Dbg.Grp.Init,1);				
 				Dbg.printMsg("Rain effects"+conf.isEnabledWeatherEffects.toEnabledString());
