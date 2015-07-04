@@ -12,7 +12,11 @@ namespace Plugin.HCR {
 		public string confName = "HCR";
 		public Version version = new Version("0.3.22");
 		public Version build = new Version(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
-		
+
+		//file path relative to T&S.exe!		
+		public ConfigValue filePathPrefix = new ConfigValue("saves");
+
+		//enable/disable components
 		public ConfigValue isEnabledWeatherEffects = new ConfigValue(1);
 		public ConfigValue isEnabledShowRainBlocks = new ConfigValue(1);
 		public ConfigValue isEnabledInvasionConfig = new ConfigValue(1);
@@ -42,10 +46,15 @@ namespace Plugin.HCR {
 		//this will activate only when a new game is started
 		public ConfigValue trackResourcesIdxFirst = new ConfigValue(1);
 		public ConfigValue trackResourcesIdxLast = new ConfigValue(79);	//60+ is tools, 90+ is weapons
-		
+
+		//you have to enable TRACE_ON in Dbg.cs if you want to use these..
+		//debugLevel 0 = off, 1 = all output ... n = less output		
 		public ConfigValue isEnabledDebugLevel = new ConfigValue(1);
+		//use win32 DebugOutputString instead of game text window
 		public ConfigValue IsEnabledDebugOutputString = new ConfigValue(1);
+		//logfile
 		public ConfigValue IsEnabledDebugLogFile = new ConfigValue(1);
+		//this is by no means a strict classification, see source code what's used where  
 		public ConfigValue isEnabledDebugGroup = new ConfigValue((int)(
 			Dbg.Grp.Init | Dbg.Grp.Startup | Dbg.Grp.Unity | Dbg.Grp.Time | Dbg.Grp.Terrain | Dbg.Grp.Weather | Dbg.Grp.Units | Dbg.Grp.Invasion
 		));
@@ -59,7 +68,7 @@ namespace Plugin.HCR {
 		
 		public bool init() {
 
-			iniFile = new IniFile("saves\\" + confName + ".ini");
+			iniFile = new IniFile(filePathPrefix.getStr() + "/" + confName + ".ini");
 			if(!load()) {
 				Dbg.printErr("Could not read ini file, rename/delete yours to start with default configuration");
 				return false;	
@@ -105,7 +114,7 @@ namespace Plugin.HCR {
 									fiCv.SetValue(configValue, str);
 									continue;								
 								}
-								fiCv.SetValue(configValue, num);							
+								//TODO: whats this? fiCv.SetValue(configValue, num);							
 							}
 						}
 					}
@@ -140,6 +149,10 @@ namespace Plugin.HCR {
 	public class ConfigValue {
 		public object _value;
 		
+		public ConfigValue(string value) {
+			_value = value;
+		}
+
 		public ConfigValue(int value) {
 			_value = value;
 		}

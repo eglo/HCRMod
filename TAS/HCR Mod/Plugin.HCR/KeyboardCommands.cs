@@ -4,12 +4,8 @@ using UnityEngine;
 using Timber_and_Stone;
 
 namespace Plugin.HCR {
-	public class KeyboardCommands : MonoBehaviour {
+	public class KeyboardCommands : SingletonMonoBehaviour<KeyboardCommands> {
 
-		private static KeyboardCommands instance = new KeyboardCommands();			
-		public static KeyboardCommands getInstance() {
-			return instance; 
-		}
 		
 		private static KeyCode[] cmdCombo = {KeyCode.LeftShift,KeyCode.LeftControl,KeyCode.LeftAlt};
 
@@ -41,8 +37,8 @@ namespace Plugin.HCR {
 		
 		public static void printHelp() {
 			string str = "All commands use a combination of ";
-			foreach (KeyCode key in cmdCombo) {
-				str += (key.ToString()+"+");
+			foreach(KeyCode key in cmdCombo) {
+				str += (key.ToString() + "+");
 			}
 			str += "<key> for activation.";
 			UI.print(str);
@@ -65,7 +61,7 @@ namespace Plugin.HCR {
 		///////////////////////////////////////////////////////////////////////////////////////////
 		public static void letItRain() {
 			Weather weather = Weather.getInstance();
-			weather.rainStorm(0,0,weather.worldSize3i.x,weather.worldSize3i.z);
+			weather.rainStorm(0, 0, weather.worldSize3i.x, weather.worldSize3i.z);
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////		
@@ -100,13 +96,13 @@ namespace Plugin.HCR {
 
 		///////////////////////////////////////////////////////////////////////////////////////////
 		
-		public void Start() {
-			Dbg.trc(Dbg.Grp.Startup,3);
+		public override void Start() {
+			Dbg.trc(Dbg.Grp.Startup, 3);
 			
 			string str;
 			str = "Keyboard commands active. Press ";
-			foreach (KeyCode key in cmdCombo) {
-				str += (key.ToString()+"+");
+			foreach(KeyCode key in cmdCombo) {
+				str += (key.ToString() + "+");
 			}
 			str += "H for help.";
 			Dbg.printMsg(str);
@@ -115,7 +111,7 @@ namespace Plugin.HCR {
 		public void OnGUI() {
 
 			Event evt = Event.current;
-			if ((Event.current.type == EventType.KeyDown) && evt.isKey && checkPressed(cmdCombo)) {
+			if((Event.current.type == EventType.KeyDown) && evt.isKey && checkPressed(cmdCombo)) {
 				try {
 					if(cmdDict.ContainsKey(evt.keyCode)) {
 						cmdDict[evt.keyCode]();
@@ -130,16 +126,18 @@ namespace Plugin.HCR {
 
 		private bool checkPressed(KeyCode[] combo) {
 			foreach(KeyCode key in combo) {
-				if(!UnityEngine.Input.GetKey(key))
+				if(!UnityEngine.Input.GetKey(key)) {
 					return false;
+				}
 			}
 			return true;
 		}
 
 		private bool checkReleased(KeyCode[] combo) {
 			foreach(KeyCode key in combo) {
-				if(UnityEngine.Input.GetKey(key))
+				if(UnityEngine.Input.GetKey(key)) {
 					return false;
+				}
 			}
 			return true;
 		}

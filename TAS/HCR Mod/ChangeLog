@@ -1,6 +1,25 @@
 2015-07-04  tengel  <tengel@home.de>
 
 	* Plugin.csproj:
+	* Dbg.cs:
+	* Rain.cs:
+	* Cheats.cs:
+	* HCRMod.cs:
+	* Weather.cs:
+	* Lightning.cs:
+	* RainSound.cs:
+	* Merchants.cs:
+	* UnitTraits.cs:
+	* PluginMain.cs:
+	* Immigrants.cs:
+	* Configuration.cs:
+	* ExtMonoBehaviour.cs:
+	* KeyboardCommands.cs:
+Singleton/ExtMonobehaviour migration; added Cheats and Lighting class 
+
+2015-07-04  tengel  <tengel@home.de>
+
+	* Plugin.csproj:
 	* Plugin.userprefs:
 	* Dbg.cs:
 	* Rain.cs:

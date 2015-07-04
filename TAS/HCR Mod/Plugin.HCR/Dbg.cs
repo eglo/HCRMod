@@ -82,7 +82,7 @@ namespace Plugin.HCR {
 			if(conf.IsEnabledDebugLogFile.getBool()) {
 				try {
 					if(sw == null) {
-						sw = new StreamWriter("saves\\" + conf.confName + ".log");
+						sw = new StreamWriter(conf.filePathPrefix.getStr() + "\\" + conf.confName + ".log");
 						sw.AutoFlush = true;
 					}
 					sw.WriteLine(str);

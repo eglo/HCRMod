@@ -70,6 +70,9 @@
     <Compile Include="Plugin.HCR\ExtMonoBehaviour.cs" />
     <Compile Include="Plugin.HCR\TestFunctions.cs" />
     <Compile Include="Plugin.HCR\Weather.cs" />
+    <Compile Include="Plugin.HCR\Cheats.cs" />
+    <Compile Include="Plugin.HCR\Lightning.cs" />
+    <Compile Include="Plugin.HCR\RainSound.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

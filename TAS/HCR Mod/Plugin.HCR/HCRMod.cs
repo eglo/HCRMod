@@ -6,23 +6,24 @@ using Timber_and_Stone;
 
 namespace Plugin.HCR {
 
-	public class HCRMod : MonoBehaviour {
+	public class HCRMod : SingletonMonoBehaviour<HCRMod> {
 
-		public static GameObject go = new GameObject();
-
-		private static HCRMod instance = new HCRMod();			
-		public static HCRMod getInstance() {
-			return instance; 
-		}
+//		public static GameObject go = new GameObject();
+//
+//		private static HCRMod instance = new HCRMod();			
+//		public static HCRMod getInstance() {
+//			return instance; 
+//		}
 
 		public HCRMod() {
 		}
 
-		public void Start() {
+		public override void Start() {
 			StartCoroutine(initHCRMod(0.1F));
 		}
 
 		public void OnLevelWasLoaded(int level) {
+			//???
 			Dbg.trc(Dbg.Grp.Init, 1, "Level loaded:" + level.ToString());
 		}
 
@@ -57,21 +58,21 @@ namespace Plugin.HCR {
 				Dbg.trc(Dbg.Grp.Init, 1);				
 				UI.print("Rain effects" + conf.isEnabledWeatherEffects.toEnabledString());
 				if(conf.isEnabledWeatherEffects.getBool()) {
-					go.AddComponent(typeof(Weather));
+					Weather.Create<Weather>(go);
 					UI.print("Rainblobs visible effect" + conf.isEnabledShowRainBlocks.toEnabledString());
 					
 				}
 				UI.print("Improve unit traits" + conf.isEnabledImproveUnitTraits.toEnabledString());
 				if(conf.isEnabledImproveUnitTraits.getBool()) {
-					go.AddComponent(typeof(UnitTraits));
+					UnitTraits.Create<UnitTraits>(go);
 				}			
 				UI.print("More immigrants" + conf.isEnabledMoreImmigrants.toEnabledString());
 				if(conf.isEnabledMoreImmigrants.getBool()) {
-					go.AddComponent(typeof(Immigrants));
+					Immigrants.Create<Immigrants>(go);
 				}			
 				UI.print("More merchants" + conf.isEnabledMoreMerchants.toEnabledString());
 				if(conf.isEnabledMoreMerchants.getBool()) {
-					go.AddComponent(typeof(Merchants));
+					Merchants.Create<Merchants>(go);
 				}			
 				UI.print("Cheats" + conf.isEnabledCheats.toEnabledString());
 				if(conf.isEnabledCheats.getBool()) {
@@ -79,7 +80,7 @@ namespace Plugin.HCR {
 				}			
 				UI.print("Keyboard commands" + conf.isEnabledKeyboardCommands.toEnabledString());
 				if(conf.isEnabledKeyboardCommands.getBool()) {
-					go.AddComponent(typeof(KeyboardCommands));
+					KeyboardCommands.Create<KeyboardCommands>(go);
 				}			
 				UI.print("Invasion configuration" + conf.isEnabledInvasionConfig.toEnabledString());
 				
