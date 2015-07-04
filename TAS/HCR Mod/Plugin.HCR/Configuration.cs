@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 
-[assembly: AssemblyVersion("0.3.*")] 
+[assembly: AssemblyVersion("0.3.22.*")] 
 
 namespace Plugin.HCR {
 	public class Configuration {
@@ -43,10 +43,11 @@ namespace Plugin.HCR {
 		public ConfigValue trackResourcesIdxFirst = new ConfigValue(1);
 		public ConfigValue trackResourcesIdxLast = new ConfigValue(79);	//60+ is tools, 90+ is weapons
 		
-		public ConfigValue IsEnabledLogFile = new ConfigValue(1);
-		public ConfigValue isEnabledDebugLevel= new ConfigValue(4);
-		public ConfigValue isEnabledDebugGroup= new ConfigValue((int)(
-			Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
+		public ConfigValue isEnabledDebugLevel = new ConfigValue(1);
+		public ConfigValue IsEnabledDebugOutputString = new ConfigValue(1);
+		public ConfigValue IsEnabledDebugLogFile = new ConfigValue(1);
+		public ConfigValue isEnabledDebugGroup = new ConfigValue((int)(
+			Dbg.Grp.Init | Dbg.Grp.Startup | Dbg.Grp.Unity | Dbg.Grp.Time | Dbg.Grp.Terrain | Dbg.Grp.Weather | Dbg.Grp.Units | Dbg.Grp.Invasion
 		));
 		
 		private IniFile iniFile;
@@ -58,7 +59,7 @@ namespace Plugin.HCR {
 		
 		public bool init() {
 
-			iniFile = new IniFile("saves\\"+confName+".ini");
+			iniFile = new IniFile("saves\\" + confName + ".ini");
 			if(!load()) {
 				Dbg.printErr("Could not read ini file, rename/delete yours to start with default configuration");
 				return false;	
@@ -70,46 +71,47 @@ namespace Plugin.HCR {
 			try {
 				string iniVersionStr;
 				Version iniVersion;
-				iniVersionStr = iniFile.read(confName,confName);
-				if (iniVersionStr == "") {
+				iniVersionStr = iniFile.read(confName, confName);
+				if(iniVersionStr == "") {
 					Dbg.printErr("Ini file not found or corrupt, creating new file");
 					save();
 					return true;
 				}
 				iniVersion = new Version(iniVersionStr);
-				if (iniVersion < version) {
+				if(iniVersion < version) {
 					Dbg.printErr("Old version ini file detected, can not proceed");
 					return false;
 				}
 	
 				FieldInfo[] fl = this.GetType().GetFields();
-				foreach (FieldInfo fi in fl) {
-					if (fi.FieldType.ToString().Contains("ConfigValue")) {
+				foreach(FieldInfo fi in fl) {
+					if(fi.FieldType.ToString().Contains("ConfigValue")) {
 						//GUIManager gm = AManager<GUIManager>.getInstance();
 						//UI.print("fi.FieldType : "+fi.FieldType.ToString());
 						//UI.print("fi.Name "+fi.Name.ToString());
 						FieldInfo[] flCv = fi.FieldType.GetFields();
 						object configValue = fi.GetValue(this);
-						foreach (FieldInfo fiCv in flCv) {
+						foreach(FieldInfo fiCv in flCv) {
 							object value = fiCv.GetValue(configValue);
-							if (fiCv.Name.ToString().Contains("_value")) {
-								string str = iniFile.read(fi.Name.ToString(),confName);
-								if (str == "")
+							if(fiCv.Name.ToString().Contains("_value")) {
+								string str = iniFile.read(fi.Name.ToString(), confName);
+								if(str == "") {
 									throw new ArgumentException(fi.Name.ToString());
+								}
 								int num;
 								try {
-									num = Convert.ToInt32(str,10);
+									num = Convert.ToInt32(str, 10);
 								} catch {
-									fiCv.SetValue(configValue,str);
+									fiCv.SetValue(configValue, str);
 									continue;								
 								}
-								fiCv.SetValue(configValue,num);							
+								fiCv.SetValue(configValue, num);							
 							}
 						}
 					}
 				}
 				return true;
-			} catch (Exception e) {
+			} catch(Exception e) {
 				Dbg.dumpExc(e);
 				Dbg.printErr("Error reading ini file, bailing out");
 				return false;
@@ -117,16 +119,16 @@ namespace Plugin.HCR {
 		}
 		
 		private void save() {
-			iniFile.write(confName,version.ToString(),confName);
+			iniFile.write(confName, version.ToString(), confName);
 			FieldInfo[] fl = this.GetType().GetFields();
-			foreach (FieldInfo fi in fl) {
-				if (fi.FieldType.ToString().Contains("ConfigValue")) {
+			foreach(FieldInfo fi in fl) {
+				if(fi.FieldType.ToString().Contains("ConfigValue")) {
 					FieldInfo[] flCv = fi.FieldType.GetFields();
 					object configValue = fi.GetValue(this);
-					foreach (FieldInfo fiCv in flCv) {
+					foreach(FieldInfo fiCv in flCv) {
 						object value = fiCv.GetValue(configValue);
-						if (fiCv.Name.ToString().Contains("_value")) {
-							iniFile.write(fi.Name.ToString(),fiCv.GetValue(configValue).ToString(),confName);
+						if(fiCv.Name.ToString().Contains("_value")) {
+							iniFile.write(fi.Name.ToString(), fiCv.GetValue(configValue).ToString(), confName);
 						}
 					}
 				}
@@ -152,27 +154,27 @@ namespace Plugin.HCR {
 		
 		public int get() {
 			if((_value as int?) != null) {
-				return (int) _value;
+				return (int)_value;
 			}
 			throw new InvalidCastException();
 		}
 		
 		public bool getBool() {
 			if((_value as int?) != null) {
-				return ((int) _value != 0);				
+				return (((int)_value) != 0);				
 			}
 			throw new InvalidCastException();
 		}
 		
 		public string getStr() {
 			if((_value as string) != null) {
-				return (string) _value;
+				return (string)_value;
 			}
 			throw new InvalidCastException();
 		}
 		
 		public string toEnabledString() {
-			if (get() != 0) {
+			if(get() != 0) {
 				return " enabled";
 			} else {
 				return " disabled";

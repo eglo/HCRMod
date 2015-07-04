@@ -1,3 +1,17 @@
+2015-07-04  tengel  <tengel@home.de>
+
+	* Plugin.csproj:
+	* Plugin.userprefs:
+	* Dbg.cs:
+	* Rain.cs:
+	* HCRMod.cs:
+	* Weather.cs:
+	* UnitTraits.cs:
+	* AssemblyInfo.cs:
+	* Configuration.cs:
+	* ExtMonoBehaviour.cs: 
+SingletonMonobehaviour, ExtMonoBehaviour WIP
+
 2015-07-03  tengel  <tengel@home.de>
 
 	* Plugin.csproj:

@@ -8,37 +8,37 @@ using Timber_and_Stone;
 
 namespace Plugin.HCR {
 
-	public class RainTest : ExtMonoBehaviour<RainTest> {
-		private static string filePath = "file:///"+Application.dataPath+"/StreamingAssets/rain.ogg";
+	public class RainTest : SingletonMonoBehaviour<RainTest> {
+		private static string filePath = "file:///" + Application.dataPath + "/StreamingAssets/rain.ogg";
 		private static WWW www = new WWW(filePath);
 //		public bool isActive = false;
 //		public static GameObject go = new GameObject();
-		public static AudioSource ass;
+		public static AudioSource asrc;
 		
-
-		public RainTest(GameObject parent) : base (parent,true) {
-			
-		}
 		
 		public override void Start() {
-			Dbg.trc(Dbg.Grp.Startup,3,"RainSound started");
-			Dbg.msg(Dbg.Grp.Rain,3,"Using rain sound file:"+filePath);
-			ass = (AudioSource) go.AddComponent(typeof(AudioSource));
+			Dbg.trc(Dbg.Grp.Startup, 3, "RainSound started");
+			Dbg.msg(Dbg.Grp.Rain, 3, "Using rain sound file:" + filePath);
+			asrc = (AudioSource)AddComponent<AudioSource>();
 			StartCoroutine(rainSoundLoad());
+		}
+
+		public override void Update() {
 		}
 		
 		IEnumerator rainSoundLoad() {
 			yield return www;
-			if(www.error != null)
-				Dbg.trc(Dbg.Grp.Rain,3,www.error);
-			
-			ass.clip = www.GetAudioClip(false,false);
-			if (ass.clip == null) {
-				Dbg.trc(Dbg.Grp.Rain,3,"clip == null");
-			} else {
-				Dbg.trc(Dbg.Grp.Rain,3,"clip == "+ass.clip.ToString());
+			if(www.error != null) {
+				Dbg.trc(Dbg.Grp.Rain, 3, www.error);
 			}
-			Dbg.trc(Dbg.Grp.Rain,3,"done");
+			
+			asrc.clip = www.GetAudioClip(false, false);
+			if(asrc.clip == null) {
+				Dbg.trc(Dbg.Grp.Rain, 3, "clip == null");
+			} else {
+				Dbg.trc(Dbg.Grp.Rain, 3, "clip == " + asrc.clip.ToString());
+			}
+			Dbg.trc(Dbg.Grp.Rain, 3, "done");
 			//			if (!ass.isPlaying && ass.clip.isReadyToPlay) {
 			//				ass.volume = 1.0f;
 			//				ass.loop = true;
@@ -47,18 +47,18 @@ namespace Plugin.HCR {
 		}
 		
 		public void rainSoundPlay() {
-			Dbg.trc(Dbg.Grp.Rain,3,ass.ToString());
+			Dbg.trc(Dbg.Grp.Rain, 3, asrc.ToString());
 			
-			if (!ass.isPlaying && ass.clip.isReadyToPlay) {
-				ass.volume = 1.0f;
-				ass.loop = true;
-				ass.Play();
+			if(!asrc.isPlaying && asrc.clip.isReadyToPlay) {
+				asrc.volume = 1.0f;
+				asrc.loop = true;
+				asrc.Play();
 			}			
 		}
 		
 		public void rainSoundStop() {
-			Dbg.trc(Dbg.Grp.Rain,3,ass.ToString());
-			ass.Pause();
+			Dbg.trc(Dbg.Grp.Rain, 3, asrc.ToString());
+			asrc.Pause();
 		}
 		
 		
@@ -66,37 +66,38 @@ namespace Plugin.HCR {
 		
 
 	
-	public class RainSound : MonoBehaviour {
-		private static string filePath = "file:///"+Application.dataPath+"/StreamingAssets/rain.ogg";
+	public class xRainSound : MonoBehaviour {
+		private static string filePath = "file:///" + Application.dataPath + "/StreamingAssets/rain.ogg";
 		private static WWW www = new WWW(filePath);
 		public bool isActive = false;
 		public static GameObject go = new GameObject();
 		public static AudioSource ass;
 		
-		private static RainSound instance = new RainSound();			
-		public static RainSound getInstance() {
-			return instance; 
-		}
+//		private static xRainSound instance = new xRainSound();			
+//		public static xRainSound getInstance() {
+//			return instance; 
+//		}
 
 		public void Start() {
-			Dbg.trc(Dbg.Grp.Startup,3,"RainSound started");
-			Dbg.msg(Dbg.Grp.Rain,3,"Using rain sound file:"+filePath);
-			ass = (AudioSource) go.AddComponent(typeof(AudioSource));
+			Dbg.trc(Dbg.Grp.Startup, 3, "RainSound started");
+			Dbg.msg(Dbg.Grp.Rain, 3, "Using rain sound file:" + filePath);
+			ass = (AudioSource)go.AddComponent(typeof(AudioSource));
 			StartCoroutine(rainSoundLoad());
 		}
 
 		IEnumerator rainSoundLoad() {
 			yield return www;
-			if(www.error != null)
-				Dbg.trc(Dbg.Grp.Rain,3,www.error);
-
-			ass.clip = www.GetAudioClip(false,false);
-			if (ass.clip == null) {
-				Dbg.trc(Dbg.Grp.Rain,3,"clip == null");
-			} else {
-				Dbg.trc(Dbg.Grp.Rain,3,"clip == "+ass.clip.ToString());
+			if(www.error != null) {
+				Dbg.trc(Dbg.Grp.Rain, 3, www.error);
 			}
-			Dbg.trc(Dbg.Grp.Rain,3,"done");
+
+			ass.clip = www.GetAudioClip(false, false);
+			if(ass.clip == null) {
+				Dbg.trc(Dbg.Grp.Rain, 3, "clip == null");
+			} else {
+				Dbg.trc(Dbg.Grp.Rain, 3, "clip == " + ass.clip.ToString());
+			}
+			Dbg.trc(Dbg.Grp.Rain, 3, "done");
 //			if (!ass.isPlaying && ass.clip.isReadyToPlay) {
 //				ass.volume = 1.0f;
 //				ass.loop = true;
@@ -105,9 +106,9 @@ namespace Plugin.HCR {
 		}
 
 		public void rainSoundPlay() {
-			Dbg.trc(Dbg.Grp.Rain,3,ass.ToString());
+			Dbg.trc(Dbg.Grp.Rain, 3, ass.ToString());
 
-			if (!ass.isPlaying && ass.clip.isReadyToPlay) {
+			if(!ass.isPlaying && ass.clip.isReadyToPlay) {
 				ass.volume = 1.0f;
 				ass.loop = true;
 				ass.Play();
@@ -115,7 +116,7 @@ namespace Plugin.HCR {
 		}
 
 		public void rainSoundStop() {
-			Dbg.trc(Dbg.Grp.Rain,3,ass.ToString());
+			Dbg.trc(Dbg.Grp.Rain, 3, ass.ToString());
 			ass.Pause();
 		}
 		
@@ -127,7 +128,7 @@ namespace Plugin.HCR {
 		public Vector3 location;
 		public Vector3 minHeight;
 		
-		public RainDrop(Vector3 _location,Vector3 _minHeight) {
+		public RainDrop(Vector3 _location, Vector3 _minHeight) {
 			location = _location;
 			minHeight = _minHeight;
 			blob = GameObject.CreatePrimitive(PrimitiveType.Sphere);
@@ -142,46 +143,45 @@ namespace Plugin.HCR {
 		public static List<RainDrop> rainDropsOnMap = new List<RainDrop>();
 		public bool isRainOnMap = false;
 		public float timeToRemove = 0.0f;
-		public RainTest rt;
-	
+
 		private static Rain instance = new Rain();			
 		public static Rain getInstance() {
 			return instance; 
 		}
 		
 		public void startRain() {
-			Dbg.trc(Dbg.Grp.Rain,3);
+			Dbg.trc(Dbg.Grp.Rain, 3);
 
 			//shouldnt happen
-			if(isRainOnMap)
+			if(isRainOnMap) {
 				return;
+			}
 
-			RainSound rs = RainSound.getInstance();
-			rs.rainSoundPlay();
+			RainTest.getInstance().rainSoundPlay();
+			;
 			//stay on map for about 5-10 mins, this doesn't care about game speed settings ..(?)
-			timeToRemove = Time.time+UnityEngine.Random.Range(300.0f,600.0f);
+			timeToRemove = Time.time + UnityEngine.Random.Range(300.0f, 600.0f);
 			
 			isRainOnMap = true;
 		} 
 
-		public void addRainDrop(Vector3 location,Vector3 minHeight) {
+		public void addRainDrop(Vector3 location, Vector3 minHeight) {
 			RainDrop rainDrop = new RainDrop(location,minHeight);
 			rainDrop.blob = Instantiate(rainDrop.blob, location, Quaternion.identity) as GameObject;
 			rainDropsOnMap.Add(rainDrop);
 			rainDrop.blob.SetActiveRecursively(true);	//TODO: is this needed?
-			Dbg.trc(Dbg.Grp.Rain,2);			
+			Dbg.trc(Dbg.Grp.Rain, 2);			
 		} 
 
 		public void removeRain() {
-			Dbg.trc(Dbg.Grp.Rain,3);
+			Dbg.trc(Dbg.Grp.Rain, 3);
 
-			foreach (RainDrop rainDrop in rainDropsOnMap) {
+			foreach(RainDrop rainDrop in rainDropsOnMap) {
 				UnityEngine.Object.Destroy(rainDrop.blob); 
 			}
 			rainDropsOnMap.Clear();
 
-			RainSound rs = RainSound.getInstance();
-			rs.rainSoundStop();
+			RainTest.getInstance().rainSoundStop();
 
 			isRainOnMap = false;
 
@@ -190,19 +190,26 @@ namespace Plugin.HCR {
 		
 		public void Start() {
 			gameObject.AddComponent(typeof(AudioSource));
-			gameObject.transform.position = Weather.getInstance().worldSize3i/2;
+			gameObject.transform.position = Weather.getInstance().worldSize3i / 2;
 			//gameObject.AddComponent(typeof(RainSound));
-			rt = new RainTest(gameObject);
-						
-			Dbg.trc(Dbg.Grp.Startup,3,"Rain started");
+			Dbg.trc(Dbg.Grp.Startup, 3, "Rain starting");
+			try {
+				RainTest.Create<RainTest>(gameObject);
+				Dbg.trc(Dbg.Grp.Startup, 3, "Rain starting .. more");			
+			} catch(Exception e) { 
+				Dbg.dumpExc(e);
+			}
+			
+			Dbg.trc(Dbg.Grp.Startup, 3, "Rain started");
 		}
 		
 		public void Update() {
 			//Dbg.trc(Dbg.Grp.Rain,1,"Rain update");
-			foreach (RainDrop rainDrop in rainDropsOnMap) {
-				rainDrop.blob.transform.Translate(new Vector3(0,-1f,-.2f) * Time.deltaTime,Space.World);
-				if(rainDrop.blob.transform.position.y < rainDrop.minHeight.y)
+			foreach(RainDrop rainDrop in rainDropsOnMap) {
+				rainDrop.blob.transform.Translate(new Vector3(0,-1f,-.2f) * Time.deltaTime, Space.World);
+				if(rainDrop.blob.transform.position.y < rainDrop.minHeight.y) {
 					rainDrop.blob.transform.position = rainDrop.location;
+				}
 			}
 		}
 	}	

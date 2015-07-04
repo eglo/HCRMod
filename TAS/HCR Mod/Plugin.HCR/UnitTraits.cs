@@ -28,7 +28,7 @@ namespace Plugin.HCR {
 			if(um.playerUnits.Count == 0)
 				Dbg.printErr("UnitManager not initialized"); //farg..
 			
-			StartCoroutine(CheckLevelUp(1.0F));
+			StartCoroutine(CheckLevelUp(2.0F));
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////

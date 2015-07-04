@@ -8,7 +8,7 @@ namespace Plugin.HCR {
 
 	public class HCRMod : MonoBehaviour {
 
-		public static GameObject go  = new GameObject();
+		public static GameObject go = new GameObject();
 
 		private static HCRMod instance = new HCRMod();			
 		public static HCRMod getInstance() {
@@ -22,6 +22,9 @@ namespace Plugin.HCR {
 			StartCoroutine(initHCRMod(0.1F));
 		}
 
+		public void OnLevelWasLoaded(int level) {
+			Dbg.trc(Dbg.Grp.Init, 1, "Level loaded:" + level.ToString());
+		}
 
 		IEnumerator initHCRMod(float waitTime) {
 
@@ -30,77 +33,77 @@ namespace Plugin.HCR {
 			GUIManager gm = AManager<GUIManager>.getInstance();
 			int ticks = 0;
 			while(!gm.inGame) {
-				Dbg.msg(Dbg.Grp.Init,1,"Not in game:"+ticks.ToString());
-				yield return new WaitForSeconds(0.1f);
+				Dbg.msg(Dbg.Grp.Init, 1, "Not in game:" + ticks.ToString());
+				yield return new WaitForSeconds(3.0f);
 			}
 
 			try {
 				Configuration conf = Configuration.getInstance();
 				
-				gm.AddTextLine("HCR - Here Comes The Rain - Mod Version "+conf.version+" Build "+conf.build);
-				if (!conf.init()) {
+				gm.AddTextLine("HCR - Here Comes The Rain - Mod Version " + conf.version + " Build " + conf.build);
+				if(!conf.init()) {
 					Dbg.printErr("Error in configuration init, mod is NOT enabled");
 					yield break;
 				}
 	
 //TODO_ delete this			
 //overrides ini config...
-conf.isEnabledDebugLevel.set(1);
-conf.isEnabledDebugGroup.set((int)(
-	//Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
-					Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Rain|Dbg.Grp.Units
+				conf.isEnabledDebugLevel.set(3);
+				conf.isEnabledDebugGroup.set((int)(
+				//Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
+					Dbg.Grp.Init | Dbg.Grp.Startup | Dbg.Grp.Terrain | Dbg.Grp.Weather | Dbg.Grp.Rain | Dbg.Grp.Sound
 ));
 
-				Dbg.trc(Dbg.Grp.Init,1);				
-				Dbg.printMsg("Rain effects"+conf.isEnabledWeatherEffects.toEnabledString());
-				if (conf.isEnabledWeatherEffects.getBool()) {
+				Dbg.trc(Dbg.Grp.Init, 1);				
+				UI.print("Rain effects" + conf.isEnabledWeatherEffects.toEnabledString());
+				if(conf.isEnabledWeatherEffects.getBool()) {
 					go.AddComponent(typeof(Weather));
-					Dbg.printMsg("Rainblobs visible effect"+conf.isEnabledShowRainBlocks.toEnabledString());
+					UI.print("Rainblobs visible effect" + conf.isEnabledShowRainBlocks.toEnabledString());
 					
 				}
-				Dbg.printMsg("Improve unit traits"+conf.isEnabledImproveUnitTraits.toEnabledString());
+				UI.print("Improve unit traits" + conf.isEnabledImproveUnitTraits.toEnabledString());
 				if(conf.isEnabledImproveUnitTraits.getBool()) {
 					go.AddComponent(typeof(UnitTraits));
 				}			
-				Dbg.printMsg("More immigrants"+conf.isEnabledMoreImmigrants.toEnabledString());
+				UI.print("More immigrants" + conf.isEnabledMoreImmigrants.toEnabledString());
 				if(conf.isEnabledMoreImmigrants.getBool()) {
 					go.AddComponent(typeof(Immigrants));
 				}			
-				Dbg.printMsg("More merchants"+conf.isEnabledMoreMerchants.toEnabledString());
+				UI.print("More merchants" + conf.isEnabledMoreMerchants.toEnabledString());
 				if(conf.isEnabledMoreMerchants.getBool()) {
 					go.AddComponent(typeof(Merchants));
 				}			
-				Dbg.printMsg("Cheats"+conf.isEnabledCheats.toEnabledString());
+				UI.print("Cheats" + conf.isEnabledCheats.toEnabledString());
 				if(conf.isEnabledCheats.getBool()) {
 					//go.AddComponent(typeof(Immigrants));
 				}			
-				Dbg.printMsg("Keyboard commands"+conf.isEnabledKeyboardCommands.toEnabledString());
+				UI.print("Keyboard commands" + conf.isEnabledKeyboardCommands.toEnabledString());
 				if(conf.isEnabledKeyboardCommands.getBool()) {
 					go.AddComponent(typeof(KeyboardCommands));
 				}			
-				Dbg.printMsg("Invasion configuration"+conf.isEnabledInvasionConfig.toEnabledString());
+				UI.print("Invasion configuration" + conf.isEnabledInvasionConfig.toEnabledString());
 				
 				if(conf.trackResourcesIdxFirst.getBool() && conf.trackResourcesIdxLast.getBool()) {
 					ResourceManager rm = AManager<ResourceManager>.getInstance();
 					//this will only happen for a game started anew, not for a saved game
 					if(gm.watchedResources.Count == 0) {
-						for (int i = conf.trackResourcesIdxFirst.get(); i <= conf.trackResourcesIdxLast.get(); i++) {
-							if ((i >= 0) && (i < rm.resources.Length)) {
+						for(int i = conf.trackResourcesIdxFirst.get(); i <= conf.trackResourcesIdxLast.get(); i++) {
+							if((i >= 0) && (i < rm.resources.Length)) {
 								gm.watchedResources.Add(i);
 							}
 						}
 					}						
 				}
 				
-				if (conf.isEnabledDebugLevel.getBool()) {
-					Dbg.printMsg("Debug enabled level:"+conf.isEnabledDebugLevel.get().ToString());
-					Dbg.Grp grp = (Dbg.Grp) conf.isEnabledDebugGroup.get();
-					Dbg.printMsg("Debug enabled groups:"+grp.ToString());
+				if(conf.isEnabledDebugLevel.getBool()) {
+					UI.print("Debug enabled level:" + conf.isEnabledDebugLevel.get().ToString());
+					Dbg.Grp grp = (Dbg.Grp)conf.isEnabledDebugGroup.get();
+					UI.print("Debug enabled groups:" + grp.ToString());
 				}
 				
-				Dbg.msg(Dbg.Grp.Startup,3,"Mod enabled");
-			}  catch(Exception e) {
-				Dbg.dumpCorExc("initHCRMod",e);
+				Dbg.msg(Dbg.Grp.Startup, 3, "Mod enabled");
+			} catch(Exception e) {
+				Dbg.dumpCorExc("initHCRMod", e);
 			}			
 		}
 
