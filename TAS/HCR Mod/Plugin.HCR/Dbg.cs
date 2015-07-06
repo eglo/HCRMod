@@ -1,11 +1,13 @@
 #if !TRACE_ON
 #warning Trace info not active
 #endif
+#undef USE_STACKFRAMES_FOR_TRACE
 
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -46,19 +48,18 @@ namespace Plugin.HCR {
 			Rain = 256,
 			Units = 512, 
 			Invasion = 1024,
+			Else = 2048,
 			All = -1
-		}
-		;
+		};
 
 		private static GUIManager gm = AManager<GUIManager>.getInstance();
 		private static Configuration conf = Configuration.getInstance();
 		private static StreamWriter sw = null;
 		
-		//poor man's friend access, only use from UI.print
+		//no friend class in c#? bah..
 		public static void friendPrint(string str) {
 			print(str, true);
 		}
-
 		
 		private static void print(string inStr, bool isUIMsg = false) {
 			Configuration conf = Configuration.getInstance();
@@ -82,7 +83,7 @@ namespace Plugin.HCR {
 			if(conf.IsEnabledDebugLogFile.getBool()) {
 				try {
 					if(sw == null) {
-						sw = new StreamWriter(conf.filePathPrefix.getStr() + "\\" + conf.confName + ".log");
+						sw = new StreamWriter(conf.filePathPrefix + "/" + conf.confName + ".log");
 						sw.AutoFlush = true;
 					}
 					sw.WriteLine(str);
@@ -127,17 +128,8 @@ namespace Plugin.HCR {
 			print("MSG:" + group.ToString() + ": " + outStr);
 		}
 
-		[Conditional("TRACE_ON")]
-		public static void trc(Dbg.Grp group, int dbgLvl, int position) {
-			if(((conf.isEnabledDebugGroup.get() & (int)group) == 0) || (conf.isEnabledDebugLevel.get() == 0) || (dbgLvl < conf.isEnabledDebugLevel.get())) {
-				return;
-			}
-			
-			StackTrace st = new StackTrace();
-			StackFrame[] frames = st.GetFrames();
-			print("TRC:" + group.ToString() + ": " + frames[1].GetMethod().DeclaringType.ToString() + "." + frames[1].GetMethod().Name + ": " + position.ToString());			
-		}
 		
+#if USE_STACKFRAMES_FOR_TRACE			
 		[Conditional("TRACE_ON")]
 		public static void trc(Dbg.Grp group, int dbgLvl, string str = "") {
 			if(((conf.isEnabledDebugGroup.get() & (int)group) == 0) || (conf.isEnabledDebugLevel.get() == 0) || (dbgLvl < conf.isEnabledDebugLevel.get())) {
@@ -147,6 +139,32 @@ namespace Plugin.HCR {
 			StackTrace st = new StackTrace();
 			StackFrame[] frames = st.GetFrames();
 			print("TRC:" + group.ToString() + ": " + frames[1].GetMethod().DeclaringType.ToString() + "." + frames[1].GetMethod().Name + ": " + str);
+		}
+#else
+		public static void trc(
+			Dbg.Grp group, 
+			int dbgLvl, 
+			string str = "",
+			[CallerMemberName] string memberName = "",
+			[CallerFilePath] string sourceFilePath = "",
+			[CallerLineNumber] int sourceLineNumber = 0
+		) {
+			if(((conf.isEnabledDebugGroup.get() & (int)group) == 0) || (conf.isEnabledDebugLevel.get() == 0) || (dbgLvl < conf.isEnabledDebugLevel.get())) {
+				return;
+			}
+			print("TRC:" + group.ToString() + ": " + sourceFilePath + ":" + memberName + ":" + sourceLineNumber + ": " + str);			
+		}
+#endif
+
+		[Conditional("TRACE_ON")]
+		public static void trcCaller(Dbg.Grp group, int dbgLvl, string str = "") {
+			if(((conf.isEnabledDebugGroup.get() & (int)group) == 0) || (conf.isEnabledDebugLevel.get() == 0) || (dbgLvl < conf.isEnabledDebugLevel.get())) {
+				return;
+			}
+			
+			StackTrace st = new StackTrace();
+			StackFrame[] frames = st.GetFrames();
+			print("TRC:" + group.ToString() + ": " + frames[2].GetMethod().DeclaringType.ToString() + "." + frames[2].GetMethod().Name + ": " + str);
 		}
 		
 		public static void dumpExc(Exception e) {

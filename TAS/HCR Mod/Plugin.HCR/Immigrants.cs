@@ -8,13 +8,18 @@ using Timber_and_Stone.Event;
 
 
 namespace Plugin.HCR {
-	public class Immigrants : SingletonMonoBehaviour<Immigrants> {
+	public class Immigrants : ExtMonoBehaviour {
 
 		public static int lastImmigrantDay = 0;
 		public static int nextImmigrantDay = 0;
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
-		public override void Start() {
+
+		public override void Awake() {
+			Setup();
+		}
+
+		public void Start() {
 			if(!Configuration.getInstance().isEnabledMoreImmigrants.getBool()) {
 				return;
 			}

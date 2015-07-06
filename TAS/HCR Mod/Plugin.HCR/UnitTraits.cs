@@ -8,14 +8,19 @@ using Timber_and_Stone;
 
 namespace Plugin.HCR {
 
-	public class UnitTraits : SingletonMonoBehaviour<UnitTraits> {
+	public class UnitTraits : ExtMonoBehaviour {
 
 		public static Dictionary <string,int> unitProfessionLevels = new Dictionary <string,int>();
 		bool isInitialized = false;
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
 
-		public override void Start() {
+		public override void Awake() {
+			Setup();
+		}
+		
+
+		public void Start() {
 			if(!Configuration.getInstance().isEnabledImproveUnitTraits.getBool()) {
 				return;
 			}

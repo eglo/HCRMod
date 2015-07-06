@@ -79,7 +79,7 @@
     <MonoDevelop>
       <Properties>
         <Policies>
-          <TextStylePolicy inheritsSet="Mono" inheritsScope="text/plain" scope="text/plain" />
+          <TextStylePolicy inheritsSet="null" scope="text/x-changelog" />
           <XmlFormattingPolicy inheritsSet="Mono" inheritsScope="application/xml" scope="application/xml" />
           <NameConventionPolicy>
             <Rules>
@@ -146,5 +146,14 @@
     <None Include="..\..\..\games\Timber and Stone\Timber and Stone v1.6.3\saves\HCR.ini">
       <Link>Properties\old.ini</Link>
     </None>
+    <None Include="ChangeLog">
+      <Link>Properties\ChangeLog</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Svelto IoC\Svelto.IoC\Svelto.IoC.csproj">
+      <Project>{53B6990C-B437-412F-9496-5E28A937575F}</Project>
+      <Name>Svelto.IoC</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

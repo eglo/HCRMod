@@ -1,23 +1,32 @@
 ﻿<Properties GitUserInfo="UsingMD">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Plugin.HCR\ExtMonoBehaviour.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Plugin.HCR\Weather.cs">
     <Files>
-      <File FileName="Plugin.HCR\PluginMain.cs" Line="1" Column="1" />
-      <File FileName="d:\data\projects\TAS\HCR Mod\Plugin.HCR\Weather.cs" Line="142" Column="1" />
-      <File FileName="Plugin.HCR\TestFunctions.cs" Line="1" Column="1" />
-      <File FileName="Plugin.HCR\Rain.cs" Line="186" Column="24" />
-      <File FileName="Plugin.HCR\IniFile.cs" Line="6" Column="1" />
-      <File FileName="Plugin.HCR\Dbg.cs" Line="65" Column="1" />
-      <File FileName="Plugin.HCR\KeyboardCommands.cs" Line="1" Column="1" />
-      <File FileName="Plugin.HCR\InvasionHandler.cs" Line="1" Column="1" />
-      <File FileName="Plugin.HCR\Configuration.cs" Line="46" Column="61" />
-      <File FileName="..\..\..\apps\Unity\Projects\Test1\Assets\Bounce.cs" Line="1" Column="1" />
-      <File FileName="Properties\AssemblyInfo.cs" Line="1" Column="1" />
-      <File FileName="Plugin.HCR\HCRMod.cs" Line="48" Column="35" />
-      <File FileName="Plugin.HCR\UnitTraits.cs" Line="31" Column="33" />
-      <File FileName="Plugin.HCR\Merchants.cs" Line="1" Column="1" />
-      <File FileName="Plugin.HCR\ExtMonoBehaviour.cs" Line="21" Column="67" />
+      <File FileName="Plugin.HCR\ExtMonoBehaviour.cs" Line="29" Column="8" />
+      <File FileName="Plugin.HCR\HCRMod.cs" Line="1" Column="1" />
+      <File FileName="Plugin.HCR\RainSound.cs" Line="62" Column="30" />
+      <File FileName="Plugin.HCR\UnitTraits.cs" Line="1" Column="1" />
+      <File FileName="Plugin.HCR\Weather.cs" Line="58" Column="5" />
+      <File FileName="Plugin.HCR\Rain.cs" Line="1" Column="1" />
+      <File FileName="Plugin.HCR\Dbg.cs" Line="1" Column="1" />
+      <File FileName="Plugin.HCR\Configuration.cs" Line="1" Column="1" />
+      <File FileName="Plugin.HCR\IniFile.cs" Line="1" Column="1" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True" selected="True">
+          <Node name="Plugin" expanded="True">
+            <Node name="References" expanded="True" />
+            <Node name="Plugin.HCR" expanded="True" />
+            <Node name="Properties" expanded="True" />
+          </Node>
+          <Node name="Svelto.IoC" expanded="True">
+            <Node name="Command" expanded="True" />
+            <Node name="IoC" expanded="True" />
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

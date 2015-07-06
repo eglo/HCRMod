@@ -3,10 +3,58 @@ using System.Collections;
 using System.Diagnostics;
 using UnityEngine;
 using Timber_and_Stone;
+//using Svelto.IoC;
+//using Svelto.Ticker;
+
 
 namespace Plugin.HCR {
+	
+//Application Composition Root.
+//Composition Root is the place where the framework can be initialised.
 
-	public class HCRMod : SingletonMonoBehaviour<HCRMod> {
+//	public class newHCRMod:ICompositionRoot {
+//		public Svelto.IoC.IContainer container { get; private set; }
+//	
+//		public newHCRMod() {
+//		
+//			SetupContainer();
+//			StartGame();
+//		}
+//	
+//		void SetupContainer() {
+//			container = new Container();
+//		
+//			//container.Bind<IGameObjectFactory>().AsSingle<GameObjectFactory>(new GameObjectFactory(container));
+//			//container.Bind<Weather>().AsSingle<Weather>();
+//		
+////			container.Bind<WeaponPresenter>().ToFactory(new MultiProvider<WeaponPresenter>());
+////			container.Bind<MonsterPresenter>().ToFactory(new MultiProvider<MonsterPresenter>());
+////		
+////			container.BindSelf<UnderAttackSystem>();
+////			container.BindSelf<PathController>();
+////			container.BindSelf<MonsterSpawner>();
+//		}
+//	
+//		void StartGame() {
+//			//tickEngine could be added in the container as well
+//			//if needed to other classes!
+//			//UnityTicker tickEngine = new UnityTicker(); 
+//		
+////			tickEngine.Add(container.Build<MonsterSpawner>());
+////			tickEngine.Add(container.Build<UnderAttackSystem>());
+//		}
+//	}
+//
+////A GameObject containing GameContext must be present in the scene
+////All the monobehaviours present in the scene file that need dependencies 
+////injected must be component of GameObjects children of GameContext.
+//
+//	public class GameContext: UnityRoot<newHCRMod> {
+//
+//	}
+
+
+	public class HCRMod : ExtMonoBehaviour {
 
 //		public static GameObject go = new GameObject();
 //
@@ -18,7 +66,12 @@ namespace Plugin.HCR {
 		public HCRMod() {
 		}
 
-		public override void Start() {
+		public override void Awake() {
+			Dbg.trc(Dbg.Grp.Init, 3, this.GetType().ToString()); 							
+			Setup();
+		}
+		
+		public void Start() {
 			StartCoroutine(initHCRMod(0.1F));
 		}
 
@@ -52,35 +105,35 @@ namespace Plugin.HCR {
 				conf.isEnabledDebugLevel.set(3);
 				conf.isEnabledDebugGroup.set((int)(
 				//Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
-					Dbg.Grp.Init | Dbg.Grp.Startup | Dbg.Grp.Terrain | Dbg.Grp.Weather | Dbg.Grp.Rain | Dbg.Grp.Sound
+					Dbg.Grp.Init | Dbg.Grp.Startup | Dbg.Grp.Terrain | Dbg.Grp.Weather | Dbg.Grp.Rain | Dbg.Grp.Sound | Dbg.Grp.Light 
 ));
 
 				Dbg.trc(Dbg.Grp.Init, 1);				
-				UI.print("Rain effects" + conf.isEnabledWeatherEffects.toEnabledString());
+				UI.print("Weather effects" + conf.isEnabledWeatherEffects.toEnabledString());
 				if(conf.isEnabledWeatherEffects.getBool()) {
-					Weather.Create<Weather>(go);
+					AddGameComponent<Weather>();
 					UI.print("Rainblobs visible effect" + conf.isEnabledShowRainBlocks.toEnabledString());
 					
 				}
 				UI.print("Improve unit traits" + conf.isEnabledImproveUnitTraits.toEnabledString());
 				if(conf.isEnabledImproveUnitTraits.getBool()) {
-					UnitTraits.Create<UnitTraits>(go);
+					AddGameComponent<UnitTraits>();
 				}			
 				UI.print("More immigrants" + conf.isEnabledMoreImmigrants.toEnabledString());
 				if(conf.isEnabledMoreImmigrants.getBool()) {
-					Immigrants.Create<Immigrants>(go);
+					AddGameComponent<Immigrants>();
 				}			
 				UI.print("More merchants" + conf.isEnabledMoreMerchants.toEnabledString());
 				if(conf.isEnabledMoreMerchants.getBool()) {
-					Merchants.Create<Merchants>(go);
+					AddGameComponent<Merchants>();
 				}			
 				UI.print("Cheats" + conf.isEnabledCheats.toEnabledString());
 				if(conf.isEnabledCheats.getBool()) {
-					//go.AddComponent(typeof(Immigrants));
+					AddGameComponent<Cheats>();
 				}			
 				UI.print("Keyboard commands" + conf.isEnabledKeyboardCommands.toEnabledString());
 				if(conf.isEnabledKeyboardCommands.getBool()) {
-					KeyboardCommands.Create<KeyboardCommands>(go);
+					AddGameComponent<KeyboardCommands>();
 				}			
 				UI.print("Invasion configuration" + conf.isEnabledInvasionConfig.toEnabledString());
 				

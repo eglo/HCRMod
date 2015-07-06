@@ -4,7 +4,7 @@ using UnityEngine;
 using Timber_and_Stone;
 
 namespace Plugin.HCR {
-	public class KeyboardCommands : SingletonMonoBehaviour<KeyboardCommands> {
+	public class KeyboardCommands : ExtMonoBehaviour {
 
 		
 		private static KeyCode[] cmdCombo = {KeyCode.LeftShift,KeyCode.LeftControl,KeyCode.LeftAlt};
@@ -60,7 +60,7 @@ namespace Plugin.HCR {
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
 		public static void letItRain() {
-			Weather weather = Weather.getInstance();
+			Weather weather = Weather.getInstance() as Weather;
 			weather.rainStorm(0, 0, weather.worldSize3i.x, weather.worldSize3i.z);
 		}
 
@@ -95,8 +95,12 @@ namespace Plugin.HCR {
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////
+
+		public override void Awake() {
+			Setup();
+		}
 		
-		public override void Start() {
+		public void Start() {
 			Dbg.trc(Dbg.Grp.Startup, 3);
 			
 			string str;

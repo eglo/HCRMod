@@ -7,13 +7,17 @@ using Timber_and_Stone;
 
 namespace Plugin.HCR {
 	
-	public class Cheats : SingletonMonoBehaviour<Cheats> {
+	public class Cheats : ExtMonoBehaviour {
 		
 		public static bool furCheatDone = false;
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
+
+		public override void Awake() {
+			Setup();
+		}
 		
-		public override void Start() {
+		public void Start() {
 			if(!Configuration.getInstance().isEnabledCheats.getBool()) {
 				return;
 			}
@@ -39,6 +43,7 @@ namespace Plugin.HCR {
 
 					//animal fur cheat, gives a chance for animla found on 1st day
 					if((cDay == 1) && !furCheatDone && (UnityEngine.Random.Range(0, 200) == 0)) {
+						Dbg.trc(Dbg.Grp.Else, 3, "furCheat done");		
 						rm.AddResource(11, 5);
 						UI.print("The woodchopper found some pieces of animal fur. Have any use for these?");
 						furCheatDone = true;
@@ -55,6 +60,7 @@ namespace Plugin.HCR {
 							enemy.inventory.Add(47, UnityEngine.Random.Range(0, 3));
 						}
 					}
+					Dbg.trc(Dbg.Grp.Else, 3, "enemy stuff done");		
 					
 				} catch(Exception e) { 
 					Dbg.dumpCorExc("doCheats", e);

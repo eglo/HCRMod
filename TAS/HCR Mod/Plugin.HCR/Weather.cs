@@ -11,25 +11,27 @@ using Timber_and_Stone.Blocks;
 namespace Plugin.HCR {
 
 	
-	public class Weather : SingletonMonoBehaviour<Weather> {
+	public class Weather : SingletonMonoBehaviour {
 		private static TimeManager tm = AManager<TimeManager>.getInstance();
 		private bool isInitialized = false;
 		public static int nextRainDay = 0;
 		public static int nextRainHour = 0;
 		public Vector3i worldSize3i;
 
-		
-		public override void Start() {
 
-			if(!Configuration.getInstance().isEnabledWeatherEffects.getBool()) {
-				//TODO: check
-				return;
-			}
+		public override void Awake() {
 
+			Dbg.trc(Dbg.Grp.Init, 3);
+			Setup();
+			
 			if(Configuration.getInstance().isEnabledShowRainBlocks.getBool()) {
-				Rain.Create<Rain>(go);
+				AddGameComponent<Rain>();
 			}
 			
+		}
+		
+		public void Start() {
+
 			Dbg.trc(Dbg.Grp.Startup, 3);
 			StartCoroutine(doWeather(5.0F));
 		}
@@ -63,8 +65,9 @@ namespace Plugin.HCR {
 					cDay = tm.day;
 					cHour = tm.hour;
 
-					if(Rain.getInstance().isRainOnMap && (Time.time >= Rain.getInstance().timeToRemove)) {
-						Rain.getInstance().removeRain();
+					Rain rs = GetGameComponent<Rain>();
+					if(rs.isRainOnMap && (Time.time >= rs.timeToRemove)) {
+						rs.removeRain();
 					}
 
 					if((cDay >= nextRainDay) && (cHour >= nextRainHour)) {						
@@ -175,7 +178,7 @@ namespace Plugin.HCR {
 			int topBlkID;
 			int surround = 0;
 			
-			Dbg.trc(Dbg.Grp.Terrain, 1, 2);
+			Dbg.trc(Dbg.Grp.Terrain, 2, "start");
 			
 			ChunkManager cm = AManager<ChunkManager>.getInstance();			
 			topBlk = cm.GetBlockOnTop(Coordinate.FromBlock(x, 0, z));
@@ -195,10 +198,10 @@ namespace Plugin.HCR {
 				}
 			}
 			if(surround >= 6) {
-				Dbg.trc(Dbg.Grp.Terrain, 3, 2);
+				Dbg.trc(Dbg.Grp.Terrain, 2, "fill");
 				newBlk = topBlk.relative(0, +1, 0);
 				cm.SetBlock(newBlk.coordinate, BlockProperties.BlockDirt);
-				Dbg.msg(Dbg.Grp.Terrain, 1, "Filled a hole on top of a " + topBlk.properties.ToString() + " at " + x.ToString() + "," + z.ToString());
+				Dbg.msg(Dbg.Grp.Terrain, 2, "Filled a hole on top of a " + topBlk.properties.ToString() + " at " + x.ToString() + "," + z.ToString());
 			}
 		}
 		
@@ -249,23 +252,24 @@ namespace Plugin.HCR {
 			IBlock topBlk;
 			IBlock newBlk;
 			
-			Dbg.trc(Dbg.Grp.Terrain, 2, 1);			
-			Rain.getInstance().startRain();
+			Dbg.trc(Dbg.Grp.Terrain, 2, "start");
+			Rain rain = GetGameComponent<Rain>();			
+			rain.startRain();
 			for(int x = xpos; x < xext; x++) {
 				for(int z = zpos; z < zext; z++) {
 					if(UnityEngine.Random.Range(0, 200 - dropRate) != 1) {
 						continue;
 					}
 
-					Dbg.trc(Dbg.Grp.Terrain, 2, 2);
+					Dbg.trc(Dbg.Grp.Terrain, 1, "tryRandom");
 					topBlk = getBlockOnTop(Coordinate.FromBlock(x, worldSize3i.y - 1, z));
 					int height = UnityEngine.Random.Range(10, 20);
 					if((topBlk.coordinate.absolute.y + height) >= (worldSize3i.y - 1)) {
 						continue;
 					}
 					newBlk = topBlk.relative(0, height, 0);
-					Dbg.msg(Dbg.Grp.Terrain, 1, "New raindrop over" + topBlk.coordinate.ToString());
-					Rain.getInstance().addRainDrop(newBlk.coordinate.world, topBlk.coordinate.world);
+					Dbg.msg(Dbg.Grp.Terrain, 2, "New raindrop over" + topBlk.coordinate.ToString());
+					rain.addRainDrop(newBlk.coordinate.world, topBlk.coordinate.world);
 				}
 			}
 		}
@@ -316,7 +320,7 @@ namespace Plugin.HCR {
 			} else {
 				Dbg.msg(Dbg.Grp.Terrain, 10, "Could not put Block on top at " + x.ToString() + "," + y.ToString() + "," + z.ToString());
 			}
-			Dbg.msg(Dbg.Grp.Terrain, 1, "Set type " + blockPropsNew.ToString() + " on top of a " + topBlk.properties.ToString() + " at " + x.ToString() + "," + z.ToString());
+			Dbg.msg(Dbg.Grp.Terrain, 2, "Set type " + blockPropsNew.ToString() + " on top of a " + topBlk.properties.ToString() + " at " + x.ToString() + "," + z.ToString());
 			
 		} //catch (Exception e) {exceptionPrint(e);}}
 		
@@ -330,7 +334,7 @@ namespace Plugin.HCR {
 			topBlk = cm.GetBlockOnTop(Coordinate.FromBlock(x, 0, z));
 			if(topBlk.properties == blockPropsOld) {
 				cm.SetBlock(topBlk.coordinate, blockPropsNew);
-				Dbg.msg(Dbg.Grp.Terrain, 1, "Replaced type " + topBlk.properties.ToString() + " with " + blockPropsNew.ToString() + " at " + x.ToString() + "," + z.ToString());
+				Dbg.msg(Dbg.Grp.Terrain, 2, "Replaced type " + topBlk.properties.ToString() + " with " + blockPropsNew.ToString() + " at " + x.ToString() + "," + z.ToString());
 			}
 		}  // catch (Exception e) {exceptionPrint(e);}}
 		

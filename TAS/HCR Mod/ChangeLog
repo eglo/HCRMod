@@ -1,3 +1,24 @@
+2015-07-06  tengel  <tengel@home.de>
+
+	* Plugin.sln:
+	* Plugin.csproj:
+	* Plugin.userprefs:
+	* Dbg.cs:
+	* Rain.cs:
+	* Cheats.cs:
+	* HCRMod.cs:
+	* Weather.cs:
+	* Merchants.cs:
+	* Lightning.cs:
+	* RainSound.cs:
+	* UnitTraits.cs:
+	* PluginMain.cs:
+	* Immigrants.cs:
+	* Configuration.cs:
+	* KeyboardCommands.cs:
+	* ExtMonoBehaviour.cs:
+Remake Singleton/ExtMonobehaviour WIP, started Lightning 
+
 2015-07-04  tengel  <tengel@home.de>
 
 	* Plugin.csproj:

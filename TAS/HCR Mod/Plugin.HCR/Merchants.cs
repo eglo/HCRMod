@@ -9,14 +9,18 @@ using Timber_and_Stone.Event;
 
 namespace Plugin.HCR {
 
-	public class Merchants : SingletonMonoBehaviour<Merchants> {
+	public class Merchants : ExtMonoBehaviour {
 
 		public static int lastMerchantDay = 0;
 		public static int nextMerchantDay = 0;
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
 
-		public override void Start() {
+		public override void Awake() {
+			Setup();
+		}
+
+		public void Start() {
 			if(!Configuration.getInstance().isEnabledMoreImmigrants.getBool()) {
 				return;
 			}
