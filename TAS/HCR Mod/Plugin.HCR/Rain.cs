@@ -66,27 +66,26 @@ namespace Plugin.HCR {
 		} 
 		
 		public override void Awake() {
-			Setup();
+			Dbg.trc(Dbg.Grp.Init, 3);
+			try {
+				AddGameComponent<RainSound>(this.transform);
+				AddGameComponent<Lightning>(this.transform);
+			} catch(Exception e) { 
+				Dbg.dumpExc(e);
+			}
 		}
 		
 
 		public void Start() {
-			Dbg.trc(Dbg.Grp.Startup, 3, "Rain starting");
-			try {
-				AudioSource asrc = gameObject.AddComponent<AudioSource>();
-				AddGameComponent<RainSound>();
-				AddGameComponent<Lightning>();
-				Dbg.trc(Dbg.Grp.Startup, 3, "Rain started");
-			} catch(Exception e) { 
-				Dbg.dumpExc(e);
-			}
+			Dbg.trc(Dbg.Grp.Startup, 3);
 			
 		}
 		
 		public void Update() {
 			//Dbg.trc(Dbg.Grp.Rain,1,"Rain update");
+			float speed = 2.0f;
 			foreach(RainDrop rainDrop in rainDropsOnMap) {
-				rainDrop.blob.transform.Translate(new Vector3(0,-1f,-.2f) * Time.deltaTime, Space.World);
+				rainDrop.blob.transform.Translate(new Vector3(0,-1f,-.2f) * Time.deltaTime * speed, Space.World);
 				if(rainDrop.blob.transform.position.y < rainDrop.minHeight.y) {
 					rainDrop.blob.transform.position = rainDrop.location;
 				}

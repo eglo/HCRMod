@@ -1,3 +1,25 @@
+2015-07-08  tengel  <tengel@home.de>
+
+	* Plugin.sln:
+	* Plugin.csproj:
+	* Plugin.userprefs:
+	* Dbg.cs:
+	* Rain.cs:
+	* Cheats.cs:
+	* HCRMod.cs:
+	* Weather.cs:
+	* RainSound.cs:
+	* Merchants.cs:
+	* Lightning.cs:
+	* UnitTraits.cs:
+	* Immigrants.cs:
+	* PluginMain.cs:
+	* TestFunctions.cs:
+	* KeyboardCommands.cs:
+	* ExtMonoBehaviour.cs: 
+More ExtMonoBehavior WIP; Lightning working; Fader not working
+
+
 2015-07-06  tengel  <tengel@home.de>
 
 	* Plugin.sln:

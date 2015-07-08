@@ -49,8 +49,9 @@ namespace Plugin.HCR {
 			Dbg.printMsg("Test invoked: "+MethodBase.GetCurrentMethod().Name);
 			
 			TimeManager tm = AManager<TimeManager>.getInstance();
-			Weather.nextRainDay = tm.day;
-			Weather.nextRainHour = tm.hour;
+			Weather weather = SingletonMonoBehaviour.FindGameComponent<Weather>();
+			weather.nextRainDay = tm.day;
+			weather.nextRainHour = tm.hour;
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////		
@@ -143,6 +144,7 @@ namespace Plugin.HCR {
 			}
 		}
 
+	
 		///////////////////////////////////////////////////////////////////////////////////////////		
 
 //		public class Hack : MonoBehaviour {

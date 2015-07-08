@@ -152,7 +152,9 @@ namespace Plugin.HCR {
 			if(((conf.isEnabledDebugGroup.get() & (int)group) == 0) || (conf.isEnabledDebugLevel.get() == 0) || (dbgLvl < conf.isEnabledDebugLevel.get())) {
 				return;
 			}
-			print("TRC:" + group.ToString() + ": " + sourceFilePath + ":" + memberName + ":" + sourceLineNumber + ": " + str);			
+			string remove = "d:\\data\\projects\\TAS\\HCR Mod\\Plugin.HCR\\";			
+			string source = sourceFilePath.Remove(sourceFilePath.IndexOf(remove),remove.Length);
+			print("TRC:" + group.ToString() + ": " + source + ":" + memberName + ":" + sourceLineNumber + ": " + str);			
 		}
 #endif
 

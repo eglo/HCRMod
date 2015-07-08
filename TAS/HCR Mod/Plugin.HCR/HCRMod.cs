@@ -3,58 +3,19 @@ using System.Collections;
 using System.Diagnostics;
 using UnityEngine;
 using Timber_and_Stone;
-//using Svelto.IoC;
-//using Svelto.Ticker;
-
 
 namespace Plugin.HCR {
 	
-//Application Composition Root.
-//Composition Root is the place where the framework can be initialised.
+	public class HCRModWrapper : SingletonMonoBehaviour {
+			
+		public override void Awake() {
+			Dbg.trc(Dbg.Grp.Init, 3);
+			
+			HCRMod hcr = AddGameComponent<HCRMod>(this.transform);
+		}
+	}
 
-//	public class newHCRMod:ICompositionRoot {
-//		public Svelto.IoC.IContainer container { get; private set; }
-//	
-//		public newHCRMod() {
-//		
-//			SetupContainer();
-//			StartGame();
-//		}
-//	
-//		void SetupContainer() {
-//			container = new Container();
-//		
-//			//container.Bind<IGameObjectFactory>().AsSingle<GameObjectFactory>(new GameObjectFactory(container));
-//			//container.Bind<Weather>().AsSingle<Weather>();
-//		
-////			container.Bind<WeaponPresenter>().ToFactory(new MultiProvider<WeaponPresenter>());
-////			container.Bind<MonsterPresenter>().ToFactory(new MultiProvider<MonsterPresenter>());
-////		
-////			container.BindSelf<UnderAttackSystem>();
-////			container.BindSelf<PathController>();
-////			container.BindSelf<MonsterSpawner>();
-//		}
-//	
-//		void StartGame() {
-//			//tickEngine could be added in the container as well
-//			//if needed to other classes!
-//			//UnityTicker tickEngine = new UnityTicker(); 
-//		
-////			tickEngine.Add(container.Build<MonsterSpawner>());
-////			tickEngine.Add(container.Build<UnderAttackSystem>());
-//		}
-//	}
-//
-////A GameObject containing GameContext must be present in the scene
-////All the monobehaviours present in the scene file that need dependencies 
-////injected must be component of GameObjects children of GameContext.
-//
-//	public class GameContext: UnityRoot<newHCRMod> {
-//
-//	}
-
-
-	public class HCRMod : ExtMonoBehaviour {
+	public class HCRMod : SingletonMonoBehaviour {
 
 //		public static GameObject go = new GameObject();
 //
@@ -63,32 +24,26 @@ namespace Plugin.HCR {
 //			return instance; 
 //		}
 
-		public HCRMod() {
-		}
 
 		public override void Awake() {
-			Dbg.trc(Dbg.Grp.Init, 3, this.GetType().ToString()); 							
-			Setup();
+			Dbg.trc(Dbg.Grp.Init, 3);			
 		}
 		
 		public void Start() {
-			StartCoroutine(initHCRMod(0.1F));
-		}
 
-		public void OnLevelWasLoaded(int level) {
-			//???
-			Dbg.trc(Dbg.Grp.Init, 1, "Level loaded:" + level.ToString());
+			StartCoroutine(initHCRMod(0.1F));
+
 		}
 
 		IEnumerator initHCRMod(float waitTime) {
 
-			//seems OnEnable comes a little too early, apparently some parts of the game are not quite init'ed at this time.
-			//(I'm looking at you, worldSize member in ChunkManager..)
+			//wait for game load, some parts of the game are not quite init'ed at this time.
 			GUIManager gm = AManager<GUIManager>.getInstance();
 			int ticks = 0;
 			while(!gm.inGame) {
-				Dbg.msg(Dbg.Grp.Init, 1, "Not in game:" + ticks.ToString());
-				yield return new WaitForSeconds(3.0f);
+				Dbg.msg(Dbg.Grp.Init, 1, "Wait for game init.." + ticks.ToString());
+				yield return new WaitForSeconds(1.0f);
+				ticks++;
 			}
 
 			try {
@@ -102,41 +57,42 @@ namespace Plugin.HCR {
 	
 //TODO_ delete this			
 //overrides ini config...
-				conf.isEnabledDebugLevel.set(3);
+				conf.isEnabledDebugLevel.set(1);
 				conf.isEnabledDebugGroup.set((int)(
 				//Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
-					Dbg.Grp.Init | Dbg.Grp.Startup | Dbg.Grp.Terrain | Dbg.Grp.Weather | Dbg.Grp.Rain | Dbg.Grp.Sound | Dbg.Grp.Light 
+					Dbg.Grp.Init | Dbg.Grp.Startup | Dbg.Grp.Sound | Dbg.Grp.Light 
 ));
 
-				Dbg.trc(Dbg.Grp.Init, 1);				
-				UI.print("Weather effects" + conf.isEnabledWeatherEffects.toEnabledString());
+				Dbg.trc(Dbg.Grp.Init, 3);				
 				if(conf.isEnabledWeatherEffects.getBool()) {
-					AddGameComponent<Weather>();
+					AddGameComponent<Weather>(this.transform);
 					UI.print("Rainblobs visible effect" + conf.isEnabledShowRainBlocks.toEnabledString());
 					
 				}
-				UI.print("Improve unit traits" + conf.isEnabledImproveUnitTraits.toEnabledString());
+				UI.print("Weather effects" + conf.isEnabledWeatherEffects.toEnabledString());
 				if(conf.isEnabledImproveUnitTraits.getBool()) {
-					AddGameComponent<UnitTraits>();
+					AddGameComponent<UnitTraits>(this.transform);
+				}			
+				UI.print("Improve unit traits" + conf.isEnabledImproveUnitTraits.toEnabledString());
+				if(conf.isEnabledMoreImmigrants.getBool()) {
+					AddGameComponent<Immigrants>(this.transform);
 				}			
 				UI.print("More immigrants" + conf.isEnabledMoreImmigrants.toEnabledString());
-				if(conf.isEnabledMoreImmigrants.getBool()) {
-					AddGameComponent<Immigrants>();
+				if(conf.isEnabledMoreMerchants.getBool()) {
+					AddGameComponent<Merchants>(this.transform);
 				}			
 				UI.print("More merchants" + conf.isEnabledMoreMerchants.toEnabledString());
-				if(conf.isEnabledMoreMerchants.getBool()) {
-					AddGameComponent<Merchants>();
+				if(conf.isEnabledCheats.getBool()) {
+					AddGameComponent<Cheats>(this.transform);
 				}			
 				UI.print("Cheats" + conf.isEnabledCheats.toEnabledString());
-				if(conf.isEnabledCheats.getBool()) {
-					AddGameComponent<Cheats>();
+				if(conf.isEnabledKeyboardCommands.getBool()) {
+					AddGameComponent<KeyboardCommands>(this.transform);
 				}			
 				UI.print("Keyboard commands" + conf.isEnabledKeyboardCommands.toEnabledString());
-				if(conf.isEnabledKeyboardCommands.getBool()) {
-					AddGameComponent<KeyboardCommands>();
-				}			
-				UI.print("Invasion configuration" + conf.isEnabledInvasionConfig.toEnabledString());
 				
+				UI.print("Invasion configuration" + conf.isEnabledInvasionConfig.toEnabledString());
+
 				if(conf.trackResourcesIdxFirst.getBool() && conf.trackResourcesIdxLast.getBool()) {
 					ResourceManager rm = AManager<ResourceManager>.getInstance();
 					//this will only happen for a game started anew, not for a saved game
@@ -160,7 +116,6 @@ namespace Plugin.HCR {
 				Dbg.dumpCorExc("initHCRMod", e);
 			}			
 		}
-
 	}
 }
 

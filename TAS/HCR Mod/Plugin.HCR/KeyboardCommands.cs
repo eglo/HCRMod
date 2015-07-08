@@ -44,7 +44,7 @@ namespace Plugin.HCR {
 			UI.print(str);
 			UI.print("Command+H: help");
 			UI.print("Command+X: kill all enemies");
-			UI.print("Command+R: rain over full map");
+			UI.print("Command+R: start rain");
 			UI.print("Command+1: Game speed normal");
 			UI.print("Command+2: Game speed 2x");
 			UI.print("Command+3: Game speed 3x");
@@ -60,7 +60,7 @@ namespace Plugin.HCR {
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
 		public static void letItRain() {
-			Weather weather = Weather.getInstance() as Weather;
+			Weather weather = SingletonMonoBehaviour.FindGameComponent<Weather>();
 			weather.rainStorm(0, 0, weather.worldSize3i.x, weather.worldSize3i.z);
 		}
 
@@ -97,7 +97,7 @@ namespace Plugin.HCR {
 		///////////////////////////////////////////////////////////////////////////////////////////
 
 		public override void Awake() {
-			Setup();
+			Dbg.trc(Dbg.Grp.Init, 3);
 		}
 		
 		public void Start() {

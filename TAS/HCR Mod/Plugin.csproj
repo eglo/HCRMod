@@ -150,10 +150,4 @@
       <Link>Properties\ChangeLog</Link>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Svelto IoC\Svelto.IoC\Svelto.IoC.csproj">
-      <Project>{53B6990C-B437-412F-9496-5E28A937575F}</Project>
-      <Name>Svelto.IoC</Name>
-    </ProjectReference>
-  </ItemGroup>
 </Project>

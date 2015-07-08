@@ -12,27 +12,24 @@ namespace Plugin.HCR {
 
 	
 	public class Weather : SingletonMonoBehaviour {
-		private static TimeManager tm = AManager<TimeManager>.getInstance();
+		private TimeManager tm = AManager<TimeManager>.getInstance();
 		private bool isInitialized = false;
-		public static int nextRainDay = 0;
-		public static int nextRainHour = 0;
+		public int nextRainDay = 0;
+		public int nextRainHour = 0;
 		public Vector3i worldSize3i;
 
 
 		public override void Awake() {
-
 			Dbg.trc(Dbg.Grp.Init, 3);
-			Setup();
-			
+
 			if(Configuration.getInstance().isEnabledShowRainBlocks.getBool()) {
-				AddGameComponent<Rain>();
+				AddGameComponent<Rain>(this.transform);
 			}
-			
 		}
 		
 		public void Start() {
-
 			Dbg.trc(Dbg.Grp.Startup, 3);
+			
 			StartCoroutine(doWeather(5.0F));
 		}
 		

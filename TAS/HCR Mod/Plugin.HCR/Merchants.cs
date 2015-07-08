@@ -17,7 +17,7 @@ namespace Plugin.HCR {
 		///////////////////////////////////////////////////////////////////////////////////////////
 
 		public override void Awake() {
-			Setup();
+			Dbg.trc(Dbg.Grp.Init, 3);
 		}
 
 		public void Start() {
