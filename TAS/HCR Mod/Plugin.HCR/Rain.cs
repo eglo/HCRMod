@@ -67,18 +67,18 @@ namespace Plugin.HCR {
 		
 		public override void Awake() {
 			Dbg.trc(Dbg.Grp.Init, 3);
-			try {
-				AddGameComponent<RainSound>(this.transform);
-				AddGameComponent<Lightning>(this.transform);
-			} catch(Exception e) { 
-				Dbg.dumpExc(e);
-			}
 		}
 		
 
 		public void Start() {
 			Dbg.trc(Dbg.Grp.Startup, 3);
 			
+			try {
+				AddGameComponent<RainSound>(this.transform);
+				AddGameComponent<Lightning>(this.transform);
+			} catch(Exception e) { 
+				Dbg.dumpExc(e);
+			}
 		}
 		
 		public void Update() {

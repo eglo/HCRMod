@@ -1,5 +1,14 @@
 2015-07-08  tengel  <tengel@home.de>
 
+	* Plugin.userprefs:
+	* Rain.cs:
+	* Weather.cs:
+	* RainSound.cs:
+	* ExtMonoBehaviour.cs: 
+Fader working
+
+2015-07-08  tengel  <tengel@home.de>
+
 	* Plugin.sln:
 	* Plugin.csproj:
 	* Plugin.userprefs:

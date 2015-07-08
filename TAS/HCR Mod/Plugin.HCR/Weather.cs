@@ -21,14 +21,14 @@ namespace Plugin.HCR {
 
 		public override void Awake() {
 			Dbg.trc(Dbg.Grp.Init, 3);
-
-			if(Configuration.getInstance().isEnabledShowRainBlocks.getBool()) {
-				AddGameComponent<Rain>(this.transform);
-			}
 		}
 		
 		public void Start() {
 			Dbg.trc(Dbg.Grp.Startup, 3);
+
+			if(Configuration.getInstance().isEnabledShowRainBlocks.getBool()) {
+				AddGameComponent<Rain>(this.transform);
+			}
 			
 			StartCoroutine(doWeather(5.0F));
 		}

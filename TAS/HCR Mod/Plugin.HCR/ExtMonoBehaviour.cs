@@ -44,7 +44,6 @@ namespace Plugin.HCR {
 
 			Dbg.trcCaller(Dbg.Grp.Init, 2 ,"Start AddGameComponent: "+typeof(T).FullName);
 
-
 			T comp = go.AddComponent<T>();
 			comp.Setup(parent);
 		
