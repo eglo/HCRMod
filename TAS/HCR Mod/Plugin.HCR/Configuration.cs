@@ -13,7 +13,7 @@ namespace Plugin.HCR {
 		public Version version = new Version("0.3.22");
 		public Version build = new Version(System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
 
-		//file path relative to T&S.exe		
+		//file path relative to T&S.exe
 		public string filePathPrefix = "saves";
 
 		//enable/disable components

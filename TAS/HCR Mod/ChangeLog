@@ -1,3 +1,17 @@
+2015-07-13  tengel  <tengel@home.de>
+
+	* Plugin.userprefs:
+	* Dbg.cs:
+	* Rain.cs:
+	* HCRMod.cs:
+	* Weather.cs:
+	* RainSound.cs:
+	* Lightning.cs:
+	* AssemblyInfo.cs:
+	* Configuration.cs:
+	* KeyboardCommands.cs:
+added different audio clips/sources per rain type 
+
 2015-07-08  tengel  <tengel@home.de>
 
 	* Plugin.userprefs:

@@ -17,20 +17,14 @@ namespace Plugin.HCR {
 
 	public class HCRMod : SingletonMonoBehaviour {
 
-//		public static GameObject go = new GameObject();
-//
-//		private static HCRMod instance = new HCRMod();			
-//		public static HCRMod getInstance() {
-//			return instance; 
-//		}
-
 
 		public override void Awake() {
 			Dbg.trc(Dbg.Grp.Init, 3);			
 		}
 		
 		public void Start() {
-
+			Dbg.trc(Dbg.Grp.Startup, 3);			
+			
 			StartCoroutine(initHCRMod(0.1F));
 
 		}
@@ -57,10 +51,10 @@ namespace Plugin.HCR {
 	
 //TODO_ delete this			
 //overrides ini config...
-				conf.isEnabledDebugLevel.set(1);
+				conf.isEnabledDebugLevel.set(3);
 				conf.isEnabledDebugGroup.set((int)(
 				//Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
-					Dbg.Grp.Init | Dbg.Grp.Startup | Dbg.Grp.Sound | Dbg.Grp.Light 
+					Dbg.Grp.Init | Dbg.Grp.Startup | Dbg.Grp.Sound | Dbg.Grp.Terrain | Dbg.Grp.Weather
 ));
 
 				Dbg.trc(Dbg.Grp.Init, 3);				
@@ -70,22 +64,27 @@ namespace Plugin.HCR {
 					
 				}
 				UI.print("Weather effects" + conf.isEnabledWeatherEffects.toEnabledString());
+
 				if(conf.isEnabledImproveUnitTraits.getBool()) {
 					AddGameComponent<UnitTraits>(this.transform);
 				}			
 				UI.print("Improve unit traits" + conf.isEnabledImproveUnitTraits.toEnabledString());
+
 				if(conf.isEnabledMoreImmigrants.getBool()) {
 					AddGameComponent<Immigrants>(this.transform);
 				}			
 				UI.print("More immigrants" + conf.isEnabledMoreImmigrants.toEnabledString());
+
 				if(conf.isEnabledMoreMerchants.getBool()) {
 					AddGameComponent<Merchants>(this.transform);
 				}			
 				UI.print("More merchants" + conf.isEnabledMoreMerchants.toEnabledString());
+
 				if(conf.isEnabledCheats.getBool()) {
 					AddGameComponent<Cheats>(this.transform);
 				}			
 				UI.print("Cheats" + conf.isEnabledCheats.toEnabledString());
+
 				if(conf.isEnabledKeyboardCommands.getBool()) {
 					AddGameComponent<KeyboardCommands>(this.transform);
 				}			

@@ -12,7 +12,6 @@ namespace Plugin.HCR {
 
 	
 	public class Weather : SingletonMonoBehaviour {
-		private TimeManager tm = AManager<TimeManager>.getInstance();
 		private bool isInitialized = false;
 		public int nextRainDay = 0;
 		public int nextRainHour = 0;
@@ -36,9 +35,11 @@ namespace Plugin.HCR {
 		///////////////////////////////////////////////////////////////////////////////////////////
 				
 		IEnumerator doWeather(float waitTime) {
-			int cDay, cHour, secs = 0;
 
 			ChunkManager cm = AManager<ChunkManager>.getInstance();
+			TimeManager tm = AManager<TimeManager>.getInstance();
+			int cDay, cHour, secs = 0;
+
 			while(!isInitialized) {
 				worldSize3i = new Vector3i(((cm.worldSize.x) * cm.chunkSize.x),cm.worldSize.y,(cm.worldSize.z) * cm.chunkSize.z);				
 				if(worldSize3i.x > 1) {
@@ -53,11 +54,12 @@ namespace Plugin.HCR {
 					Dbg.trc(Dbg.Grp.Weather | Dbg.Grp.Terrain, 1, "worldSize not initialized" + secs.ToString());
 					secs++;
 				}
-				yield return new WaitForSeconds(1.0f);
+				yield return new WaitForSeconds(waitTime);
 			}	
 
 			while(true) {
 				yield return new WaitForSeconds(waitTime);
+				
 				try {		
 					cDay = tm.day;
 					cHour = tm.hour;
@@ -67,55 +69,36 @@ namespace Plugin.HCR {
 						rs.removeRain();
 					}
 
-					if((cDay >= nextRainDay) && (cHour >= nextRainHour)) {						
+					if((cDay >= nextRainDay) && (cHour >= nextRainHour) && !rs.isRainOnMap) {						
 						nextRainDay = cDay + UnityEngine.Random.Range(0, 2);
 						nextRainHour = cHour + UnityEngine.Random.Range(4, 12);
 						nextRainHour %= 24;
 						
-//						int x1 = UnityEngine.Random.Range(1, worldSize3i.x);
-//						int x2 = UnityEngine.Random.Range(1, worldSize3i.x);
-//						int z1 = UnityEngine.Random.Range(1, worldSize3i.z);
-//						int z2 = UnityEngine.Random.Range(1, worldSize3i.z);
-//						int xpos = Math.Min(x1,x2);
-//						int xext = Math.Max(x1,x2);
-//						int zpos = Math.Min(z1,z2);
-//						int zext = Math.Max(z1,z2);
-//						switch(UnityEngine.Random.Range(1, 4)) {
-//							case 1 :
-//								xpos = 1;
-//								break;
-//							case 2 :
-//								xext = worldSize3i.x;
-//								break;
-//							case 3 :
-//								zpos = 1;
-//								break;
-//							case 4 :
-//								zext = worldSize3i.z;
-//								break;
-//						}
 						int xpos = 1, zpos = 1, xext = worldSize3i.x, zext = worldSize3i.z;
 						Dbg.msg(Dbg.Grp.Weather, 3, "start weather effect over: ", xpos, zpos, xext, zext);
-						switch(UnityEngine.Random.Range(1, 8)) {
+						switch(UnityEngine.Random.Range(1, 6)) {
 							case 1:	
 							case 2:	
 								UI.print("It's raining. Good thing all the dirt gets washed away.");
-								createRainDrops(xpos, zpos, xext, zext, 20);
-								lightRain(xpos, zpos, xext, zext);
+								StartCoroutine(createRainDrops(xpos, zpos, xext, zext, 1));
+								StartCoroutine(doRemoveBurntDirt(xpos, zpos, xext, zext));
 								break;
 								
 							case 3:	
 							case 4:	
 							case 5:	
-								UI.print("Lots of rain today. Even those dead trees grow sprouts again");
-								createRainDrops(xpos, zpos, xext, zext, 30);
-								rain(xpos, zpos, xext, zext);
+								UI.print("Lots of rain today. Even those dead trees are growing sprouts again");
+								StartCoroutine(createRainDrops(xpos, zpos, xext, zext, 2));
+								StartCoroutine(doRemoveBurntDirt(xpos, zpos, xext, zext));
+								StartCoroutine(doRegrowTrees(xpos, zpos, xext, zext));
 								break;
 								
 							case 6:	
-								UI.print("It's pouring. Torrents of muddy water fill up puddles everywhere");
-								createRainDrops(xpos, zpos, xext, zext, 40);
-								rainStorm(xpos, zpos, xext, zext);
+								UI.print("It's pouring. The muddy water fills up puddles everywhere");
+								StartCoroutine(createRainDrops(xpos, zpos, xext, zext, 3));
+								StartCoroutine(doRemoveBurntDirt(xpos, zpos, xext, zext));
+								StartCoroutine(doRegrowTrees(xpos, zpos, xext, zext));
+								StartCoroutine(doFillHoles(xpos, zpos, xext, zext));
 								break;
 								
 								
@@ -132,42 +115,46 @@ namespace Plugin.HCR {
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
-		public void rainStorm(int xpos, int zpos, int xext, int zext) {
+		public IEnumerator doFillHoles(int xpos, int zpos, int xext, int zext) {
 			ChunkManager cm = AManager<ChunkManager>.getInstance();
-			
+
 			Dbg.trc(Dbg.Grp.Terrain, 3);
-			rain(xpos, zpos, xext, zext);
 			for(int x = xpos; x < xext; x++) {
 				for(int z = zpos; z < zext; z++) {
 					fillHoles(x, 0, z);
 				}
+				yield return null;
 			}
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
-		public void rain(int xpos, int zpos, int xext, int zext) {
+		public IEnumerator doRegrowTrees(int xpos, int zpos, int xext, int zext) {
 			
 			Dbg.trc(Dbg.Grp.Terrain, 3);
-			lightRain(xpos, zpos, xext, zext);
-			for(int x = xpos; x < xext; x++) {
-				for(int z = zpos; z < zext; z++) {
-					regrowTrees(x, 0, z);
-				}
-			}
+
+			regrowTrees(0, 0, 0);
+
+			yield return null;
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
-		public void lightRain(int xpos, int zpos, int xext, int zext) {
+		public IEnumerator doRemoveBurntDirt(int xpos, int zpos, int xext, int zext) {
 			
 			Dbg.trc(Dbg.Grp.Terrain, 3);
 			for(int x = xpos; x < xext; x++) {
 				for(int z = zpos; z < zext; z++) {
 					replaceBlock(x, 0, z, BlockProperties.BlockBurnt, BlockProperties.BlockDirt);
+					if (UnityEngine.Random.Range(0,11) == 0) {
+						replaceBlock(x, 0, z, BlockProperties.BlockDirt, BlockProperties.BlockGrass);
+					}
 				}
+				yield return null;
 			}
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
+		//TODO: Known problem: This thing loves to fill up single block spaces around mine carts. No idea why..	
+
 		private void fillHoles(int x, int y, int z) {
 			IBlock topBlk;
 			IBlock checkBlk;
@@ -178,7 +165,7 @@ namespace Plugin.HCR {
 			Dbg.trc(Dbg.Grp.Terrain, 2, "start");
 			
 			ChunkManager cm = AManager<ChunkManager>.getInstance();			
-			topBlk = cm.GetBlockOnTop(Coordinate.FromBlock(x, 0, z));
+			topBlk = getBlockOnTop(Coordinate.FromBlock(x, worldSize3i.y - 1, z));
 			topBlkID = topBlk.properties.getID();
 			for(int cx = -1; cx <=1; cx++) {
 				for(int cz = -1; cz <=1; cz++) {
@@ -205,17 +192,26 @@ namespace Plugin.HCR {
 		///////////////////////////////////////////////////////////////////////////////////////////
 		private void regrowTrees(int x, int y, int z) {
 
-//			TerrainObjectManager tm = AManager<TerrainObjectManager>.getInstance();			
-//			foreach (TreeFlora treeObj in tm.treeObjects) {
-//				if(
-//					(treeObj.transform.position.x == x) 
-//					(treeObj.transform.position.y == y) 
-//				)
-//					treeObj.onFire = false;
-//						
-//			}
+			Dbg.trc(Dbg.Grp.Terrain, 2);
 			
-			
+			TerrainObjectManager tm = AManager<TerrainObjectManager>.getInstance();			
+			foreach (TreeFlora treeObj in tm.treeObjects) {
+				if(
+					(treeObj.onFire == true)
+					//&& (treeObj.transform.position.x == x)
+					//&& (treeObj.transform.position.y == y) 
+				) {
+					treeObj.onFire = false;
+					treeObj.stage = "seed";
+					treeObj.health = 30;
+				}
+			}	
+		}
+
+
+//old version, beware the bugs, it sometimes creates trees floating in air or multiple instances of trees in same position
+//
+// 			
 //		ChunkManager cm = AManager<ChunkManager>.getInstance();			
 //			BlockProperties checkProps = BlockProperties.BlockTreeBase;
 //			BlockProperties replaceProps = BlockProperties.BlockTreeBaseBurnt;
@@ -235,73 +231,52 @@ namespace Plugin.HCR {
 //				transform.GetComponent<TreeFlora>().health = 61f;
 //				transform.GetComponent<TreeFlora>().Init();
 //			}
-		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
+		//create random rain drops over the map
 
-		private void createRainDrops(int xpos, int zpos, int xext, int zext, int dropRate) {
+		IEnumerator createRainDrops(int xpos, int zpos, int xext, int zext, int type) {
 			
 			if(Configuration.getInstance().isEnabledShowRainBlocks.get() == 0) {
-				return;
+				yield return null;
 			}
 			
 			ChunkManager cm = AManager<ChunkManager>.getInstance();
 			IBlock topBlk;
 			IBlock newBlk;
+			int dropRate;
 			
-			Dbg.trc(Dbg.Grp.Terrain, 2, "start");
+			Dbg.trc(Dbg.Grp.Rain, 3, "start");
 			Rain rain = GetGameComponent<Rain>();			
-			rain.startRain();
+			rain.startRain(type);
+
+			switch(type) {
+				case 1: dropRate = 40; break;
+				case 2: dropRate = 80; break;
+				case 3: dropRate = 120; break;
+				default: dropRate = 100; break;
+			}
+
 			for(int x = xpos; x < xext; x++) {
 				for(int z = zpos; z < zext; z++) {
-					if(UnityEngine.Random.Range(0, 200 - dropRate) != 1) {
+					if(UnityEngine.Random.Range(0,200-dropRate) != 1) {
 						continue;
 					}
 
-					Dbg.trc(Dbg.Grp.Terrain, 1, "tryRandom");
+					Dbg.trc(Dbg.Grp.Rain, 1, "tryRandom");
 					topBlk = getBlockOnTop(Coordinate.FromBlock(x, worldSize3i.y - 1, z));
 					int height = UnityEngine.Random.Range(10, 20);
 					if((topBlk.coordinate.absolute.y + height) >= (worldSize3i.y - 1)) {
 						continue;
 					}
 					newBlk = topBlk.relative(0, height, 0);
-					Dbg.msg(Dbg.Grp.Terrain, 2, "New raindrop over" + topBlk.coordinate.ToString());
+					Dbg.msg(Dbg.Grp.Rain, 2, "New raindrop over" + topBlk.coordinate.ToString());
 					rain.addRainDrop(newBlk.coordinate.world, topBlk.coordinate.world);
 				}
+				yield return null;
 			}
 		}
-		
-		///////////////////////////////////////////////////////////////////////////////////////////
-//kill this?
-//		private void removeRainDrops() {
-//			ChunkManager cm = AManager<ChunkManager>.getInstance();
-//			
-//			Dbg.trc(Dbg.Grp.Map,2);
-//			
-//			foreach(Coordinate rainDrop in rainDrops) {
-//				cm.SetBlock(rainDrop, BlockProperties.BlockAir);
-//			}
-//			rainDrops.Clear();
-//			isRainOnMap = false;
-//		}
-		
-		///////////////////////////////////////////////////////////////////////////////////////////
-		/// set a block regardless of surrounding or what was there before
-//kill this?
-//		private void xxxputBlock(int x, int y, int z, BlockProperties blockPropsNew) { try {
-//				IBlock oldBlk;
-//				IBlock newBlk;
-//				
-//				GUIManager gm = AManager<GUIManager>.getInstance();
-//				ChunkManager cm = AManager<ChunkManager>.getInstance();
-//				oldBlk = cm.GetBlock(Coordinate.FromBlock(x, y, z));
-//				newBlk = oldBlk.relative(0, 0, 0);
-//				cm.SetBlock(newBlk.coordinate, blockPropsNew);
-//				Dbg.msg(Dbg.Grp.Map,1,"Set type " + blockPropsNew.ToString() + " in place of a " + oldBlk.properties.ToString() + " at " + x.ToString() + "," + z.ToString());
-//				
-//			} catch(Exception e) {Dbg.dumpExc(e);}}
-		
-		
+				
 		///////////////////////////////////////////////////////////////////////////////////////////
 		/// put a block on top of map at coordinate, ignores height y, replaces air
 		private void putBlockOnTop(int x, int y, int z, BlockProperties blockPropsNew) { //try {
@@ -310,7 +285,7 @@ namespace Plugin.HCR {
 			IBlock newBlk;
 			
 			Dbg.trc(Dbg.Grp.Terrain, 1);
-			topBlk = cm.GetBlockOnTop(Coordinate.FromBlock(x, 0, z));
+			topBlk = getBlockOnTop(Coordinate.FromBlock(x, 0, z));
 			newBlk = topBlk.relative(0, +1, 0);
 			if(cm.isCoordInMap(newBlk.coordinate)) {
 				cm.SetBlock(newBlk.coordinate, blockPropsNew);
@@ -328,8 +303,8 @@ namespace Plugin.HCR {
 			IBlock topBlk;
 			
 			Dbg.trc(Dbg.Grp.Terrain, 1);
-			topBlk = cm.GetBlockOnTop(Coordinate.FromBlock(x, 0, z));
-			if(topBlk.properties == blockPropsOld) {
+			topBlk = getBlockOnTop(Coordinate.FromBlock(x, worldSize3i.y - 1, z));
+			if(topBlk.properties.getID() == blockPropsOld.getID()) {
 				cm.SetBlock(topBlk.coordinate, blockPropsNew);
 				Dbg.msg(Dbg.Grp.Terrain, 2, "Replaced type " + topBlk.properties.ToString() + " with " + blockPropsNew.ToString() + " at " + x.ToString() + "," + z.ToString());
 			}
@@ -337,8 +312,7 @@ namespace Plugin.HCR {
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
 		// get highest non-air block
-		// ChunkManager.getBlockOnTop doesn't seem to work when searching from air/top down for me, 
-		// not sure if borken or I am using it wrong? 
+		// ChunkManager.getBlockOnTop doesn't seem to work for me when searching from air/top down, not sure if I am using it wrong.. 
 		private IBlock getBlockOnTop(Coordinate coord) { // try {
 			ChunkManager cm = AManager<ChunkManager>.getInstance();
 			IBlock topBlk;

@@ -24,7 +24,7 @@ namespace Plugin.HCR {
 			gm.AddTextLine(str);
 			//send it to debug out too
 			if(conf.IsEnabledDebugOutputString.getBool()) {
-				Dbg.friendPrint(str);
+				Dbg.print(str,true);
 			}			
 		}
 	}
@@ -56,12 +56,8 @@ namespace Plugin.HCR {
 		private static Configuration conf = Configuration.getInstance();
 		private static StreamWriter sw = null;
 		
-		//no friend class in c#? bah..
-		public static void friendPrint(string str) {
-			print(str, true);
-		}
 		
-		private static void print(string inStr, bool isUIMsg = false) {
+		public static void print(string inStr, bool isUIMsg = false) {
 			Configuration conf = Configuration.getInstance();
 
 			string str = conf.confName + ":DBG:" + inStr;

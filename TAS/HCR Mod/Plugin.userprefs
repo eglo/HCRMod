@@ -1,24 +1,6 @@
 ﻿<Properties GitUserInfo="UsingMD">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Plugin.HCR\RainSound.cs">
-    <Files>
-      <File FileName="Plugin.HCR\ExtMonoBehaviour.cs" Line="1" Column="1" />
-      <File FileName="Plugin.HCR\HCRMod.cs" Line="1" Column="1" />
-      <File FileName="Plugin.HCR\RainSound.cs" Line="32" Column="1" />
-      <File FileName="Plugin.HCR\UnitTraits.cs" Line="1" Column="1" />
-      <File FileName="Plugin.HCR\Weather.cs" Line="1" Column="1" />
-      <File FileName="Plugin.HCR\Rain.cs" Line="1" Column="1" />
-      <File FileName="Plugin.HCR\Dbg.cs" Line="1" Column="1" />
-      <File FileName="Plugin.HCR\Configuration.cs" Line="1" Column="1" />
-      <File FileName="Plugin.HCR\IniFile.cs" Line="1" Column="1" />
-      <File FileName="d:\data\projects\TAS\HCR Mod\Plugin.HCR\KeyboardCommands.cs" Line="1" Column="1" />
-      <File FileName="Plugin.HCR\Lightning.cs" Line="1" Column="1" />
-      <File FileName="Plugin.HCR\Immigrants.cs" Line="1" Column="1" />
-      <File FileName="Plugin.HCR\Merchants.cs" Line="1" Column="1" />
-      <File FileName="Plugin.HCR\Cheats.cs" Line="1" Column="1" />
-      <File FileName="Plugin.HCR\PluginMain.cs" Line="1" Column="1" />
-      <File FileName="Plugin.HCR\TestFunctions.cs" Line="1" Column="1" />
-    </Files>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">

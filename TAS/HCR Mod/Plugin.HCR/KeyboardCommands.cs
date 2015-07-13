@@ -61,7 +61,7 @@ namespace Plugin.HCR {
 		///////////////////////////////////////////////////////////////////////////////////////////
 		public static void letItRain() {
 			Weather weather = SingletonMonoBehaviour.FindGameComponent<Weather>();
-			weather.rainStorm(0, 0, weather.worldSize3i.x, weather.worldSize3i.z);
+			weather.doFillHoles(0, 0, weather.worldSize3i.x, weather.worldSize3i.z);
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////		

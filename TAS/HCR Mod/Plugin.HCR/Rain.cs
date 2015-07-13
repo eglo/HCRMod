@@ -28,15 +28,17 @@ namespace Plugin.HCR {
 			}		
 		}
 
-		public void startRain() {
+		public void startRain(int type) {
 			Dbg.trc(Dbg.Grp.Rain, 3);
 
-			//TODO: shouldnt really happen at this point
+			//TODO: shouldnt really happen at this point, but it does...?
 			if(isRainOnMap) {
 				return;
 			}
+			isRainOnMap = true;
+
 			RainSound rs = GetGameComponent<RainSound>();
-			rs.rainSoundPlay();
+			rs.rainSoundPlay(type);
 			//stay on map for about 5-10 mins, this doesn't care about game speed settings ..(?)
 			timeToRemove = Time.time + UnityEngine.Random.Range(300.0f, 600.0f);
 			

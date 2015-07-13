@@ -23,12 +23,12 @@ namespace Plugin.HCR {
 			
 			lightGameObject.AddComponent<Light>();
 			//lightGameObject.light.color = Color.white;
-			lightGameObject.light.color = new Color(0.95f,0.95f,1.0f);	//light blueish tint?
+			lightGameObject.light.color = new Color(0.80f,0.80f,1.0f);	//tried to get a blueish tint, but cant really see any of it it haha
 			lightGameObject.light.type = LightType.Directional;
 			lightGameObject.light.intensity = 0;
 			lightGameObject.light.range = 0;
 			lightGameObject.transform.parent = go.transform;
-			lightGameObject.transform.position = new Vector3(20, 10, 20);			
+			lightGameObject.transform.position = new Vector3(5, 10, 5);			
 
 			int fSmplRate = AudioSettings.outputSampleRate/2;
 			bLow = (fMin/(fSmplRate/samples));
@@ -39,18 +39,18 @@ namespace Plugin.HCR {
 			Dbg.trc(Dbg.Grp.Startup, 3);
 
 			RainSound rs = gameObject.GetComponent<RainSound>();
-			asrc = rs.asrc;
-			Dbg.trc(Dbg.Grp.Startup|Dbg.Grp.Light, 3,"Audiosource linked: "+asrc.gameObject.name+":"+asrc.name);			
-			//the clip isnt valid at this point, do I need yet another coroutine? gah .. :/
+			//the clip isnt valid at this point, do I need yet another coroutine? .. :/
+			//asrc = rs.asrcCurrent;
+			//Dbg.trc(Dbg.Grp.Startup|Dbg.Grp.Light, 3,"Audiosource linked: "+asrc.gameObject.name+":"+asrc.name);			
 			//Dbg.trc(Dbg.Grp.Startup|Dbg.Grp.Sound, 3, "clip: " + asrc.clip.ToString()+":" + asrc.clip.name);
 		}
 
 		public void Update() {
 			try {			
 				RainSound rs = gameObject.GetComponent<RainSound>();
-				asrc = rs.asrc;
+				asrc = rs.asrcCurrent;
 				
-				if (!asrc.isPlaying)
+				if (!asrc || !asrc.isPlaying)
 					return;
 
 				Dbg.trc(Dbg.Grp.Light, 3);
@@ -67,16 +67,16 @@ namespace Plugin.HCR {
 				Dbg.trc(Dbg.Grp.Light, 3, "vol = "+ vol.ToString());
 
 				//values after fft are very small, not sure why
-				//cut off values just from trial and error for now,
-				//need a better selection of frequencies, 20-8000 is probably not optimal at all
+				//cut off values just from trial and error for now 
+				//needs a better selection of frequencies, 20-8000 is probably not optimal at all
 				vol *= asrc.volume;
 				float intensity = vol;
 				if (intensity < 0.003f)
 					intensity *= 0f;	
 				else if (intensity < 0.006f)
-					intensity *= 0f;
+					intensity *= 10f;
 				else if (intensity < 0.008f)
-					intensity *= 50f;
+					intensity *= 20f;
 				else if (intensity < 0.01)
 					intensity *= 100f;	
 				else 
