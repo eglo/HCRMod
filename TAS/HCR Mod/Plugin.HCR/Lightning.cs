@@ -7,7 +7,7 @@ using Timber_and_Stone;
 namespace Plugin.HCR {
 	
 	
-	public class Lightning : SingletonMonoBehaviour {
+	public class Lightning : SingletonEntity<Lightning> {
 
 		private const int samples = 256;
 		private int fMin = 20;

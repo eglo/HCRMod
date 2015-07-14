@@ -7,7 +7,7 @@ using Timber_and_Stone;
 
 namespace Plugin.HCR {
 
-	public class Rain : SingletonMonoBehaviour {
+	public class Rain : SingletonEntity<Rain> {
 
 		public static List<RainDrop> rainDropsOnMap = new List<RainDrop>();
 		public bool isRainOnMap = false;

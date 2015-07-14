@@ -9,7 +9,7 @@ using Timber_and_Stone.Event;
 
 namespace Plugin.HCR {
 
-	public class Merchants : ExtMonoBehaviour {
+	public class Merchants : Entity {
 
 		public static int lastMerchantDay = 0;
 		public static int nextMerchantDay = 0;

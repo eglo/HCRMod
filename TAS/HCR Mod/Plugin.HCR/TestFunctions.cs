@@ -49,7 +49,7 @@ namespace Plugin.HCR {
 			Dbg.printMsg("Test invoked: "+MethodBase.GetCurrentMethod().Name);
 			
 			TimeManager tm = AManager<TimeManager>.getInstance();
-			Weather weather = SingletonMonoBehaviour.FindGameComponent<Weather>();
+			Weather weather = SingletonEntity<HCRMod>.GetEntity<Weather>();
 			Rain rain = weather.GetGameComponent<Rain>();
 			rain.timeToRemove = Time.time;
 			rain.removeRain();

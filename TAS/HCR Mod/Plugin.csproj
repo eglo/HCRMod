@@ -67,12 +67,12 @@
     <Compile Include="Plugin.HCR\UnitTraits.cs" />
     <Compile Include="Plugin.HCR\Immigrants.cs" />
     <Compile Include="Plugin.HCR\Merchants.cs" />
-    <Compile Include="Plugin.HCR\ExtMonoBehaviour.cs" />
     <Compile Include="Plugin.HCR\TestFunctions.cs" />
     <Compile Include="Plugin.HCR\Weather.cs" />
     <Compile Include="Plugin.HCR\Cheats.cs" />
     <Compile Include="Plugin.HCR\Lightning.cs" />
     <Compile Include="Plugin.HCR\RainSound.cs" />
+    <Compile Include="Plugin.HCR\Entity.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

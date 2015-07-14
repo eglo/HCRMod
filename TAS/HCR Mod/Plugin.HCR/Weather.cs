@@ -11,7 +11,7 @@ using Timber_and_Stone.Blocks;
 namespace Plugin.HCR {
 
 	
-	public class Weather : SingletonMonoBehaviour {
+	public class Weather : SingletonEntity<Weather> {
 		private bool isInitialized = false;
 		public int nextRainDay = 0;
 		public int nextRainHour = 0;

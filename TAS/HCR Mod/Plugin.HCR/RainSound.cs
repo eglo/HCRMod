@@ -8,7 +8,7 @@ using Timber_and_Stone;
 namespace Plugin.HCR {
 
 
-	public class Fader : SingletonMonoBehaviour {
+	public class Fader : SingletonEntity<Fader> {
 
 		private RainSound rs;
 		private bool isCorRunning;
@@ -78,7 +78,7 @@ namespace Plugin.HCR {
 		}		
 	}
 	
-	public class RainSound : SingletonMonoBehaviour {
+	public class RainSound : SingletonEntity<RainSound> {
 		private string applPath = "file:///" + Application.dataPath + "/../";
 		public AudioSource asrcRainLight;		
 		public AudioSource asrcRainHeavy;		

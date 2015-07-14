@@ -1,5 +1,24 @@
 2015-07-14  tengel  <tengel@home.de>
 
+	* Plugin.csproj:
+	* Rain.cs:
+	* Entity.cs:
+	* Cheats.cs:
+	* HCRMod.cs:
+	* Weather.cs:
+	* RainSound.cs:
+	* Lightning.cs:
+	* Merchants.cs:
+	* Immigrants.cs:
+	* UnitTraits.cs:
+	* TestFunctions.cs:
+	* ExtMonoBehaviour.cs:
+	* KeyboardCommands.cs: 
+Refactoring ExtMonoBehaviour => Entity
+
+
+2015-07-14  tengel  <tengel@home.de>
+
 	* Rain.cs:
 	* Weather.cs:
 	* RainSound.cs:

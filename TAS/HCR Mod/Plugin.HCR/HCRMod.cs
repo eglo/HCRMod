@@ -6,7 +6,7 @@ using Timber_and_Stone;
 
 namespace Plugin.HCR {
 	
-	public class HCRModWrapper : SingletonMonoBehaviour {
+	public class HCRModWrapper : SingletonEntity<HCRModWrapper> {
 			
 		public override void Awake() {
 			Dbg.trc(Dbg.Grp.Init, 3);
@@ -15,7 +15,7 @@ namespace Plugin.HCR {
 		}
 	}
 
-	public class HCRMod : SingletonMonoBehaviour {
+	public class HCRMod : SingletonEntity<HCRMod> {
 
 
 		public override void Awake() {

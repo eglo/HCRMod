@@ -4,7 +4,7 @@ using UnityEngine;
 using Timber_and_Stone;
 
 namespace Plugin.HCR {
-	public class KeyboardCommands : ExtMonoBehaviour {
+	public class KeyboardCommands : Entity {
 
 		
 		private static KeyCode[] cmdCombo = {KeyCode.LeftShift,KeyCode.LeftControl,KeyCode.LeftAlt};
@@ -60,7 +60,7 @@ namespace Plugin.HCR {
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
 		public static void letItRain() {
-			Weather weather = SingletonMonoBehaviour.FindGameComponent<Weather>();
+			Weather weather = SingletonEntity<HCRMod>.GetEntity<Weather>();
 			weather.doFillHoles(0, 0, weather.worldSize3i.x, weather.worldSize3i.z);
 		}
 

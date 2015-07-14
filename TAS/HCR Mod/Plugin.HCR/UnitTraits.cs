@@ -8,7 +8,7 @@ using Timber_and_Stone;
 
 namespace Plugin.HCR {
 
-	public class UnitTraits : ExtMonoBehaviour {
+	public class UnitTraits : Entity {
 
 		public static Dictionary <string,int> unitProfessionLevels = new Dictionary <string,int>();
 		bool isInitialized = false;

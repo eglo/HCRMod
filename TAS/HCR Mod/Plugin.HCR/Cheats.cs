@@ -7,7 +7,7 @@ using Timber_and_Stone;
 
 namespace Plugin.HCR {
 	
-	public class Cheats : ExtMonoBehaviour {
+	public class Cheats : Entity {
 		
 		public static bool furCheatDone = false;
 		

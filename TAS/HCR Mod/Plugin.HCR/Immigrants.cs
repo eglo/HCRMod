@@ -8,7 +8,7 @@ using Timber_and_Stone.Event;
 
 
 namespace Plugin.HCR {
-	public class Immigrants : ExtMonoBehaviour {
+	public class Immigrants : Entity {
 
 		public static int lastImmigrantDay = 0;
 		public static int nextImmigrantDay = 0;

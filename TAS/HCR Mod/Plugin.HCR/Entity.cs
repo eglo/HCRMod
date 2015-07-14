@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace Plugin.HCR {
 
-	public abstract class SingletonMonoBehaviour : ExtMonoBehaviour {
-		protected SingletonMonoBehaviour instance = null;
+	public abstract class SingletonEntity<T> : Entity {
+		protected static SingletonEntity<T> instance = null;
 
 		public override void Setup(
 			Transform parent = null, 
@@ -24,12 +24,28 @@ namespace Plugin.HCR {
 			instance = this;
 		}
 			
-		public static T FindGameComponent<T>() where T : SingletonMonoBehaviour {
-			object obj = GameObject.FindObjectOfType(typeof(T));
+		public static U GetEntity<U>() where U : Entity {
+			object obj = instance.go.GetComponent(typeof(U));
 			if (obj != null) {
-				return (T) obj;
+				return (U) obj;
 			} else {
-				throw new ArgumentException("GameComponent not found");
+				throw new ArgumentException("Entity not found");
+			}
+		}
+		public static U GetEntityInParent<U>() where U : Entity {
+			object obj = instance.gameObject.GetComponent(typeof(U));
+			if (obj != null) {
+				return (U) obj;
+			} else {
+				throw new ArgumentException("Entity not found");
+			}
+		}
+		public static U FindEntity<U>() where U : Entity {
+			object obj = GameObject.FindObjectOfType(typeof(U));
+			if (obj != null) {
+				return (U) obj;
+			} else {
+				throw new ArgumentException("Gameobject not found");
 			}
 		}
 	}
@@ -37,10 +53,10 @@ namespace Plugin.HCR {
 	///////////////////////////////////////////////////////////////////////////////////////////
 
 
-	public abstract class ExtMonoBehaviour : MonoBehaviour {
+	public abstract class Entity : MonoBehaviour {
 		protected GameObject go = new GameObject("iNiTiAl");
 		
-		protected virtual T AddGameComponent<T>(Transform parent)  where T : ExtMonoBehaviour {
+		protected virtual T AddGameComponent<T>(Transform parent)  where T : Entity {
 
 			Dbg.trcCaller(Dbg.Grp.Init, 2 ,"Start AddGameComponent: "+typeof(T).FullName);
 
@@ -51,7 +67,7 @@ namespace Plugin.HCR {
 			return comp;
 		}
 		
-		public T GetGameComponent<T>() where T : ExtMonoBehaviour {
+		public T GetGameComponent<T>() where T : Entity {
 			T comp = go.GetComponent<T>();
 			Dbg.trcCaller(Dbg.Grp.Init, 3,"GetGameComponent: "+typeof(T).FullName);
 			return comp;
