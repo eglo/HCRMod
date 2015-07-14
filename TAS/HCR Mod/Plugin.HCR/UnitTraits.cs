@@ -16,7 +16,7 @@ namespace Plugin.HCR {
 		///////////////////////////////////////////////////////////////////////////////////////////
 
 		public override void Awake() {
-			Dbg.trc(Dbg.Grp.Init, 3);
+			Dbg.trc(Dbg.Grp.Init, 5);
 		}
 		
 
@@ -25,7 +25,7 @@ namespace Plugin.HCR {
 				return;
 			}
 
-			Dbg.trc(Dbg.Grp.Startup, 3, "Improve unit traits started");
+			Dbg.trc(Dbg.Grp.Startup, 5, "Improve unit traits started");
 
 			UnitManager um = AManager<UnitManager>.getInstance();
 			if(um.playerUnits.Count == 0) {
@@ -43,14 +43,14 @@ namespace Plugin.HCR {
 			while(true) {
 				yield return new WaitForSeconds(waitTime);
 				while(um.playerUnits.Count == 0) {
-					Dbg.trc(Dbg.Grp.Units, 1, "UnitManager not initialized");
+					Dbg.trc(Dbg.Grp.Units, 3, "UnitManager not initialized");
 					yield return new WaitForSeconds(waitTime);
 				}
 				try {
 	
 					if(!isInitialized) {
 						foreach(APlayableEntity unit in um.playerUnits) {
-							Dbg.trc(Dbg.Grp.Units, 1, "unit " + unit.unitName);
+							Dbg.trc(Dbg.Grp.Units, 3, "unit " + unit.unitName);
 							foreach(AProfession prof in unit.getProfessions()) {
 								string unitNameAndProfession = unit.unitName + " " + prof.getProfessionName();
 								unitProfessionLevels[unitNameAndProfession] = prof.getLevel();
@@ -60,12 +60,12 @@ namespace Plugin.HCR {
 					}
 
 					foreach(APlayableEntity unit in um.playerUnits) {
-						Dbg.trc(Dbg.Grp.Units, 1, "unit " + unit.unitName);
+						Dbg.trc(Dbg.Grp.Units, 3, "unit " + unit.unitName);
 						foreach(AProfession prof in unit.getProfessions()) {
 							string unitNameAndProfession = unit.unitName + " " + prof.getProfessionName();
 							int lvl = prof.getLevel();
 							int donelvl = 0;
-							Dbg.trc(Dbg.Grp.Units, 1, "tryLvlUp " + unitNameAndProfession);
+							Dbg.trc(Dbg.Grp.Units, 3, "tryLvlUp " + unitNameAndProfession);
 							if(unitProfessionLevels.TryGetValue(unitNameAndProfession, out donelvl)) {
 								if(donelvl >= lvl) {
 									continue;
@@ -76,15 +76,15 @@ namespace Plugin.HCR {
 								continue;
 							}
 							unitProfessionLevels[unitNameAndProfession] = lvl;
-							Dbg.trc(Dbg.Grp.Units, 2, "randomLvlUp " + unitNameAndProfession);
+							Dbg.trc(Dbg.Grp.Units, 4, "randomLvlUp " + unitNameAndProfession);
 							if(UnityEngine.Random.Range(0, (20 - lvl)) == 0) {
-								Dbg.trc(Dbg.Grp.Units, 3, "doLvlUp " + unitNameAndProfession);
+								Dbg.trc(Dbg.Grp.Units, 5, "doLvlUp " + unitNameAndProfession);
 								processLevelUp(unit.unitName, lvl);
 							}
 						}
 					}	
 					
-					Dbg.trc(Dbg.Grp.Units, 1);
+					Dbg.trc(Dbg.Grp.Units, 3);
 				} catch(Exception e) { 
 					Dbg.dumpCorExc("CheckLevelUp", e);
 				}
@@ -110,20 +110,20 @@ namespace Plugin.HCR {
 //					string unitName = mc.Groups[1].Value;
 //					int lvl = Int32.Parse(mc.Groups[2].Value);
 //					string profession = mc.Groups[3].Value;
-//					Dbg.msg(Dbg.Grp.Units,2,"unitName "+unitName);
-//					Dbg.msg(Dbg.Grp.Units,2,"lvl "+lvl.ToString());
-//					Dbg.msg(Dbg.Grp.Units,2,"profession "+profession);
+//					Dbg.msg(Dbg.Grp.Units,4,"unitName "+unitName);
+//					Dbg.msg(Dbg.Grp.Units,4,"lvl "+lvl.ToString());
+//					Dbg.msg(Dbg.Grp.Units,4,"profession "+profession);
 //					string unitNameAndProfession = unitName+" "+profession;
 //					int donelvl = 0;
-//					Dbg.trc(Dbg.Grp.Units,2,"tryLvlUp "+unitNameAndProfession);
+//					Dbg.trc(Dbg.Grp.Units,4,"tryLvlUp "+unitNameAndProfession);
 //					if (unitLevelUpEvents.TryGetValue(unitNameAndProfession,out donelvl)) {
 //						if (donelvl >= lvl)	//wtf?..
 //							continue;
 //					}
 //					unitLevelUpEvents[unitNameAndProfession] = lvl;
-//					Dbg.trc(Dbg.Grp.Units,2,"randomLvlUp "+unitNameAndProfession);
+//					Dbg.trc(Dbg.Grp.Units,4,"randomLvlUp "+unitNameAndProfession);
 //					if(UnityEngine.Random.Range(0,(20-lvl)) == 0) {
-//						Dbg.trc(Dbg.Grp.Units,3,"doLvlUp "+unitNameAndProfession);
+//						Dbg.trc(Dbg.Grp.Units,5,"doLvlUp "+unitNameAndProfession);
 //						processLevelUp(unitName, lvl);
 //					}
 //				}
@@ -133,7 +133,7 @@ namespace Plugin.HCR {
 		///////////////////////////////////////////////////////////////////////////////////////////
 		// get unit <unitName> and either remove negative traits or apply positive ones if no negatives found 
 		private void processLevelUp(string unitName, int lvl) {
-			Dbg.trc(Dbg.Grp.Units, 3);
+			Dbg.trc(Dbg.Grp.Units, 5);
 			
 			UnitManager um = AManager<UnitManager>.getInstance();
 			foreach(APlayableEntity unit in um.playerUnits) {
@@ -150,7 +150,7 @@ namespace Plugin.HCR {
 		///////////////////////////////////////////////////////////////////////////////////////////
 		//find all negative traits on unit and randomly remove one, return false if no negs found
 		private bool removeNegativeTrait(APlayableEntity unit) {
-			Dbg.trc(Dbg.Grp.Units, 3);
+			Dbg.trc(Dbg.Grp.Units, 5);
 			
 			List<string> negPrefs = new List<string> {"trait.weakback","trait.cowardly","trait.clumsy","trait.sluggish","trait.overeater","trait.disloyal","trait.badvision","trait.lazy"};
 			List<string> hasPrefs = new List<string>();
@@ -185,7 +185,7 @@ namespace Plugin.HCR {
 		//add a new random postive trait to unit
 		
 		private bool addPositiveTrait(APlayableEntity unit) {
-			Dbg.trc(Dbg.Grp.Units, 3);
+			Dbg.trc(Dbg.Grp.Units, 5);
 			
 			List<string> posPrefs = new List<string> {"trait.hardworker","trait.goodvision","trait.charismatic","trait.courageous","trait.athletic","trait.quicklearner","trait.strongback"};
 			List<string> notHasPrefs = new List<string>();

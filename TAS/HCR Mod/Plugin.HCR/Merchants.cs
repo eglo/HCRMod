@@ -17,7 +17,7 @@ namespace Plugin.HCR {
 		///////////////////////////////////////////////////////////////////////////////////////////
 
 		public override void Awake() {
-			Dbg.trc(Dbg.Grp.Init, 3);
+			Dbg.trc(Dbg.Grp.Init, 5);
 		}
 
 		public void Start() {
@@ -25,7 +25,7 @@ namespace Plugin.HCR {
 				return;
 			}
 			
-			Dbg.trc(Dbg.Grp.Startup, 3);		
+			Dbg.trc(Dbg.Grp.Startup, 5);		
 			StartCoroutine(doMerchants(10.0F));
 		}
 		
@@ -60,13 +60,13 @@ namespace Plugin.HCR {
 						float sellValue = 0.0f;
 						foreach(Resource res in rm.sellList) {
 							sellValue += rm.materials[res.index] * res.value;
-							Dbg.trc(Dbg.Grp.Units, 2, res.name + ":" + (rm.materials[res.index] * res.value).ToString());
+							Dbg.trc(Dbg.Grp.Units, 4, res.name + ":" + (rm.materials[res.index] * res.value).ToString());
 						}
 						
 						//seeds valued at 10.0f..
-						Dbg.msg(Dbg.Grp.Units, 3, "Checking merchant: sellValue=" + sellValue.ToString());
+						Dbg.msg(Dbg.Grp.Units, 5, "Checking merchant: sellValue=" + sellValue.ToString());
 						if((sellValue) >= UnityEngine.Random.Range(300.0f, 3000.0f)) {
-							Dbg.msg(Dbg.Grp.Units, 3, "Trying merchant");
+							Dbg.msg(Dbg.Grp.Units, 5, "Trying merchant");
 							um.SpawnMerchant(Vector3.zero);
 							
 						}

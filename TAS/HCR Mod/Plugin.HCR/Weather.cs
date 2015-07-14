@@ -19,11 +19,11 @@ namespace Plugin.HCR {
 
 
 		public override void Awake() {
-			Dbg.trc(Dbg.Grp.Init, 3);
+			Dbg.trc(Dbg.Grp.Init, 5);
 		}
 		
 		public void Start() {
-			Dbg.trc(Dbg.Grp.Startup, 3);
+			Dbg.trc(Dbg.Grp.Startup, 5);
 
 			if(Configuration.getInstance().isEnabledShowRainBlocks.getBool()) {
 				AddGameComponent<Rain>(this.transform);
@@ -43,7 +43,7 @@ namespace Plugin.HCR {
 			while(!isInitialized) {
 				worldSize3i = new Vector3i(((cm.worldSize.x) * cm.chunkSize.x),cm.worldSize.y,(cm.worldSize.z) * cm.chunkSize.z);				
 				if(worldSize3i.x > 1) {
-					Dbg.trc(Dbg.Grp.Weather | Dbg.Grp.Terrain, 1, "worldSize initialized");					
+					Dbg.trc(Dbg.Grp.Weather | Dbg.Grp.Terrain, 3, "worldSize initialized");					
 					gameObject.transform.position = worldSize3i / 2;		//TODO: something better	
 					nextRainDay = tm.day + UnityEngine.Random.Range(0, 2);
 					nextRainHour = tm.hour + UnityEngine.Random.Range(4, 12);
@@ -51,7 +51,7 @@ namespace Plugin.HCR {
 
 					isInitialized = true;					
 				} else {
-					Dbg.trc(Dbg.Grp.Weather | Dbg.Grp.Terrain, 1, "worldSize not initialized" + secs.ToString());
+					Dbg.trc(Dbg.Grp.Weather | Dbg.Grp.Terrain, 3, "worldSize not initialized" + secs.ToString());
 					secs++;
 				}
 				yield return new WaitForSeconds(waitTime);
@@ -75,7 +75,7 @@ namespace Plugin.HCR {
 						nextRainHour %= 24;
 						
 						int xpos = 1, zpos = 1, xext = worldSize3i.x, zext = worldSize3i.z;
-						Dbg.msg(Dbg.Grp.Weather, 3, "start weather effect over: ", xpos, zpos, xext, zext);
+						Dbg.msg(Dbg.Grp.Weather, 5, "start weather effect over: ", xpos, zpos, xext, zext);
 						switch(UnityEngine.Random.Range(1, 8)) {
 							case 1:	
 							case 2:	
@@ -108,7 +108,7 @@ namespace Plugin.HCR {
 								break;
 						}
 					}
-					Dbg.msg(Dbg.Grp.Time | Dbg.Grp.Weather, 2, "Next weather event at " + nextRainDay.ToString() + ":" + nextRainHour.ToString());
+					Dbg.msg(Dbg.Grp.Time | Dbg.Grp.Weather, 4, "Next weather event at " + nextRainDay.ToString() + ":" + nextRainHour.ToString());
 				} catch(Exception e) { 
 					Dbg.dumpCorExc("doWeather", e);
 				}
@@ -119,7 +119,7 @@ namespace Plugin.HCR {
 		public IEnumerator doFillHoles(int xpos, int zpos, int xext, int zext) {
 			ChunkManager cm = AManager<ChunkManager>.getInstance();
 
-			Dbg.trc(Dbg.Grp.Terrain, 3);
+			Dbg.trc(Dbg.Grp.Terrain, 5);
 			for(int x = xpos; x < xext; x++) {
 				for(int z = zpos; z < zext; z++) {
 					fillHoles(x, 0, z);
@@ -131,7 +131,7 @@ namespace Plugin.HCR {
 		///////////////////////////////////////////////////////////////////////////////////////////
 		public IEnumerator doRegrowTrees(int xpos, int zpos, int xext, int zext) {
 			
-			Dbg.trc(Dbg.Grp.Terrain, 3);
+			Dbg.trc(Dbg.Grp.Terrain, 5);
 
 			regrowTrees(0, 0, 0);
 
@@ -141,7 +141,7 @@ namespace Plugin.HCR {
 		///////////////////////////////////////////////////////////////////////////////////////////
 		public IEnumerator doRemoveBurntDirt(int xpos, int zpos, int xext, int zext) {
 			
-			Dbg.trc(Dbg.Grp.Terrain, 3);
+			Dbg.trc(Dbg.Grp.Terrain, 5);
 			for(int x = xpos; x < xext; x++) {
 				for(int z = zpos; z < zext; z++) {
 					replaceBlock(x, 0, z, BlockProperties.BlockBurnt, BlockProperties.BlockDirt);
@@ -163,7 +163,7 @@ namespace Plugin.HCR {
 			int topBlkID;
 			int surround = 0;
 			
-			Dbg.trc(Dbg.Grp.Terrain, 2, "start");
+			Dbg.trc(Dbg.Grp.Terrain, 4, "start");
 			
 			ChunkManager cm = AManager<ChunkManager>.getInstance();			
 			topBlk = getBlockOnTop(Coordinate.FromBlock(x, worldSize3i.y - 1, z));
@@ -183,17 +183,17 @@ namespace Plugin.HCR {
 				}
 			}
 			if(surround >= 6) {
-				Dbg.trc(Dbg.Grp.Terrain, 2, "fill");
+				Dbg.trc(Dbg.Grp.Terrain, 4, "fill");
 				newBlk = topBlk.relative(0, +1, 0);
 				cm.SetBlock(newBlk.coordinate, BlockProperties.BlockDirt);
-				Dbg.msg(Dbg.Grp.Terrain, 2, "Filled a hole on top of a " + topBlk.properties.ToString() + " at " + x.ToString() + "," + z.ToString());
+				Dbg.msg(Dbg.Grp.Terrain, 4, "Filled a hole on top of a " + topBlk.properties.ToString() + " at " + x.ToString() + "," + z.ToString());
 			}
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
 		private void regrowTrees(int x, int y, int z) {
 
-			Dbg.trc(Dbg.Grp.Terrain, 2);
+			Dbg.trc(Dbg.Grp.Terrain, 4);
 			
 			TerrainObjectManager tm = AManager<TerrainObjectManager>.getInstance();			
 			foreach (TreeFlora treeObj in tm.treeObjects) {
@@ -218,11 +218,11 @@ namespace Plugin.HCR {
 //			BlockProperties replaceProps = BlockProperties.BlockTreeBaseBurnt;
 //			IBlock topBlk;
 //						
-//			Dbg.trc(Dbg.Grp.Map,1);
+//			Dbg.trc(Dbg.Grp.Map,3);
 //			topBlk = cm.GetBlockOnTop(Coordinate.FromBlock(x, 0, z));
 //			if(topBlk.properties == checkProps) {
 //				cm.SetBlock(topBlk.coordinate, BlockProperties.BlockTreeBase);
-//				Dbg.msg(Dbg.Grp.Map,2,"Replaced type " + topBlk.properties.ToString() + " with " + replaceProps.ToString() + " at " + x.ToString() + "," + z.ToString());
+//				Dbg.msg(Dbg.Grp.Map,4,"Replaced type " + topBlk.properties.ToString() + " with " + replaceProps.ToString() + " at " + x.ToString() + "," + z.ToString());
 //
 //				Transform transform = UnityEngine.Object.Instantiate(AManager<AssetManager>.getInstance().tree, base.transform.position, Quaternion.identity) as Transform;
 //				transform.transform.parent = AManager<ChunkManager>.getInstance().chunkArray[topBlk.coordinate.chunk.x, topBlk.coordinate.chunk.y, topBlk.coordinate.chunk.z].chunkObj.transform;
@@ -242,7 +242,7 @@ namespace Plugin.HCR {
 				yield return null;
 			}
 			
-			Dbg.trc(Dbg.Grp.Rain, 3, "start");
+			Dbg.trc(Dbg.Grp.Rain, 5, "start");
 			
 			ChunkManager cm = AManager<ChunkManager>.getInstance();
 			Rain rain = GetGameComponent<Rain>();			
@@ -265,14 +265,14 @@ namespace Plugin.HCR {
 						continue;
 					}
 
-					Dbg.trc(Dbg.Grp.Rain, 1, "tryRandom");
+					Dbg.trc(Dbg.Grp.Rain, 3, "tryRandom");
 					topBlk = getBlockOnTop(Coordinate.FromBlock(x, worldSize3i.y - 1, z));
 					int height = UnityEngine.Random.Range(10, 20);
 					if((topBlk.coordinate.absolute.y + height) >= (worldSize3i.y - 1)) {
 						continue;
 					}
 					newBlk = topBlk.relative(0, height, 0);
-					Dbg.msg(Dbg.Grp.Rain, 2, "New raindrop over" + topBlk.coordinate.ToString());
+					Dbg.msg(Dbg.Grp.Rain, 4, "New raindrop over" + topBlk.coordinate.ToString());
 					rain.addRainDrop(newBlk.coordinate.world, topBlk.coordinate.world);
 				}
 				yield return null;
@@ -286,7 +286,7 @@ namespace Plugin.HCR {
 			IBlock topBlk;
 			IBlock newBlk;
 			
-			Dbg.trc(Dbg.Grp.Terrain, 1);
+			Dbg.trc(Dbg.Grp.Terrain, 3);
 			topBlk = getBlockOnTop(Coordinate.FromBlock(x, 0, z));
 			newBlk = topBlk.relative(0, +1, 0);
 			if(cm.isCoordInMap(newBlk.coordinate)) {
@@ -294,7 +294,7 @@ namespace Plugin.HCR {
 			} else {
 				Dbg.msg(Dbg.Grp.Terrain, 10, "Could not put Block on top at " + x.ToString() + "," + y.ToString() + "," + z.ToString());
 			}
-			Dbg.msg(Dbg.Grp.Terrain, 2, "Set type " + blockPropsNew.ToString() + " on top of a " + topBlk.properties.ToString() + " at " + x.ToString() + "," + z.ToString());
+			Dbg.msg(Dbg.Grp.Terrain, 4, "Set type " + blockPropsNew.ToString() + " on top of a " + topBlk.properties.ToString() + " at " + x.ToString() + "," + z.ToString());
 			
 		} //catch (Exception e) {exceptionPrint(e);}}
 		
@@ -304,11 +304,11 @@ namespace Plugin.HCR {
 			ChunkManager cm = AManager<ChunkManager>.getInstance();
 			IBlock topBlk;
 			
-			Dbg.trc(Dbg.Grp.Terrain, 1);
+			Dbg.trc(Dbg.Grp.Terrain, 3);
 			topBlk = getBlockOnTop(Coordinate.FromBlock(x, worldSize3i.y - 1, z));
 			if(topBlk.properties.getID() == blockPropsOld.getID()) {
 				cm.SetBlock(topBlk.coordinate, blockPropsNew);
-				Dbg.msg(Dbg.Grp.Terrain, 2, "Replaced type " + topBlk.properties.ToString() + " with " + blockPropsNew.ToString() + " at " + x.ToString() + "," + z.ToString());
+				Dbg.msg(Dbg.Grp.Terrain, 4, "Replaced type " + topBlk.properties.ToString() + " with " + blockPropsNew.ToString() + " at " + x.ToString() + "," + z.ToString());
 			}
 		}  // catch (Exception e) {exceptionPrint(e);}}
 		
@@ -319,7 +319,7 @@ namespace Plugin.HCR {
 			ChunkManager cm = AManager<ChunkManager>.getInstance();
 			IBlock topBlk;
 			
-			Dbg.trc(Dbg.Grp.Terrain, 1);
+			Dbg.trc(Dbg.Grp.Terrain, 3);
 			topBlk = cm.GetBlock(coord);
 			while(topBlk.properties.getID() == BlockProperties.BlockAir.getID()) {
 				topBlk = topBlk.relative(0, -1, 0);

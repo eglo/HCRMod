@@ -16,7 +16,7 @@ namespace Plugin.HCR {
 		///////////////////////////////////////////////////////////////////////////////////////////
 
 		public override void Awake() {
-			Dbg.trc(Dbg.Grp.Init, 3);
+			Dbg.trc(Dbg.Grp.Init, 5);
 		}
 
 		public void Start() {
@@ -24,7 +24,7 @@ namespace Plugin.HCR {
 				return;
 			}
 			
-			Dbg.trc(Dbg.Grp.Startup, 3);		
+			Dbg.trc(Dbg.Grp.Startup, 5);		
 			StartCoroutine(doImmigrants(10.0F));
 		}
 		
@@ -47,11 +47,11 @@ namespace Plugin.HCR {
 						int settlers = um.LiveUnitCount();
 						int food = rm.materials[4];
 
-						Dbg.msg(Dbg.Grp.Units, 3, "Checking immigration: " + food.ToString() + " food for " + settlers.ToString() + " settlers");
+						Dbg.msg(Dbg.Grp.Units, 5, "Checking immigration: " + food.ToString() + " food for " + settlers.ToString() + " settlers");
 						//never had much over 3000 food in my games so I guess this will normally stop at about 30 settlers
 						//might stil get some more from in game logic
 						if((food / settlers) >= (50 + settlers * 1.5)) {
-							Dbg.msg(Dbg.Grp.Units, 3, "Trying immigrant");
+							Dbg.msg(Dbg.Grp.Units, 5, "Trying immigrant");
 							um.Migrate(Vector3.zero);	//chance of 1/4, ugh
 						}
 					}
@@ -74,7 +74,7 @@ namespace Plugin.HCR {
 			lastImmigrantDay = tm.day;
 			UI.print("Someone's coming over the hills. I think it's one of us..");
 
-			Dbg.msg(Dbg.Grp.Units, 3, "Immigrant event processed, new immigrant check set to day: " + nextImmigrantDay);
+			Dbg.msg(Dbg.Grp.Units, 5, "Immigrant event processed, new immigrant check set to day: " + nextImmigrantDay);
 		}
 		
 	}

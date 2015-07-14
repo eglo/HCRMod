@@ -9,7 +9,7 @@ namespace Plugin.HCR {
 	public class HCRModWrapper : SingletonEntity<HCRModWrapper> {
 			
 		public override void Awake() {
-			Dbg.trc(Dbg.Grp.Init, 3);
+			Dbg.trc(Dbg.Grp.Init, 5);
 			
 			HCRMod hcr = AddGameComponent<HCRMod>(this.transform);
 		}
@@ -19,11 +19,11 @@ namespace Plugin.HCR {
 
 
 		public override void Awake() {
-			Dbg.trc(Dbg.Grp.Init, 3);			
+			Dbg.trc(Dbg.Grp.Init, 5);			
 		}
 		
 		public void Start() {
-			Dbg.trc(Dbg.Grp.Startup, 3);			
+			Dbg.trc(Dbg.Grp.Startup, 5);			
 			
 			StartCoroutine(initHCRMod(0.1F));
 
@@ -35,7 +35,7 @@ namespace Plugin.HCR {
 			GUIManager gm = AManager<GUIManager>.getInstance();
 			int ticks = 0;
 			while(!gm.inGame) {
-				Dbg.msg(Dbg.Grp.Init, 1, "Wait for game init.." + ticks.ToString());
+				Dbg.msg(Dbg.Grp.Init, 3, "Wait for game init.." + ticks.ToString());
 				yield return new WaitForSeconds(1.0f);
 				ticks++;
 			}
@@ -51,13 +51,13 @@ namespace Plugin.HCR {
 	
 //TODO_ delete this			
 //overrides ini config...
-				conf.isEnabledDebugLevel.set(3);
+				conf.isEnabledDebugLevel.set(5);
 				conf.isEnabledDebugGroup.set((int)(
 				//Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
 					Dbg.Grp.Init | Dbg.Grp.Startup | Dbg.Grp.Sound | Dbg.Grp.Terrain | Dbg.Grp.Weather
 ));
 
-				Dbg.trc(Dbg.Grp.Init, 3);				
+				Dbg.trc(Dbg.Grp.Init, 5);				
 				if(conf.isEnabledWeatherEffects.getBool()) {
 					AddGameComponent<Weather>(this.transform);
 					UI.print("Rainblobs visible effect" + conf.isEnabledShowRainBlocks.toEnabledString());
@@ -110,7 +110,7 @@ namespace Plugin.HCR {
 					UI.print("Debug enabled groups:" + grp.ToString());
 				}
 				
-				Dbg.msg(Dbg.Grp.Startup, 3, "Mod enabled");
+				Dbg.msg(Dbg.Grp.Startup, 5, "Mod enabled");
 			} catch(Exception e) {
 				Dbg.dumpCorExc("initHCRMod", e);
 			}			

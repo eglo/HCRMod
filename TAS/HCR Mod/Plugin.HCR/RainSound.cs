@@ -18,26 +18,26 @@ namespace Plugin.HCR {
 		}
 		
 		public void Start() {
-			Dbg.trc(Dbg.Grp.Startup, 3, "Fader started");
+			Dbg.trc(Dbg.Grp.Startup, 5, "Fader started");
 
 //not valid yet, bah
 //			RainSound rs = gameObject.GetComponent<RainSound>();
 //			asrc = rs.asrc;
-//			Dbg.trc(Dbg.Grp.Startup|Dbg.Grp.Sound, 3,"Audiosource linked: "+asrc.gameObject.name+":"+asrc.name);
-//			Dbg.trc(Dbg.Grp.Startup|Dbg.Grp.Sound, 3, "clip: " + asrc.clip.ToString()+":" + asrc.clip.name);
+//			Dbg.trc(Dbg.Grp.Startup|Dbg.Grp.Sound, 5,"Audiosource linked: "+asrc.gameObject.name+":"+asrc.name);
+//			Dbg.trc(Dbg.Grp.Startup|Dbg.Grp.Sound, 5, "clip: " + asrc.clip.ToString()+":" + asrc.clip.name);
 			
 		}
 
 		public void OnDoFade(bool dir) {
 			try {
-				Dbg.trc(Dbg.Grp.Sound,3, dir.ToString());
+				Dbg.trc(Dbg.Grp.Sound,5, dir.ToString());
 					
 				rs = transform.parent.GetComponent<RainSound>();
-				Dbg.trc(Dbg.Grp.Sound, 3,"rs= "+rs.ToString());
+				Dbg.trc(Dbg.Grp.Sound, 5,"rs= "+rs.ToString());
 				asrc = rs.asrcCurrent;
 
-				Dbg.trc(Dbg.Grp.Sound, 3,"Audiosource linked: "+asrc.gameObject.name+":"+asrc.name);
-				Dbg.trc(Dbg.Grp.Sound, 3, "clip: " + asrc.clip.ToString()+":" + asrc.clip.name);
+				Dbg.trc(Dbg.Grp.Sound, 5,"Audiosource linked: "+asrc.gameObject.name+":"+asrc.name);
+				Dbg.trc(Dbg.Grp.Sound, 5, "clip: " + asrc.clip.ToString()+":" + asrc.clip.name);
 
 				if(isCorRunning) {
 					StopCoroutine("doFader");
@@ -51,28 +51,28 @@ namespace Plugin.HCR {
 
 		IEnumerator doFader(bool up) {
 			while (true) {
-				Dbg.trc(Dbg.Grp.Sound, 3, "asrc.volume: " + asrc.volume.ToString());
+				Dbg.trc(Dbg.Grp.Sound, 5, "asrc.volume: " + asrc.volume.ToString());
 				if(up) {
 					asrc.volume += 0.01f;
-					Dbg.trc(Dbg.Grp.Rain, 3, "up");				
+					Dbg.trc(Dbg.Grp.Rain, 5, "up");				
 					if(asrc.volume >= 0.99) {
-						Dbg.trc(Dbg.Grp.Sound, 3, "asrc.volume max: " + asrc.volume.ToString());
+						Dbg.trc(Dbg.Grp.Sound, 5, "asrc.volume max: " + asrc.volume.ToString());
 						asrc.volume = 1.0f;
 						isCorRunning = false;	
 						yield break;
 					}					
 				} else {
-					Dbg.trc(Dbg.Grp.Rain, 3, "down");				
+					Dbg.trc(Dbg.Grp.Rain, 5, "down");				
 					asrc.volume -= 0.01f;
 					if(asrc.volume <= 0.01f) {
 						asrc.volume = 0.0f;
 						asrc.Pause();
-						Dbg.trc(Dbg.Grp.Sound, 3, "asrc.volume off: " + asrc.volume.ToString());
+						Dbg.trc(Dbg.Grp.Sound, 5, "asrc.volume off: " + asrc.volume.ToString());
 						isCorRunning = false;
 						yield break;
 					}				
 				}
-				Dbg.trc(Dbg.Grp.Sound, 3, "asrc.volume: " + asrc.volume.ToString());
+				Dbg.trc(Dbg.Grp.Sound, 5, "asrc.volume: " + asrc.volume.ToString());
 				yield return new WaitForSeconds(0.2f);
 			}
 		}		
@@ -87,24 +87,24 @@ namespace Plugin.HCR {
 		public Fader fader;
 		
 		public override void Awake() {
-			Dbg.trc(Dbg.Grp.Init, 3);
+			Dbg.trc(Dbg.Grp.Init, 5);
 		}
 		
 		public void Start() {
-			Dbg.trc(Dbg.Grp.Startup, 3);
+			Dbg.trc(Dbg.Grp.Startup, 5);
 
 			AudioSource asrc;
 			asrc = asrcRainLight =  (AudioSource)go.AddComponent<AudioSource>();
 			StartCoroutine(rainSoundLoad(asrcRainLight,"rainLight.ogg"));
-			Dbg.trc(Dbg.Grp.Startup, 3,"Audiosource added: "+asrc.gameObject.name+":"+asrc.name);			
+			Dbg.trc(Dbg.Grp.Startup, 5,"Audiosource added: "+asrc.gameObject.name+":"+asrc.name);			
 
 			asrc = asrcRainHeavy =  (AudioSource)go.AddComponent<AudioSource>();
 			StartCoroutine(rainSoundLoad(asrcRainHeavy,"rainHeavy.ogg"));
-			Dbg.trc(Dbg.Grp.Startup, 3,"Audiosource added: "+asrc.gameObject.name+":"+asrc.name);			
+			Dbg.trc(Dbg.Grp.Startup, 5,"Audiosource added: "+asrc.gameObject.name+":"+asrc.name);			
 			
 			asrc = asrcRainThunderstorm =  (AudioSource)go.AddComponent<AudioSource>();
 			StartCoroutine(rainSoundLoad(asrcRainThunderstorm,"rainThunderstorm.ogg"));
-			Dbg.trc(Dbg.Grp.Startup, 3,"Audiosource added: "+asrc.gameObject.name+":"+asrc.name);			
+			Dbg.trc(Dbg.Grp.Startup, 5,"Audiosource added: "+asrc.gameObject.name+":"+asrc.name);			
 
 			asrcCurrent = asrcRainThunderstorm;
 						
@@ -115,25 +115,25 @@ namespace Plugin.HCR {
 		IEnumerator rainSoundLoad(AudioSource asrc,string fileName) {
 			Configuration conf = Configuration.getInstance();
 			string filePath = applPath+conf.filePathPrefix+"/"+fileName;
-			Dbg.msg(Dbg.Grp.Startup, 3, "loading audio clip:" + filePath);			
+			Dbg.msg(Dbg.Grp.Startup, 5, "loading audio clip:" + filePath);			
 
 			WWW www = new WWW(filePath);
 			yield return www;
 			if(www.error != null) {
-				Dbg.trc(Dbg.Grp.Sound, 3, www.error);
+				Dbg.trc(Dbg.Grp.Sound, 5, www.error);
 			}
 			
 			asrc.clip = www.GetAudioClip(false, false);
 			if(asrc.clip == null) {
-				Dbg.trc(Dbg.Grp.Sound, 3, "error loading audio clip = null");
+				Dbg.trc(Dbg.Grp.Sound, 5, "error loading audio clip = null");
 			} else {
 				asrc.clip.name = fileName;
-				Dbg.trc(Dbg.Grp.Sound, 3, "loaded audio clip: " + asrc.clip.ToString()+":" + asrc.clip.name);
+				Dbg.trc(Dbg.Grp.Sound, 5, "loaded audio clip: " + asrc.clip.ToString()+":" + asrc.clip.name);
 			}
 		}
 		
 		public void rainSoundPlay(int type) {
-			Dbg.trc(Dbg.Grp.Sound, 3, asrcCurrent.ToString()+":"+asrcCurrent.clip.name);
+			Dbg.trc(Dbg.Grp.Sound, 5, asrcCurrent.ToString()+":"+asrcCurrent.clip.name);
 
 			if(asrcCurrent.isPlaying)
 				asrcCurrent.Pause();
@@ -155,7 +155,7 @@ namespace Plugin.HCR {
 		}
 		
 		public void rainSoundStop() {
-			Dbg.trc(Dbg.Grp.Sound, 3, asrcCurrent.ToString()+":"+asrcCurrent.clip.name);
+			Dbg.trc(Dbg.Grp.Sound, 5, asrcCurrent.ToString()+":"+asrcCurrent.clip.name);
 			fader.SendMessage("OnDoFade",(object)false);			
 		}
 	}	

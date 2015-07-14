@@ -163,11 +163,11 @@ namespace Plugin.HCR {
 //			} 
 //			
 //			public void Start() {
-//				Dbg.trc(Dbg.Grp.Startup,3,"Toogle road designation Hack started");
+//				Dbg.trc(Dbg.Grp.Startup,5,"Toogle road designation Hack started");
 //			}
 //			
 //			public void Update() {
-//				Dbg.msg(Dbg.Grp.Startup,3,".");
+//				Dbg.msg(Dbg.Grp.Startup,5,".");
 //				DesignManager dm = AManager<DesignManager>.getInstance();
 //				dm.roadDesignation.renderer.enabled = false;
 //				dm.roadTexture.color = Color.clear;

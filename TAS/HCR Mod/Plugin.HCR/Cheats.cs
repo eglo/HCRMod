@@ -21,7 +21,7 @@ namespace Plugin.HCR {
 				return;
 			}
 			
-			Dbg.trc(Dbg.Grp.Startup, 3);		
+			Dbg.trc(Dbg.Grp.Startup, 5);		
 			StartCoroutine(doCheats(5.0F));
 		}
 		
@@ -42,7 +42,7 @@ namespace Plugin.HCR {
 
 					//animal fur cheat, gives a chance for animla found on 1st day
 					if((cDay == 1) && !furCheatDone && (UnityEngine.Random.Range(0, 200) == 0)) {
-						Dbg.trc(Dbg.Grp.Else, 3, "furCheat done");		
+						Dbg.trc(Dbg.Grp.Else, 5, "furCheat done");		
 						rm.AddResource(11, 5);
 						UI.print("The woodchopper found some pieces of animal fur. Have any use for these?");
 						furCheatDone = true;
@@ -59,7 +59,7 @@ namespace Plugin.HCR {
 							enemy.inventory.Add(47, UnityEngine.Random.Range(0, 3));
 						}
 					}
-					Dbg.trc(Dbg.Grp.Else, 3, "enemy stuff done");		
+					Dbg.trc(Dbg.Grp.Else, 5, "enemy stuff done");		
 					
 				} catch(Exception e) { 
 					Dbg.dumpCorExc("doCheats", e);

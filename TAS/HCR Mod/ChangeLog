@@ -1,3 +1,21 @@
+2015-07-15  tengel  <tengel@home.de>
+
+	* Dbg.cs:
+	* Rain.cs:
+	* HCRMod.cs:
+	* Cheats.cs:
+	* Entity.cs:
+	* Weather.cs:
+	* RainSound.cs:
+	* Lightning.cs:
+	* Merchants.cs:
+	* UnitTraits.cs:
+	* Immigrants.cs:
+	* TestFunctions.cs:
+	* InvasionHandler.cs:
+	* KeyboardCommands.cs: 
+Refactoring debug levels
+
 2015-07-14  tengel  <tengel@home.de>
 
 	* Plugin.csproj:

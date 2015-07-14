@@ -15,16 +15,15 @@ namespace Plugin.HCR {
 			string tag = "", 
 			int layer  = 0
 		) {
-			Dbg.trcCaller(Dbg.Grp.Init, 1, "Singleton setup" + this.GetType().ToString());
-//TODO this is bull...
+			Dbg.trcCaller(Dbg.Grp.Init, 3, "Singleton setup" + this.GetType().ToString());
 			if (instance != null)
-				throw new ArgumentException("Singleton already created");
+				throw new ArgumentException("Singleton already exists");
 			
 			base.Setup(parent, position, rotation, scale, tag, layer);
 			instance = this;
 		}
 			
-		public static U GetEntity<U>() where U : Entity {
+		public new static U GetEntity<U>() where U : Entity {
 			object obj = instance.go.GetComponent(typeof(U));
 			if (obj != null) {
 				return (U) obj;
@@ -32,20 +31,12 @@ namespace Plugin.HCR {
 				throw new ArgumentException("Entity not found");
 			}
 		}
-		public static U GetEntityInParent<U>() where U : Entity {
+		public new static U GetEntityInParent<U>() where U : Entity {
 			object obj = instance.gameObject.GetComponent(typeof(U));
 			if (obj != null) {
 				return (U) obj;
 			} else {
 				throw new ArgumentException("Entity not found");
-			}
-		}
-		public static U FindEntity<U>() where U : Entity {
-			object obj = GameObject.FindObjectOfType(typeof(U));
-			if (obj != null) {
-				return (U) obj;
-			} else {
-				throw new ArgumentException("Gameobject not found");
 			}
 		}
 	}
@@ -58,18 +49,18 @@ namespace Plugin.HCR {
 		
 		protected virtual T AddGameComponent<T>(Transform parent)  where T : Entity {
 
-			Dbg.trcCaller(Dbg.Grp.Init, 2 ,"Start AddGameComponent: "+typeof(T).FullName);
+			Dbg.trcCaller(Dbg.Grp.Init, 5,"Start AddGameComponent: "+typeof(T).FullName);
 
 			T comp = go.AddComponent<T>();
 			comp.Setup(parent);
 		
-			Dbg.trcCaller(Dbg.Grp.Init, 3,"Done AddGameComponent: "+ comp.go.name + " parent is:" + comp.gameObject.name);			
+			Dbg.trcCaller(Dbg.Grp.Init, 5,"Done AddGameComponent: "+ comp.go.name + " parent is:" + comp.gameObject.name);			
 			return comp;
 		}
 		
 		public T GetGameComponent<T>() where T : Entity {
 			T comp = go.GetComponent<T>();
-			Dbg.trcCaller(Dbg.Grp.Init, 3,"GetGameComponent: "+typeof(T).FullName);
+			Dbg.trcCaller(Dbg.Grp.Init, 5,"GetGameComponent: "+typeof(T).FullName);
 			return comp;
 		}
 		
@@ -81,7 +72,7 @@ namespace Plugin.HCR {
 			string tag = "", 
 			int layer  = 0 
 		) {
-			//Dbg.trcCaller(Dbg.Grp.Init, 1, "ExtMono setup" + this.GetType().ToString());
+			//Dbg.trcCaller(Dbg.Grp.Init, 3, "ExtMono setup" + this.GetType().ToString());
 				
 			if(position == null) {
 				this.transform.localPosition = Vector3.one;
@@ -106,20 +97,43 @@ namespace Plugin.HCR {
 			//UnityEngine.Object.DontDestroyOnLoad(this.transform.gameObject);	//TODO: check if needed			
 
 			if(parent != null) {
-//TODO:check this
 				this.transform.parent = parent;
 				this.go.name = "ObjInst:" + this.GetType().ToString() + ":" + this.go.GetInstanceID().ToString("X8");
-				//Dbg.trc(Dbg.Grp.Init, 1, "ExtMono setup done: " + this.go.name + " parent is:" + this.gameObject.name);
+				//Dbg.trc(Dbg.Grp.Init, 3, "ExtMono setup done: " + this.go.name + " parent is:" + this.gameObject.name);
 			} else {
 				this.go.name = "ObjInst:" + this.GetType().ToString() + ":" + this.go.GetInstanceID().ToString("X8"); 
-				//Dbg.trc(Dbg.Grp.Init, 1, "ExtMono setup done: " + this.go.name + " parent is: null");
+				//Dbg.trc(Dbg.Grp.Init, 3, "ExtMono setup done: " + this.go.name + " parent is: null");
 			}
 		}
 
-		public GameObject getGameObject() {
-			return go;
+
+		public U GetEntity<U>() where U : Entity {
+			object obj = go.GetComponent(typeof(U));
+			if (obj != null) {
+				return (U) obj;
+			} else {
+				throw new ArgumentException("Entity not found");
+			}
 		}
 
+		public U GetEntityInParent<U>() where U : Entity {
+			object obj = gameObject.GetComponent(typeof(U));
+			if (obj != null) {
+				return (U) obj;
+			} else {
+				throw new ArgumentException("Entity not found");
+			}
+		}
+
+		public static U FindEntity<U>() where U : Entity {
+			object obj = GameObject.FindObjectOfType(typeof(U));
+			if (obj != null) {
+				return (U) obj;
+			} else {
+				throw new ArgumentException("Gameobject not found");
+			}
+		}
+		
 		public abstract void Awake();
 	}
 }

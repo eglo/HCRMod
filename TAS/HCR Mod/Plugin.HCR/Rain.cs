@@ -29,7 +29,7 @@ namespace Plugin.HCR {
 		}
 
 		public void startRain(int type) {
-			Dbg.trc(Dbg.Grp.Rain, 3);
+			Dbg.trc(Dbg.Grp.Rain, 5);
 
 			//TODO: check: shouldnt really happen at this point, but it does...?
 			if(isRainOnMap) {
@@ -50,11 +50,11 @@ namespace Plugin.HCR {
 			rainDrop.blob = Instantiate(rainDrop.blob, location, Quaternion.identity) as GameObject;
 			rainDropsOnMap.Add(rainDrop);
 			rainDrop.blob.SetActiveRecursively(true);	//TODO: check: is this needed?
-			Dbg.trc(Dbg.Grp.Rain, 2);			
+			Dbg.trc(Dbg.Grp.Rain, 3);			
 		} 
 
 		public void removeRain() {
-			Dbg.trc(Dbg.Grp.Rain, 3);
+			Dbg.trc(Dbg.Grp.Rain, 5);
 
 			foreach(RainDrop rainDrop in rainDropsOnMap) {
 				UnityEngine.Object.Destroy(rainDrop.blob); 
@@ -68,12 +68,12 @@ namespace Plugin.HCR {
 		} 
 		
 		public override void Awake() {
-			Dbg.trc(Dbg.Grp.Init, 3);
+			Dbg.trc(Dbg.Grp.Init, 5);
 		}
 		
 
 		public void Start() {
-			Dbg.trc(Dbg.Grp.Startup, 3);
+			Dbg.trc(Dbg.Grp.Startup, 5);
 			
 			try {
 				AddGameComponent<RainSound>(this.transform);
@@ -84,7 +84,7 @@ namespace Plugin.HCR {
 		}
 		
 		public void Update() {
-			//Dbg.trc(Dbg.Grp.Rain,1,"Rain update");
+			//Dbg.trc(Dbg.Grp.Rain,3,"Rain update");
 			float speed = 2.0f;
 			foreach(RainDrop rainDrop in rainDropsOnMap) {
 				rainDrop.blob.transform.Translate(new Vector3(0,-1f,-.2f) * Time.deltaTime * speed, Space.World);

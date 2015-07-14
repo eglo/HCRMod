@@ -3,6 +3,9 @@
 #endif
 #undef USE_STACKFRAMES_FOR_TRACE
 
+//(?<sta>\s*Dbg.+\,\s*)(c)(?<end>\,.*\);)
+//${sta}3${end}
+
 using System;
 using System.Diagnostics;
 using System.IO;

@@ -97,11 +97,11 @@ namespace Plugin.HCR {
 		///////////////////////////////////////////////////////////////////////////////////////////
 
 		public override void Awake() {
-			Dbg.trc(Dbg.Grp.Init, 3);
+			Dbg.trc(Dbg.Grp.Init, 5);
 		}
 		
 		public void Start() {
-			Dbg.trc(Dbg.Grp.Startup, 3);
+			Dbg.trc(Dbg.Grp.Startup, 5);
 			
 			string str;
 			str = "Keyboard commands active. Press ";

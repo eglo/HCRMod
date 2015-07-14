@@ -19,7 +19,7 @@ namespace Plugin.HCR {
 		private GameObject lightGameObject = new GameObject("Lightning light");
 		
 		public override void Awake() {
-			Dbg.trc(Dbg.Grp.Init, 3);
+			Dbg.trc(Dbg.Grp.Init, 5);
 			
 			lightGameObject.AddComponent<Light>();
 			lightGameObject.light.color = Color.white;
@@ -35,13 +35,13 @@ namespace Plugin.HCR {
 		}
 		
 		public void Start() {
-			Dbg.trc(Dbg.Grp.Startup, 3);
+			Dbg.trc(Dbg.Grp.Startup, 5);
 
 			RainSound rs = gameObject.GetComponent<RainSound>();
 			//the clip isnt valid at this point, do I need yet another coroutine? .. :/
 			//asrc = rs.asrcCurrent;
-			//Dbg.trc(Dbg.Grp.Startup|Dbg.Grp.Light, 3,"Audiosource linked: "+asrc.gameObject.name+":"+asrc.name);			
-			//Dbg.trc(Dbg.Grp.Startup|Dbg.Grp.Sound, 3, "clip: " + asrc.clip.ToString()+":" + asrc.clip.name);
+			//Dbg.trc(Dbg.Grp.Startup|Dbg.Grp.Light, 5,"Audiosource linked: "+asrc.gameObject.name+":"+asrc.name);			
+			//Dbg.trc(Dbg.Grp.Startup|Dbg.Grp.Sound, 5, "clip: " + asrc.clip.ToString()+":" + asrc.clip.name);
 		}
 
 		public void Update() {
@@ -52,9 +52,9 @@ namespace Plugin.HCR {
 				if (!asrc || !asrc.isPlaying)
 					return;
 
-				Dbg.trc(Dbg.Grp.Light, 3);
-				Dbg.trc(Dbg.Grp.Light, 3,"Audiosource linked: "+asrc.gameObject.name+":"+asrc.name);			
-				Dbg.trc(Dbg.Grp.Sound, 3, "clip: " + asrc.clip.ToString()+":" + asrc.clip.name);
+				Dbg.trc(Dbg.Grp.Light, 5);
+				Dbg.trc(Dbg.Grp.Light, 5,"Audiosource linked: "+asrc.gameObject.name+":"+asrc.name);			
+				Dbg.trc(Dbg.Grp.Sound, 5, "clip: " + asrc.clip.ToString()+":" + asrc.clip.name);
 				
 				asrc.GetSpectrumData(freqData,0,FFTWindow.BlackmanHarris);
 				float vol = 0.0f;
@@ -63,7 +63,7 @@ namespace Plugin.HCR {
 					vol += freqData[i];
 				}
 				vol /= (bHigh - bLow + 1);
-				Dbg.trc(Dbg.Grp.Light, 3, "vol = "+ vol.ToString());
+				Dbg.trc(Dbg.Grp.Light, 5, "vol = "+ vol.ToString());
 
 				//cut off values just from trial and error for now 
 				//needs a better selection of frequencies, 20-8000 is probably not optimal at all

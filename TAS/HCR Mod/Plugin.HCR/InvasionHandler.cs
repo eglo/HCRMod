@@ -26,7 +26,7 @@ namespace Plugin.HCR {
 							evt.result = Result.Allow;
 						} else {
 							if (conf.replaceMonsters.get() != 0) {
-								Dbg.msg(Dbg.Grp.Invasion,3,"Replacing enemy type "+evt.enemyType.ToString()+" with " + conf.replaceGoblinsWith.get());								
+								Dbg.msg(Dbg.Grp.Invasion,5,"Replacing enemy type "+evt.enemyType.ToString()+" with " + conf.replaceGoblinsWith.get());								
 								evt.enemyType = conf.replaceGoblinsWith.get();
 							} else {
 								evt.result = Result.Deny;
@@ -40,7 +40,7 @@ namespace Plugin.HCR {
 							evt.result = Result.Allow;
 						} else {
 							if (conf.replaceMonsters.get() != 0) {
-								Dbg.msg(Dbg.Grp.Invasion,3,"Replacing enemy type "+evt.enemyType.ToString()+" with " + conf.replaceSkeletonsWith.get());								
+								Dbg.msg(Dbg.Grp.Invasion,5,"Replacing enemy type "+evt.enemyType.ToString()+" with " + conf.replaceSkeletonsWith.get());								
 								evt.enemyType = conf.replaceSkeletonsWith.get();
 							} else {
 								evt.result = Result.Deny;
@@ -63,7 +63,7 @@ namespace Plugin.HCR {
 							evt.result = Result.Allow;
 						} else {
 							if (conf.replaceMonsters.get() != 0) {
-								Dbg.msg(Dbg.Grp.Invasion,3,"Replacing enemy type "+evt.enemyType.ToString()+" with " + conf.replaceWolvesWith.get());								
+								Dbg.msg(Dbg.Grp.Invasion,5,"Replacing enemy type "+evt.enemyType.ToString()+" with " + conf.replaceWolvesWith.get());								
 								evt.enemyType = conf.replaceWolvesWith.get();
 							} else {
 								evt.result = Result.Deny;
@@ -77,7 +77,7 @@ namespace Plugin.HCR {
 							evt.result = Result.Allow;
 						} else {
 							if (conf.replaceMonsters.get() != 0) {
-								Dbg.msg(Dbg.Grp.Invasion,3,"Replacing enemy type "+evt.enemyType.ToString()+" with " + conf.replaceNecromancersWith.get());								
+								Dbg.msg(Dbg.Grp.Invasion,5,"Replacing enemy type "+evt.enemyType.ToString()+" with " + conf.replaceNecromancersWith.get());								
 								evt.enemyType = conf.replaceNecromancersWith.get();
 							} else {
 								evt.result = Result.Deny;
@@ -96,10 +96,10 @@ namespace Plugin.HCR {
 				}
 			} while (evt.result == Result.Default);
 			if (evt.result == Result.Deny) {
-				Dbg.msg(Dbg.Grp.Invasion,3,"Invasion of enemy type "+evt.enemyType.ToString()+" denied");								
+				Dbg.msg(Dbg.Grp.Invasion,5,"Invasion of enemy type "+evt.enemyType.ToString()+" denied");								
 				UI.print("It's been quiet lately. Too quiet...");
 			} else {
-				Dbg.msg(Dbg.Grp.Invasion,3,"Invasion of enemy type "+evt.enemyType.ToString()+" allowed");								
+				Dbg.msg(Dbg.Grp.Invasion,5,"Invasion of enemy type "+evt.enemyType.ToString()+" allowed");								
 			}		
 		}
 
