@@ -51,7 +51,7 @@ namespace Plugin.HCR {
 			return comp;
 		}
 		
-		protected virtual T GetGameComponent<T>() where T : ExtMonoBehaviour {
+		public T GetGameComponent<T>() where T : ExtMonoBehaviour {
 			T comp = go.GetComponent<T>();
 			Dbg.trcCaller(Dbg.Grp.Init, 3,"GetGameComponent: "+typeof(T).FullName);
 			return comp;
@@ -98,6 +98,10 @@ namespace Plugin.HCR {
 				this.go.name = "ObjInst:" + this.GetType().ToString() + ":" + this.go.GetInstanceID().ToString("X8"); 
 				//Dbg.trc(Dbg.Grp.Init, 1, "ExtMono setup done: " + this.go.name + " parent is: null");
 			}
+		}
+
+		public GameObject getGameObject() {
+			return go;
 		}
 
 		public abstract void Awake();

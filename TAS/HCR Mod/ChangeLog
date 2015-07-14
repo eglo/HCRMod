@@ -1,3 +1,19 @@
+2015-07-14  tengel  <tengel@home.de>
+
+	* Rain.cs:
+	* Weather.cs:
+	* RainSound.cs:
+	* Lightning.cs:
+	* TestFunctions.cs:
+	* ExtMonoBehaviour.cs: 
+debug fader, rainStart, rainStop
+
+
+
+
+
+
+
 2015-07-13  tengel  <tengel@home.de>
 
 	* Plugin.userprefs:

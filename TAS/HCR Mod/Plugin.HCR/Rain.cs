@@ -23,7 +23,7 @@ namespace Plugin.HCR {
 				location = _location;
 				minHeight = _minHeight;
 				blob = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-				blob.transform.localScale = new Vector3(0.15f,0.3f,0.15f);
+				blob.transform.localScale = new Vector3(0.1f,0.2f,0.1f);
 				blob.renderer.material = AManager<ChunkManager>.getInstance().materials[1];
 			}		
 		}
@@ -31,7 +31,7 @@ namespace Plugin.HCR {
 		public void startRain(int type) {
 			Dbg.trc(Dbg.Grp.Rain, 3);
 
-			//TODO: shouldnt really happen at this point, but it does...?
+			//TODO: check: shouldnt really happen at this point, but it does...?
 			if(isRainOnMap) {
 				return;
 			}
@@ -49,7 +49,7 @@ namespace Plugin.HCR {
 			RainDrop rainDrop = new RainDrop(location,minHeight);
 			rainDrop.blob = Instantiate(rainDrop.blob, location, Quaternion.identity) as GameObject;
 			rainDropsOnMap.Add(rainDrop);
-			rainDrop.blob.SetActiveRecursively(true);	//TODO: is this needed?
+			rainDrop.blob.SetActiveRecursively(true);	//TODO: check: is this needed?
 			Dbg.trc(Dbg.Grp.Rain, 2);			
 		} 
 

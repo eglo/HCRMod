@@ -50,6 +50,9 @@ namespace Plugin.HCR {
 			
 			TimeManager tm = AManager<TimeManager>.getInstance();
 			Weather weather = SingletonMonoBehaviour.FindGameComponent<Weather>();
+			Rain rain = weather.GetGameComponent<Rain>();
+			rain.timeToRemove = Time.time;
+			rain.removeRain();
 			weather.nextRainDay = tm.day;
 			weather.nextRainHour = tm.hour;
 		}

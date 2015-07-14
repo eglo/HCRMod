@@ -76,7 +76,7 @@ namespace Plugin.HCR {
 						
 						int xpos = 1, zpos = 1, xext = worldSize3i.x, zext = worldSize3i.z;
 						Dbg.msg(Dbg.Grp.Weather, 3, "start weather effect over: ", xpos, zpos, xext, zext);
-						switch(UnityEngine.Random.Range(1, 6)) {
+						switch(UnityEngine.Random.Range(1, 8)) {
 							case 1:	
 							case 2:	
 								UI.print("It's raining. Good thing all the dirt gets washed away.");
@@ -94,6 +94,7 @@ namespace Plugin.HCR {
 								break;
 								
 							case 6:	
+							case 7:	
 								UI.print("It's pouring. The muddy water fills up puddles everywhere");
 								StartCoroutine(createRainDrops(xpos, zpos, xext, zext, 3));
 								StartCoroutine(doRemoveBurntDirt(xpos, zpos, xext, zext));
@@ -241,20 +242,21 @@ namespace Plugin.HCR {
 				yield return null;
 			}
 			
+			Dbg.trc(Dbg.Grp.Rain, 3, "start");
+			
 			ChunkManager cm = AManager<ChunkManager>.getInstance();
+			Rain rain = GetGameComponent<Rain>();			
 			IBlock topBlk;
 			IBlock newBlk;
 			int dropRate;
 			
-			Dbg.trc(Dbg.Grp.Rain, 3, "start");
-			Rain rain = GetGameComponent<Rain>();			
 			rain.startRain(type);
 
 			switch(type) {
-				case 1: dropRate = 40; break;
-				case 2: dropRate = 80; break;
-				case 3: dropRate = 120; break;
-				default: dropRate = 100; break;
+				case 1: dropRate = 0; break;
+				case 2: dropRate = 40; break;
+				case 3: dropRate = 80; break;
+				default: dropRate = 40; break;
 			}
 
 			for(int x = xpos; x < xext; x++) {

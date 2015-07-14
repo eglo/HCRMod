@@ -22,13 +22,12 @@ namespace Plugin.HCR {
 			Dbg.trc(Dbg.Grp.Init, 3);
 			
 			lightGameObject.AddComponent<Light>();
-			//lightGameObject.light.color = Color.white;
-			lightGameObject.light.color = new Color(0.80f,0.80f,1.0f);	//tried to get a blueish tint, but cant really see any of it it haha
+			lightGameObject.light.color = Color.white;
 			lightGameObject.light.type = LightType.Directional;
 			lightGameObject.light.intensity = 0;
 			lightGameObject.light.range = 0;
 			lightGameObject.transform.parent = go.transform;
-			lightGameObject.transform.position = new Vector3(5, 10, 5);			
+			lightGameObject.transform.position = new Vector3(20, 20, 20);
 
 			int fSmplRate = AudioSettings.outputSampleRate/2;
 			bLow = (fMin/(fSmplRate/samples));
@@ -66,7 +65,6 @@ namespace Plugin.HCR {
 				vol /= (bHigh - bLow + 1);
 				Dbg.trc(Dbg.Grp.Light, 3, "vol = "+ vol.ToString());
 
-				//values after fft are very small, not sure why
 				//cut off values just from trial and error for now 
 				//needs a better selection of frequencies, 20-8000 is probably not optimal at all
 				vol *= asrc.volume;
@@ -83,7 +81,7 @@ namespace Plugin.HCR {
 					intensity *= 200f;	
 				
 				lightGameObject.light.intensity = intensity;
-				lightGameObject.light.range = intensity;	//hmm...?
+				lightGameObject.light.range = intensity;	//does this even have an effect with directional light?
 				
 			} catch (Exception e) {
 				Dbg.dumpExc(e);

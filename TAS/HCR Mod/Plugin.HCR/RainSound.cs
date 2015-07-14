@@ -11,8 +11,9 @@ namespace Plugin.HCR {
 	public class Fader : SingletonMonoBehaviour {
 
 		private RainSound rs;
+		private bool isCorRunning;
 		public AudioSource asrc;		
-	
+			
 		public override void Awake() {
 		}
 		
@@ -37,8 +38,12 @@ namespace Plugin.HCR {
 
 				Dbg.trc(Dbg.Grp.Sound, 3,"Audiosource linked: "+asrc.gameObject.name+":"+asrc.name);
 				Dbg.trc(Dbg.Grp.Sound, 3, "clip: " + asrc.clip.ToString()+":" + asrc.clip.name);
-				
-				StartCoroutine(doFader(dir));
+
+				if(isCorRunning) {
+					StopCoroutine("doFader");
+				}
+				isCorRunning = true;
+				StartCoroutine("doFader",dir);
 			} catch(Exception e) { 
 				Dbg.dumpExc(e);
 			}
@@ -53,6 +58,7 @@ namespace Plugin.HCR {
 					if(asrc.volume >= 0.99) {
 						Dbg.trc(Dbg.Grp.Sound, 3, "asrc.volume max: " + asrc.volume.ToString());
 						asrc.volume = 1.0f;
+						isCorRunning = false;	
 						yield break;
 					}					
 				} else {
@@ -62,6 +68,7 @@ namespace Plugin.HCR {
 						asrc.volume = 0.0f;
 						asrc.Pause();
 						Dbg.trc(Dbg.Grp.Sound, 3, "asrc.volume off: " + asrc.volume.ToString());
+						isCorRunning = false;
 						yield break;
 					}				
 				}
@@ -126,10 +133,10 @@ namespace Plugin.HCR {
 		}
 		
 		public void rainSoundPlay(int type) {
-			Dbg.trc(Dbg.Grp.Rain, 3, asrcCurrent.ToString()+":"+asrcCurrent.clip.name);
+			Dbg.trc(Dbg.Grp.Sound, 3, asrcCurrent.ToString()+":"+asrcCurrent.clip.name);
 
 			if(asrcCurrent.isPlaying)
-				asrcCurrent.Stop();
+				asrcCurrent.Pause();
 
 			switch (type) {
 
@@ -138,7 +145,7 @@ namespace Plugin.HCR {
 				case 3: asrcCurrent = asrcRainThunderstorm; break;
 					
 			}
-			
+
 			if(!asrcCurrent.isPlaying && asrcCurrent.clip.isReadyToPlay) {
 				asrcCurrent.loop = true;
 				asrcCurrent.volume = 0;
@@ -148,7 +155,7 @@ namespace Plugin.HCR {
 		}
 		
 		public void rainSoundStop() {
-			Dbg.trc(Dbg.Grp.Rain, 3, asrcCurrent.ToString()+":"+asrcCurrent.clip.name);
+			Dbg.trc(Dbg.Grp.Sound, 3, asrcCurrent.ToString()+":"+asrcCurrent.clip.name);
 			fader.SendMessage("OnDoFade",(object)false);			
 		}
 	}	
