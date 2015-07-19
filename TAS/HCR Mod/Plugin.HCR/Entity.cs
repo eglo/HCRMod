@@ -7,7 +7,7 @@ namespace Plugin.HCR {
 	public abstract class SingletonEntity<T> : Entity {
 		protected static SingletonEntity<T> instance = null;
 
-		public override void Setup(
+		protected override void Setup(
 			Transform parent = null, 
 			Vector3 ?position = null, 
 			Quaternion ?rotation = null, 
@@ -47,7 +47,7 @@ namespace Plugin.HCR {
 	public abstract class Entity : MonoBehaviour {
 		protected GameObject go = new GameObject("iNiTiAl");
 		
-		protected virtual T AddGameComponent<T>(Transform parent)  where T : Entity {
+		protected virtual T AddEntity<T>(Transform parent)  where T : Entity {
 
 			Dbg.trcCaller(Dbg.Grp.Init, 5,"Start AddGameComponent: "+typeof(T).FullName);
 
@@ -58,13 +58,8 @@ namespace Plugin.HCR {
 			return comp;
 		}
 		
-		public T GetGameComponent<T>() where T : Entity {
-			T comp = go.GetComponent<T>();
-			Dbg.trcCaller(Dbg.Grp.Init, 5,"GetGameComponent: "+typeof(T).FullName);
-			return comp;
-		}
 		
-		public virtual void Setup(
+		protected virtual void Setup(
 			Transform parent = null, 
 			Vector3 ?position = null, 
 			Quaternion ?rotation = null, 
@@ -94,7 +89,7 @@ namespace Plugin.HCR {
 		
 			//this.transform.gameObject.SetActive(true);
 			this.go.active = true;
-			//UnityEngine.Object.DontDestroyOnLoad(this.transform.gameObject);	//TODO: check if needed			
+			//UnityEngine.Object.DontDestroyOnLoad(this.transform.gameObject);	
 
 			if(parent != null) {
 				this.transform.parent = parent;
@@ -106,11 +101,11 @@ namespace Plugin.HCR {
 			}
 		}
 
-
-		public U GetEntity<U>() where U : Entity {
-			object obj = go.GetComponent(typeof(U));
+		public T GetEntity<T>() where T : Entity {
+			object obj = go.GetComponent(typeof(T));
 			if (obj != null) {
-				return (U) obj;
+				Dbg.trcCaller(Dbg.Grp.All, 5,"GetEntity: "+typeof(T).FullName);
+				return (T) obj;
 			} else {
 				throw new ArgumentException("Entity not found");
 			}

@@ -108,7 +108,7 @@ namespace Plugin.HCR {
 
 			asrcCurrent = asrcRainThunderstorm;
 						
-			fader = AddGameComponent<Fader>(this.transform);
+			fader = AddEntity<Fader>(this.transform);
 		}
 				
 

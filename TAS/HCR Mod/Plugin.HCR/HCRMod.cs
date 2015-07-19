@@ -11,7 +11,7 @@ namespace Plugin.HCR {
 		public override void Awake() {
 			Dbg.trc(Dbg.Grp.Init, 5);
 			
-			HCRMod hcr = AddGameComponent<HCRMod>(this.transform);
+			HCRMod hcr = AddEntity<HCRMod>(this.transform);
 		}
 	}
 
@@ -53,40 +53,40 @@ namespace Plugin.HCR {
 //overrides ini config...
 				conf.isEnabledDebugLevel.set(5);
 				conf.isEnabledDebugGroup.set((int)(
-				//Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Map|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
-					Dbg.Grp.Init | Dbg.Grp.Startup | Dbg.Grp.Sound | Dbg.Grp.Terrain | Dbg.Grp.Weather
+				Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Terrain|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
+				//Dbg.Grp.Init | Dbg.Grp.Startup | Dbg.Grp.Sound | Dbg.Grp.Terrain | Dbg.Grp.Weather
 ));
 
 				Dbg.trc(Dbg.Grp.Init, 5);				
 				if(conf.isEnabledWeatherEffects.getBool()) {
-					AddGameComponent<Weather>(this.transform);
+					AddEntity<Weather>(this.transform);
 					UI.print("Rainblobs visible effect" + conf.isEnabledShowRainBlocks.toEnabledString());
 					
 				}
 				UI.print("Weather effects" + conf.isEnabledWeatherEffects.toEnabledString());
 
 				if(conf.isEnabledImproveUnitTraits.getBool()) {
-					AddGameComponent<UnitTraits>(this.transform);
+					AddEntity<UnitTraits>(this.transform);
 				}			
 				UI.print("Improve unit traits" + conf.isEnabledImproveUnitTraits.toEnabledString());
 
 				if(conf.isEnabledMoreImmigrants.getBool()) {
-					AddGameComponent<Immigrants>(this.transform);
+					AddEntity<Immigrants>(this.transform);
 				}			
 				UI.print("More immigrants" + conf.isEnabledMoreImmigrants.toEnabledString());
 
 				if(conf.isEnabledMoreMerchants.getBool()) {
-					AddGameComponent<Merchants>(this.transform);
+					AddEntity<Merchants>(this.transform);
 				}			
 				UI.print("More merchants" + conf.isEnabledMoreMerchants.toEnabledString());
 
 				if(conf.isEnabledCheats.getBool()) {
-					AddGameComponent<Cheats>(this.transform);
+					AddEntity<Cheats>(this.transform);
 				}			
 				UI.print("Cheats" + conf.isEnabledCheats.toEnabledString());
 
 				if(conf.isEnabledKeyboardCommands.getBool()) {
-					AddGameComponent<KeyboardCommands>(this.transform);
+					AddEntity<KeyboardCommands>(this.transform);
 				}			
 				UI.print("Keyboard commands" + conf.isEnabledKeyboardCommands.toEnabledString());
 				

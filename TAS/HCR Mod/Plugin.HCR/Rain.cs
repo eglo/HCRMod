@@ -37,7 +37,7 @@ namespace Plugin.HCR {
 			}
 			isRainOnMap = true;
 
-			RainSound rs = GetGameComponent<RainSound>();
+			RainSound rs = GetEntity<RainSound>();
 			rs.rainSoundPlay(type);
 			//stay on map for about 5-10 mins, this doesn't care about game speed settings ..(?)
 			timeToRemove = Time.time + UnityEngine.Random.Range(300.0f, 600.0f);
@@ -60,11 +60,11 @@ namespace Plugin.HCR {
 				UnityEngine.Object.Destroy(rainDrop.blob); 
 			}
 			rainDropsOnMap.Clear();
-			RainSound rs = GetGameComponent<RainSound>();;
+			RainSound rs = GetEntity<RainSound>();;
 			rs.rainSoundStop();
 
 			isRainOnMap = false;
-			UI.print("The rain has stopped");
+			//UI.print("The rain has stopped");
 		} 
 		
 		public override void Awake() {
@@ -76,8 +76,8 @@ namespace Plugin.HCR {
 			Dbg.trc(Dbg.Grp.Startup, 5);
 			
 			try {
-				AddGameComponent<RainSound>(this.transform);
-				AddGameComponent<Lightning>(this.transform);
+				AddEntity<RainSound>(this.transform);
+				AddEntity<Lightning>(this.transform);
 			} catch(Exception e) { 
 				Dbg.dumpExc(e);
 			}

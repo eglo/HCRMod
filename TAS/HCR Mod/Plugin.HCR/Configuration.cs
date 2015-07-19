@@ -48,13 +48,13 @@ namespace Plugin.HCR {
 		public ConfigValue trackResourcesIdxLast = new ConfigValue(79);	//60+ is tools, 90+ is weapons
 
 		//you have to enable TRACE_ON in Dbg.cs if you want to use these..
-		//debugLevel 0 = off, 1 = all output ... n = less output		
+		//debugLevel 0 = off, 1 = all output 2 = less etc		
 		public ConfigValue isEnabledDebugLevel = new ConfigValue(1);
 		//use win32 DebugOutputString instead of game text window
-		public ConfigValue IsEnabledDebugOutputString = new ConfigValue(1);
+		public ConfigValue IsEnabledDebugOutputString = new ConfigValue(0);
 		//logfile
 		public ConfigValue IsEnabledDebugLogFile = new ConfigValue(1);
-		//this is by no means a strict classification, see source code what's used where  
+		//see source code what's used where  
 		public ConfigValue isEnabledDebugGroup = new ConfigValue((int)(
 			Dbg.Grp.Init | Dbg.Grp.Startup | Dbg.Grp.Unity | Dbg.Grp.Time | Dbg.Grp.Terrain | Dbg.Grp.Weather | Dbg.Grp.Units | Dbg.Grp.Invasion
 		));
@@ -95,9 +95,8 @@ namespace Plugin.HCR {
 				FieldInfo[] fl = this.GetType().GetFields();
 				foreach(FieldInfo fi in fl) {
 					if(fi.FieldType.ToString().Contains("ConfigValue")) {
-						//GUIManager gm = AManager<GUIManager>.getInstance();
-						//UI.print("fi.FieldType : "+fi.FieldType.ToString());
-						//UI.print("fi.Name "+fi.Name.ToString());
+						Dbg.trc(Dbg.Grp.Init,2,"fi.FieldType : "+fi.FieldType.ToString());
+						Dbg.trc(Dbg.Grp.Init,2,"fi.Name "+fi.Name.ToString());
 						FieldInfo[] flCv = fi.FieldType.GetFields();
 						object configValue = fi.GetValue(this);
 						foreach(FieldInfo fiCv in flCv) {
@@ -114,7 +113,6 @@ namespace Plugin.HCR {
 									fiCv.SetValue(configValue, str);
 									continue;								
 								}
-								//TODO: whats this? fiCv.SetValue(configValue, num);							
 							}
 						}
 					}

@@ -26,7 +26,7 @@ namespace Plugin.HCR {
 			Dbg.trc(Dbg.Grp.Startup, 5);
 
 			if(Configuration.getInstance().isEnabledShowRainBlocks.getBool()) {
-				AddGameComponent<Rain>(this.transform);
+				AddEntity<Rain>(this.transform);
 			}
 			
 			StartCoroutine(doWeather(5.0F));
@@ -64,14 +64,14 @@ namespace Plugin.HCR {
 					cDay = tm.day;
 					cHour = tm.hour;
 
-					Rain rs = GetGameComponent<Rain>();
+					Rain rs = GetEntity<Rain>();
 					if(rs.isRainOnMap && (Time.time >= rs.timeToRemove)) {
 						rs.removeRain();
 					}
 
 					if((cDay >= nextRainDay) && (cHour >= nextRainHour) && !rs.isRainOnMap) {						
-						nextRainDay = cDay + UnityEngine.Random.Range(0, 2);
-						nextRainHour = cHour + UnityEngine.Random.Range(4, 12);
+						nextRainDay = cDay + UnityEngine.Random.Range(0, 3);
+						nextRainHour = cHour + UnityEngine.Random.Range(8, 16);
 						nextRainHour %= 24;
 						
 						int xpos = 1, zpos = 1, xext = worldSize3i.x, zext = worldSize3i.z;
@@ -161,7 +161,7 @@ namespace Plugin.HCR {
 			IBlock checkBlk;
 			IBlock newBlk;
 			int topBlkID;
-			int surround = 0;
+			float surround = 0.0f;
 			
 			Dbg.trc(Dbg.Grp.Terrain, 4, "start");
 			
@@ -171,14 +171,30 @@ namespace Plugin.HCR {
 			for(int cx = -1; cx <=1; cx++) {
 				for(int cz = -1; cz <=1; cz++) {
 					checkBlk = topBlk.relative(cx, +1, cz);
+//					if(
+//						(checkBlk.properties.getID() != BlockProperties.BlockAir.getID()) &&
+//						(checkBlk.properties.getID() != BlockProperties.SlopeStone.getID()) &&
+//						(checkBlk.properties.getID() != BlockProperties.SlopeGrass.getID()) &&
+//						(checkBlk.properties.getID() != BlockProperties.SlopeDirt.getID()) &&
+//						(checkBlk.properties.getID() != BlockProperties.SlopeSand.getID())
+//						) {
+//						surround++;
+//					}
 					if(
-						(checkBlk.properties.getID() != BlockProperties.BlockAir.getID()) &&
-						(checkBlk.properties.getID() != BlockProperties.SlopeStone.getID()) &&
-						(checkBlk.properties.getID() != BlockProperties.SlopeGrass.getID()) &&
-						(checkBlk.properties.getID() != BlockProperties.SlopeDirt.getID()) &&
-						(checkBlk.properties.getID() != BlockProperties.SlopeSand.getID())
+						(checkBlk.properties.getID() == BlockProperties.BlockStone.getID()) ||
+						(checkBlk.properties.getID() == BlockProperties.BlockGrass.getID()) ||
+						(checkBlk.properties.getID() == BlockProperties.BlockDirt.getID()) ||
+						(checkBlk.properties.getID() == BlockProperties.BlockSand.getID())
 						) {
-						surround++;
+						surround += 1.0f;
+					}
+					if(
+						(checkBlk.properties.getID() == BlockProperties.SlopeStone.getID()) ||
+						(checkBlk.properties.getID() == BlockProperties.SlopeGrass.getID()) ||
+						(checkBlk.properties.getID() == BlockProperties.SlopeDirt.getID()) ||
+						(checkBlk.properties.getID() == BlockProperties.SlopeSand.getID())
+						) {
+						surround += 0.5f;
 					}
 				}
 			}
@@ -245,7 +261,7 @@ namespace Plugin.HCR {
 			Dbg.trc(Dbg.Grp.Rain, 5, "start");
 			
 			ChunkManager cm = AManager<ChunkManager>.getInstance();
-			Rain rain = GetGameComponent<Rain>();			
+			Rain rain = GetEntity<Rain>();			
 			IBlock topBlk;
 			IBlock newBlk;
 			int dropRate;

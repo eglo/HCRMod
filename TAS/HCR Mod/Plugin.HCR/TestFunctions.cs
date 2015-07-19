@@ -50,7 +50,7 @@ namespace Plugin.HCR {
 			
 			TimeManager tm = AManager<TimeManager>.getInstance();
 			Weather weather = SingletonEntity<HCRMod>.GetEntity<Weather>();
-			Rain rain = weather.GetGameComponent<Rain>();
+			Rain rain = Weather.GetEntity<Rain>();
 			rain.timeToRemove = Time.time;
 			rain.removeRain();
 			weather.nextRainDay = tm.day;
