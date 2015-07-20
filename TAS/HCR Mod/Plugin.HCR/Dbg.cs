@@ -1,10 +1,11 @@
-#if !TRACE_ON
+#if !HCRDEBUG
 #warning Trace info not active
 #endif
+
 #undef USE_STACKFRAMES_FOR_TRACE
 
 //(?<sta>\s*Dbg.+\,\s*)(c)(?<end>\,.*\);)
-//${sta}3${end}
+//${sta}5${end}
 
 using System;
 using System.Diagnostics;
@@ -16,21 +17,6 @@ using System.Text;
 
 namespace Plugin.HCR {
 
-	
-	public class UI {
-				
-		private static Configuration conf = Configuration.getInstance();
-		private static GUIManager gm = AManager<GUIManager>.getInstance();
-
-		public static void print(string str) {
-
-			gm.AddTextLine(str);
-			//send it to debug out too
-			if(conf.IsEnabledDebugOutputString.getBool()) {
-				Dbg.print(str,true);
-			}			
-		}
-	}
 	
 	public class Dbg {
 
@@ -55,21 +41,17 @@ namespace Plugin.HCR {
 			All = -1
 		};
 
-		private static GUIManager gm = AManager<GUIManager>.getInstance();
 		private static Configuration conf = Configuration.getInstance();
-		private static StreamWriter sw = null;
-		
+		private static StreamWriter sw = null;		
 		
 		public static void print(string inStr, bool isUIMsg = false) {
-			Configuration conf = Configuration.getInstance();
 
 			string str = conf.confName + ":DBG:" + inStr;
-
 			if(conf.IsEnabledDebugOutputString.getBool()) {
 				OutputDebugString(str);
 			} else {
 				if(!isUIMsg) {
-					gm.AddTextLine(str);
+					UI.print(str);
 				}
 			}			
 			if(conf.IsEnabledDebugLogFile.getBool()) {
@@ -87,12 +69,12 @@ namespace Plugin.HCR {
 					}
 					sw.WriteLine(str);
 				} catch {
-					gm.AddTextLine(conf.confName + ":Exception: Couldn't create/write to log file");
+					UI.print(conf.confName + ":Exception: Couldn't create/write to log file");
 				}
 			}			
 		}
 		
-		[Conditional("TRACE_ON")]
+		[Conditional("HCRDEBUG")]
 		public static void msg(Dbg.Grp group, int dbgLvl, string str) {
 			if(((conf.isEnabledDebugGroup.get() & (int)group) == 0) || (conf.isEnabledDebugLevel.get() == 0) || (dbgLvl < conf.isEnabledDebugLevel.get())) {
 				return;
@@ -101,7 +83,7 @@ namespace Plugin.HCR {
 			print("MSG:" + group.ToString() + ": " + str);
 		}
 		
-		[Conditional("TRACE_ON")]
+		[Conditional("HCRDEBUG")]
 		public static void msg(Dbg.Grp group, int dbgLvl, string str, params int[] parms) {
 			if(((conf.isEnabledDebugGroup.get() & (int)group) == 0) || (conf.isEnabledDebugLevel.get() == 0) || (dbgLvl < conf.isEnabledDebugLevel.get())) {
 				return;
@@ -114,7 +96,7 @@ namespace Plugin.HCR {
 			print("MSG:" + group.ToString() + ": " + outStr);
 		}
 		
-		[Conditional("TRACE_ON")]		
+		[Conditional("HCRDEBUG")]		
 		public static void msg(Dbg.Grp group, int dbgLvl, string str, params object[] parms) {
 			if(((conf.isEnabledDebugGroup.get() & (int)group) == 0) || (conf.isEnabledDebugLevel.get() == 0) || (dbgLvl < conf.isEnabledDebugLevel.get())) {
 				return;
@@ -129,7 +111,7 @@ namespace Plugin.HCR {
 
 		
 #if USE_STACKFRAMES_FOR_TRACE			
-		[Conditional("TRACE_ON")]
+		[Conditional("HCRDEBUG")]
 		public static void trc(Dbg.Grp group, int dbgLvl, string str = "") {
 			if(((conf.isEnabledDebugGroup.get() & (int)group) == 0) || (conf.isEnabledDebugLevel.get() == 0) || (dbgLvl < conf.isEnabledDebugLevel.get())) {
 				return;
@@ -140,6 +122,7 @@ namespace Plugin.HCR {
 			print("TRC:" + group.ToString() + ": " + frames[1].GetMethod().DeclaringType.ToString() + "." + frames[1].GetMethod().Name + ": " + str);
 		}
 #else
+		[Conditional("HCRDEBUG")]
 		public static void trc(
 			Dbg.Grp group, 
 			int dbgLvl, 
@@ -157,7 +140,7 @@ namespace Plugin.HCR {
 		}
 #endif
 
-		[Conditional("TRACE_ON")]
+		[Conditional("HCRDEBUG")]
 		public static void trcCaller(Dbg.Grp group, int dbgLvl, string str = "") {
 			if(((conf.isEnabledDebugGroup.get() & (int)group) == 0) || (conf.isEnabledDebugLevel.get() == 0) || (dbgLvl < conf.isEnabledDebugLevel.get())) {
 				return;

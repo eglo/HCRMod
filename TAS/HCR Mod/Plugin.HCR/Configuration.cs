@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 
-[assembly: AssemblyVersion("0.3.22.*")] 
+[assembly: AssemblyVersion("0.3.*")] 
 
 namespace Plugin.HCR {
 	public class Configuration {
@@ -45,13 +45,13 @@ namespace Plugin.HCR {
 		//set tracked Resources. selects all between IdxFirst und IdxLast
 		//this will activate only when a new game is started
 		public ConfigValue trackResourcesIdxFirst = new ConfigValue(1);
-		public ConfigValue trackResourcesIdxLast = new ConfigValue(79);	//60+ is tools, 90+ is weapons
+		public ConfigValue trackResourcesIdxLast = new ConfigValue(79);	//60+ is tools, 80+ is weapons etc
 
-		//you have to enable TRACE_ON in Dbg.cs if you want to use these..
-		//debugLevel 0 = off, 1 = all output 2 = less etc		
-		public ConfigValue isEnabledDebugLevel = new ConfigValue(1);
+		//you have to build with HCRDEBUG defined if you want to use any of these
+		//debugLevel 0 = off, 1 = all output, higher level means less output..		
+		public ConfigValue isEnabledDebugLevel = new ConfigValue(6);
 		//use win32 DebugOutputString instead of game text window
-		public ConfigValue IsEnabledDebugOutputString = new ConfigValue(0);
+		public ConfigValue IsEnabledDebugOutputString = new ConfigValue(1);
 		//logfile
 		public ConfigValue IsEnabledDebugLogFile = new ConfigValue(1);
 		//see source code what's used where  

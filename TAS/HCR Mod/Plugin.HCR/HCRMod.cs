@@ -31,7 +31,7 @@ namespace Plugin.HCR {
 
 		IEnumerator initHCRMod(float waitTime) {
 
-			//wait for game load, some parts of the game are not quite init'ed at this time.
+			//wait for game to start, some parts are not quite init'ed at this time.
 			GUIManager gm = AManager<GUIManager>.getInstance();
 			int ticks = 0;
 			while(!gm.inGame) {
@@ -42,8 +42,13 @@ namespace Plugin.HCR {
 
 			try {
 				Configuration conf = Configuration.getInstance();
+				AddEntity<UI>(this.transform);
 				
+#if HCRDEBUG				
+				gm.AddTextLine("HCR - Here Comes The Rain - Mod Version " + conf.version + " DEBUG BUILD " + conf.build);
+#else
 				gm.AddTextLine("HCR - Here Comes The Rain - Mod Version " + conf.version + " Build " + conf.build);
+#endif
 				if(!conf.init()) {
 					Dbg.printErr("Error in configuration init, mod is NOT enabled");
 					yield break;
@@ -51,7 +56,7 @@ namespace Plugin.HCR {
 	
 //TODO_ delete this			
 //overrides ini config...
-				conf.isEnabledDebugLevel.set(5);
+				conf.isEnabledDebugLevel.set(6);
 				conf.isEnabledDebugGroup.set((int)(
 				Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Terrain|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
 				//Dbg.Grp.Init | Dbg.Grp.Startup | Dbg.Grp.Sound | Dbg.Grp.Terrain | Dbg.Grp.Weather
@@ -86,7 +91,7 @@ namespace Plugin.HCR {
 				UI.print("Cheats" + conf.isEnabledCheats.toEnabledString());
 
 				if(conf.isEnabledKeyboardCommands.getBool()) {
-					AddEntity<KeyboardCommands>(this.transform);
+					AddEntity<KeyCommands>(this.transform);
 				}			
 				UI.print("Keyboard commands" + conf.isEnabledKeyboardCommands.toEnabledString());
 				
@@ -103,13 +108,13 @@ namespace Plugin.HCR {
 						}
 					}						
 				}
-				
+#if HCRDEBUG				
 				if(conf.isEnabledDebugLevel.getBool()) {
 					UI.print("Debug enabled level:" + conf.isEnabledDebugLevel.get().ToString());
 					Dbg.Grp grp = (Dbg.Grp)conf.isEnabledDebugGroup.get();
 					UI.print("Debug enabled groups:" + grp.ToString());
 				}
-				
+#endif				
 				Dbg.msg(Dbg.Grp.Startup, 5, "Mod enabled");
 			} catch(Exception e) {
 				Dbg.dumpCorExc("initHCRMod", e);

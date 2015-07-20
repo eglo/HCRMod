@@ -4,10 +4,40 @@ using UnityEngine;
 using Timber_and_Stone;
 
 namespace Plugin.HCR {
-	public class KeyboardCommands : Entity {
 
+	///////////////////////////////////////////////////////////////////////////////////////////
+	
+	public class UI : Entity {
+		private static Configuration conf = Configuration.getInstance();
+		private static GUIManager gm = AManager<GUIManager>.getInstance();
+		public new static GUIText guiText;
+
+		public static void print(string str) {
 		
-		private static KeyCode[] cmdCombo = {KeyCode.LeftShift,KeyCode.LeftControl,KeyCode.LeftAlt};
+			gm.AddTextLine(str);
+			//send it to debug out for logging
+			if(conf.IsEnabledDebugOutputString.getBool()) {
+				Dbg.print(str,true);
+			}
+		}
+
+		public override void Awake() {
+			guiText = go.AddComponent<GUIText>();
+			guiText.material.color = Color.white;
+			guiText.fontStyle = FontStyle.Bold;
+			guiText.fontSize = 14;
+		}
+	}
+	
+	///////////////////////////////////////////////////////////////////////////////////////////
+
+	public class KeyCommands : Entity {
+			
+		private static Configuration conf = Configuration.getInstance();
+		private static GUIManager gm = AManager<GUIManager>.getInstance();
+		
+		public static KeyCode[] cmdCombo = {KeyCode.LeftShift,KeyCode.LeftControl,KeyCode.LeftAlt};
+		public static bool doHookMouseEvents = false;
 
 		public delegate void CmdFunc();
 		private Dictionary<KeyCode,CmdFunc> cmdDict = new Dictionary<KeyCode,CmdFunc >{ 
@@ -18,7 +48,9 @@ namespace Plugin.HCR {
 			{KeyCode.Alpha2,setGameSpeed2},
 			{KeyCode.Alpha3,setGameSpeed3},
 			{KeyCode.Alpha4,setGameSpeed4},
-			{KeyCode.Alpha5,setGameSpeed5},
+			{KeyCode.Alpha5,setGameSpeed5}
+#if HCRDEBUG
+			,
 			{KeyCode.KeypadPlus,TestFunctions.incDebugLvl},
 			{KeyCode.KeypadMinus,TestFunctions.decDebugLvl},			
 			{KeyCode.F1,TestFunctions.tf[0]},
@@ -30,7 +62,10 @@ namespace Plugin.HCR {
 			{KeyCode.F7,TestFunctions.tf[6]},
 			{KeyCode.F8,TestFunctions.tf[7]},
 			{KeyCode.F9,TestFunctions.tf[8]},
-			{KeyCode.F10,TestFunctions.tf[9]}
+			{KeyCode.F10,TestFunctions.tf[9]},
+			{KeyCode.F11,TestFunctions.tf[10]},
+			{KeyCode.F12,TestFunctions.tf[11]}
+#endif
 		};
 
 		///////////////////////////////////////////////////////////////////////////////////////////
@@ -42,14 +77,14 @@ namespace Plugin.HCR {
 			}
 			str += "<key> for activation.";
 			UI.print(str);
-			UI.print("Command+H: help");
-			UI.print("Command+X: kill all enemies");
-			UI.print("Command+R: start rain");
+			UI.print("Command+H: Help");
 			UI.print("Command+1: Game speed normal");
 			UI.print("Command+2: Game speed 2x");
 			UI.print("Command+3: Game speed 3x");
 			UI.print("Command+4: Game speed 4x");
 			UI.print("Command+5: Game speed 5x");
+			UI.print("Command+R: Let it rain");
+			UI.print("Command+X: Kill all enemies");
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
@@ -60,8 +95,13 @@ namespace Plugin.HCR {
 		
 		///////////////////////////////////////////////////////////////////////////////////////////
 		public static void letItRain() {
+			TimeManager tm = AManager<TimeManager>.getInstance();
 			Weather weather = SingletonEntity<HCRMod>.GetEntity<Weather>();
-			weather.doFillHoles(0, 0, weather.worldSize3i.x, weather.worldSize3i.z);
+			Rain rain = Weather.GetEntity<Rain>();
+			rain.timeToRemove = Time.time;
+			rain.removeRain();
+			weather.nextRainDay = tm.day;
+			weather.nextRainHour = tm.hour;
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////		
@@ -109,7 +149,7 @@ namespace Plugin.HCR {
 				str += (key.ToString() + "+");
 			}
 			str += "H for help.";
-			Dbg.printMsg(str);
+			UI.print(str);
 		}
 
 		public void OnGUI() {
@@ -123,6 +163,15 @@ namespace Plugin.HCR {
 				} catch(Exception e) { 
 					Dbg.dumpExc(e);
 				}
+			}
+			if( doHookMouseEvents && checkPressed(cmdCombo)) {
+				try {
+					TestFunctions.HookMouseEvents();
+				} catch(Exception) {
+					//Dbg.dumpExc(e);
+				}
+			} else {
+				UI.guiText.text = "";
 			}
 		}
 		
@@ -145,10 +194,7 @@ namespace Plugin.HCR {
 			}
 			return true;
 		}
+
 	}
-
-	///////////////////////////////////////////////////////////////////////////////////////////
-
-		
 }
 

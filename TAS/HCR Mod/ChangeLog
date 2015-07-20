@@ -1,3 +1,15 @@
+2015-07-20  tengel  <tengel@home.de>
+
+	* Plugin.csproj:
+	* UI.cs:
+	* Plugin.userprefs:
+	* Dbg.cs:
+	* HCRMod.cs:
+	* Configuration.cs:
+	* TestFunctions.cs:
+	* KeyboardCommands.cs: 
+Refactoring file KeyboardCommands.cs => UI.cs; added RayCast test function
+
 2015-07-19  tengel  <tengel@home.de>
 
 	* Plugin.userprefs:
