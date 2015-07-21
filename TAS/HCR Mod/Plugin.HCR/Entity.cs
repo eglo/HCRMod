@@ -7,7 +7,8 @@ namespace Plugin.HCR {
 	public abstract class SingletonEntity<T> : Entity {
 		protected static SingletonEntity<T> instance = null;
 
-		protected override void Setup(
+		//*****************************************************************************************		
+		protected override void setup(
 			Transform parent = null, 
 			Vector3 ?position = null, 
 			Quaternion ?rotation = null, 
@@ -19,10 +20,11 @@ namespace Plugin.HCR {
 			if (instance != null)
 				throw new ArgumentException("Singleton already exists");
 			
-			base.Setup(parent, position, rotation, scale, tag, layer);
+			base.setup(parent, position, rotation, scale, tag, layer);
 			instance = this;
 		}
 			
+		//*****************************************************************************************		
 		public new static U GetEntity<U>() where U : Entity {
 			object obj = instance.go.GetComponent(typeof(U));
 			if (obj != null) {
@@ -31,6 +33,7 @@ namespace Plugin.HCR {
 				throw new ArgumentException("Entity not found");
 			}
 		}
+		//*****************************************************************************************		
 		public new static U GetEntityInParent<U>() where U : Entity {
 			object obj = instance.gameObject.GetComponent(typeof(U));
 			if (obj != null) {
@@ -41,25 +44,26 @@ namespace Plugin.HCR {
 		}
 	}
 
-	///////////////////////////////////////////////////////////////////////////////////////////
+	//*****************************************************************************************
 
 
 	public abstract class Entity : MonoBehaviour {
 		protected GameObject go = new GameObject("iNiTiAl");
 		
+		//*****************************************************************************************		
 		protected virtual T AddEntity<T>(Transform parent)  where T : Entity {
 
 			Dbg.trcCaller(Dbg.Grp.Init, 5,"Start AddGameComponent: "+typeof(T).FullName);
 
 			T comp = go.AddComponent<T>();
-			comp.Setup(parent);
+			comp.setup(parent);
 		
 			Dbg.trcCaller(Dbg.Grp.Init, 5,"Done AddGameComponent: "+ comp.go.name + " parent is:" + comp.gameObject.name);			
 			return comp;
 		}
 		
-		
-		protected virtual void Setup(
+		//*****************************************************************************************				
+		protected virtual void setup(
 			Transform parent = null, 
 			Vector3 ?position = null, 
 			Quaternion ?rotation = null, 
@@ -101,6 +105,7 @@ namespace Plugin.HCR {
 			}
 		}
 
+		//*****************************************************************************************		
 		public T GetEntity<T>() where T : Entity {
 			object obj = go.GetComponent(typeof(T));
 			if (obj != null) {
@@ -111,6 +116,7 @@ namespace Plugin.HCR {
 			}
 		}
 
+		//*****************************************************************************************		
 		public U GetEntityInParent<U>() where U : Entity {
 			object obj = gameObject.GetComponent(typeof(U));
 			if (obj != null) {
@@ -120,6 +126,7 @@ namespace Plugin.HCR {
 			}
 		}
 
+		//*****************************************************************************************		
 		public static U FindEntity<U>() where U : Entity {
 			object obj = GameObject.FindObjectOfType(typeof(U));
 			if (obj != null) {
@@ -129,6 +136,7 @@ namespace Plugin.HCR {
 			}
 		}
 		
+		//*****************************************************************************************		
 		public abstract void Awake();
 	}
 }

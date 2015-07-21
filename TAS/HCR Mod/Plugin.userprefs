@@ -1,12 +1,10 @@
 ﻿<Properties GitUserInfo="UsingMD">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Plugin.HCR\Configuration.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Plugin.HCR\Lightning.cs">
     <Files>
-      <File FileName="Plugin.HCR\TestFunctions.cs" Line="12" Column="1" />
-      <File FileName="Plugin.HCR\Dbg.cs" Line="2" Column="17" />
-      <File FileName="Plugin.HCR\HCRMod.cs" Line="53" Column="6" />
-      <File FileName="Plugin.HCR\Configuration.cs" Line="25" Column="64" />
-      <File FileName="Plugin.HCR\KeyboardCommands.cs" Line="133" Column="1" />
+      <File FileName="Plugin.HCR\Lightning.cs" Line="33" Column="78" />
+      <File FileName="Plugin.HCR\Rain.cs" Line="88" Column="23" />
+      <File FileName="Plugin.HCR\Weather.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

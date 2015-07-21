@@ -44,8 +44,9 @@ namespace Plugin.HCR {
 		private static Configuration conf = Configuration.getInstance();
 		private static StreamWriter sw = null;		
 		
-		public static void print(string inStr, bool isUIMsg = false) {
+		//*****************************************************************************************		
 
+		public static void print(string inStr, bool isUIMsg = false) {
 			string str = conf.confName + ":DBG:" + inStr;
 			if(conf.IsEnabledDebugOutputString.getBool()) {
 				OutputDebugString(str);
@@ -58,6 +59,8 @@ namespace Plugin.HCR {
 				log(str);
 			}			
 		}
+
+		//*****************************************************************************************		
 
 		private static void log(string str) {
 			
@@ -74,6 +77,7 @@ namespace Plugin.HCR {
 			}			
 		}
 		
+		//*****************************************************************************************		
 		[Conditional("HCRDEBUG")]
 		public static void msg(Dbg.Grp group, int dbgLvl, string str) {
 			if(((conf.isEnabledDebugGroup.get() & (int)group) == 0) || (conf.isEnabledDebugLevel.get() == 0) || (dbgLvl < conf.isEnabledDebugLevel.get())) {
@@ -83,6 +87,7 @@ namespace Plugin.HCR {
 			print("MSG:" + group.ToString() + ": " + str);
 		}
 		
+		//*****************************************************************************************		
 		[Conditional("HCRDEBUG")]
 		public static void msg(Dbg.Grp group, int dbgLvl, string str, params int[] parms) {
 			if(((conf.isEnabledDebugGroup.get() & (int)group) == 0) || (conf.isEnabledDebugLevel.get() == 0) || (dbgLvl < conf.isEnabledDebugLevel.get())) {
@@ -96,6 +101,7 @@ namespace Plugin.HCR {
 			print("MSG:" + group.ToString() + ": " + outStr);
 		}
 		
+		//*****************************************************************************************		
 		[Conditional("HCRDEBUG")]		
 		public static void msg(Dbg.Grp group, int dbgLvl, string str, params object[] parms) {
 			if(((conf.isEnabledDebugGroup.get() & (int)group) == 0) || (conf.isEnabledDebugLevel.get() == 0) || (dbgLvl < conf.isEnabledDebugLevel.get())) {
@@ -111,6 +117,7 @@ namespace Plugin.HCR {
 
 		
 #if USE_STACKFRAMES_FOR_TRACE			
+		//*****************************************************************************************		
 		[Conditional("HCRDEBUG")]
 		public static void trc(Dbg.Grp group, int dbgLvl, string str = "") {
 			if(((conf.isEnabledDebugGroup.get() & (int)group) == 0) || (conf.isEnabledDebugLevel.get() == 0) || (dbgLvl < conf.isEnabledDebugLevel.get())) {
@@ -122,6 +129,7 @@ namespace Plugin.HCR {
 			print("TRC:" + group.ToString() + ": " + frames[1].GetMethod().DeclaringType.ToString() + "." + frames[1].GetMethod().Name + ": " + str);
 		}
 #else
+		//*****************************************************************************************		
 		[Conditional("HCRDEBUG")]
 		public static void trc(
 			Dbg.Grp group, 
@@ -139,7 +147,7 @@ namespace Plugin.HCR {
 			print("TRC:" + group.ToString() + ": " + source + ":" + memberName + ":" + sourceLineNumber + ": " + str);			
 		}
 #endif
-
+		//*****************************************************************************************		
 		[Conditional("HCRDEBUG")]
 		public static void trcCaller(Dbg.Grp group, int dbgLvl, string str = "") {
 			if(((conf.isEnabledDebugGroup.get() & (int)group) == 0) || (conf.isEnabledDebugLevel.get() == 0) || (dbgLvl < conf.isEnabledDebugLevel.get())) {
@@ -151,6 +159,7 @@ namespace Plugin.HCR {
 			print("TRC:" + group.ToString() + ": " + frames[2].GetMethod().DeclaringType.ToString() + "." + frames[2].GetMethod().Name + ": " + str);
 		}
 		
+		//*****************************************************************************************		
 		public static void dumpExc(Exception e) {
 			print("EXC:" + e.ToString());
 			StackTrace st = new StackTrace(e);
@@ -161,6 +170,7 @@ namespace Plugin.HCR {
 			}
 		}
 		
+		//*****************************************************************************************		
 		public static void dumpCorExc(string corName, Exception e) {
 			print("COREXC:" + corName + ": " + e.ToString());
 			StackTrace st = new StackTrace(e);
@@ -171,10 +181,12 @@ namespace Plugin.HCR {
 			}
 		}
 
+		//*****************************************************************************************		
 		public static void printMsg(string str) {
 			print("MSG:" + str);
 		}		
 		
+		//*****************************************************************************************		
 		public static void printErr(string str) {
 			//print this to game text window
 			UI.print(conf.confName + ":ERROR: " + str);

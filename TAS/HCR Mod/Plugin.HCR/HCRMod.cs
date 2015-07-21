@@ -15,6 +15,7 @@ namespace Plugin.HCR {
 		}
 	}
 
+	//*****************************************************************************************		
 	public class HCRMod : SingletonEntity<HCRMod> {
 
 
@@ -29,6 +30,7 @@ namespace Plugin.HCR {
 
 		}
 
+		//*****************************************************************************************		
 		IEnumerator initHCRMod(float waitTime) {
 
 			//wait for game to start, some parts are not quite init'ed at this time.
@@ -56,7 +58,7 @@ namespace Plugin.HCR {
 	
 //TODO_ delete this			
 //overrides ini config...
-				conf.isEnabledDebugLevel.set(6);
+				conf.isEnabledDebugLevel.set(4);
 				conf.isEnabledDebugGroup.set((int)(
 				Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Terrain|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
 				//Dbg.Grp.Init | Dbg.Grp.Startup | Dbg.Grp.Sound | Dbg.Grp.Terrain | Dbg.Grp.Weather

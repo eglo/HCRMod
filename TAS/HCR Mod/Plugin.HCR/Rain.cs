@@ -13,6 +13,7 @@ namespace Plugin.HCR {
 		public bool isRainOnMap = false;
 		public float timeToRemove = 0.0f;
 	
+		//*****************************************************************************************
 		public class RainDrop {
 			
 			public GameObject blob;
@@ -28,50 +29,11 @@ namespace Plugin.HCR {
 			}		
 		}
 
-		public void startRain(int type) {
-			Dbg.trc(Dbg.Grp.Rain, 5);
-
-			//TODO: check: shouldnt really happen at this point, but it does...?
-			if(isRainOnMap) {
-				return;
-			}
-			isRainOnMap = true;
-
-			RainSound rs = GetEntity<RainSound>();
-			rs.rainSoundPlay(type);
-			//stay on map for about 5-10 mins, this doesn't care about game speed settings ..(?)
-			timeToRemove = Time.time + UnityEngine.Random.Range(300.0f, 600.0f);
-			
-			isRainOnMap = true;
-		} 
-
-		public void addRainDrop(Vector3 location, Vector3 minHeight) {
-			RainDrop rainDrop = new RainDrop(location,minHeight);
-			rainDrop.blob = Instantiate(rainDrop.blob, location, Quaternion.identity) as GameObject;
-			rainDropsOnMap.Add(rainDrop);
-			rainDrop.blob.SetActiveRecursively(true);	//TODO: check: is this needed?
-			Dbg.trc(Dbg.Grp.Rain, 3);			
-		} 
-
-		public void removeRain() {
-			Dbg.trc(Dbg.Grp.Rain, 5);
-
-			foreach(RainDrop rainDrop in rainDropsOnMap) {
-				UnityEngine.Object.Destroy(rainDrop.blob); 
-			}
-			rainDropsOnMap.Clear();
-			RainSound rs = GetEntity<RainSound>();;
-			rs.rainSoundStop();
-
-			isRainOnMap = false;
-			//UI.print("The rain has stopped");
-		} 
-		
+		//*****************************************************************************************
 		public override void Awake() {
 			Dbg.trc(Dbg.Grp.Init, 5);
 		}
 		
-
 		public void Start() {
 			Dbg.trc(Dbg.Grp.Startup, 5);
 			
@@ -93,6 +55,49 @@ namespace Plugin.HCR {
 				}
 			}
 		}
+
+		//*****************************************************************************************
+		public void startRain(int type) {
+			Dbg.trc(Dbg.Grp.Rain, 5);
+
+			//TODO: check: shouldnt really happen at this point, but it does...?
+			if(isRainOnMap) {
+				return;
+			}
+			isRainOnMap = true;
+
+			RainSound rs = GetEntity<RainSound>();
+			rs.rainSoundPlay(type);
+			//stay on map for about 5-10 mins, this doesn't care about game speed settings ..(?)
+			timeToRemove = Time.time + UnityEngine.Random.Range(300.0f, 600.0f);
+			
+			isRainOnMap = true;
+		} 
+
+		//*****************************************************************************************
+		public void addRainDrop(Vector3 location, Vector3 minHeight) {
+			RainDrop rainDrop = new RainDrop(location,minHeight);
+			rainDrop.blob = Instantiate(rainDrop.blob, location, Quaternion.identity) as GameObject;
+			rainDropsOnMap.Add(rainDrop);
+			rainDrop.blob.SetActiveRecursively(true);	//TODO: check: is this needed?
+			Dbg.trc(Dbg.Grp.Rain, 3);			
+		} 
+
+		//*****************************************************************************************
+		public void removeRain() {
+			Dbg.trc(Dbg.Grp.Rain, 5);
+
+			foreach(RainDrop rainDrop in rainDropsOnMap) {
+				UnityEngine.Object.Destroy(rainDrop.blob); 
+			}
+			rainDropsOnMap.Clear();
+			RainSound rs = GetEntity<RainSound>();;
+			rs.rainSoundStop();
+
+			isRainOnMap = false;
+			//UI.print("The rain has stopped");
+		} 
+		
 	}	
 }
 

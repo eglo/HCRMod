@@ -1,3 +1,24 @@
+2015-07-21  tengel  <tengel@home.de>
+
+	* Plugin.csproj:
+	* UI.cs:
+	* Plugin.userprefs:
+	* Dbg.cs:
+	* Rain.cs:
+	* Cheats.cs:
+	* HCRMod.cs:
+	* Entity.cs:
+	* IniFile.cs:
+	* Weather.cs:
+	* Merchants.cs:
+	* Lightning.cs:
+	* RainSound.cs:
+	* UnitTraits.cs:
+	* Immigrants.cs:
+	* TestFunctions.cs:
+	* Configuration.cs: 
+fixed class Entity; changed comment lines for readability
+
 2015-07-20  tengel  <tengel@home.de>
 
 	* Plugin.csproj:

@@ -61,11 +61,15 @@ namespace Plugin.HCR {
 		
 		private IniFile iniFile;
 		
+		//*****************************************************************************************		
+
 		private static Configuration instance = new Configuration();			
 		public static Configuration getInstance() {
 			return instance; 
 		}
 		
+		//*****************************************************************************************		
+
 		public bool init() {
 
 			iniFile = new IniFile(filePathPrefix + "/" + confName + ".ini");
@@ -76,6 +80,8 @@ namespace Plugin.HCR {
 			return true;
 		}
 		
+		//*****************************************************************************************		
+
 		private bool load() {
 			try {
 				string iniVersionStr;
@@ -125,6 +131,8 @@ namespace Plugin.HCR {
 			}
 		}
 		
+		//*****************************************************************************************		
+
 		private void save() {
 			iniFile.write(confName, version.ToString(), confName);
 			FieldInfo[] fl = this.GetType().GetFields();
@@ -144,6 +152,8 @@ namespace Plugin.HCR {
 		
 	}		
 	
+	//*****************************************************************************************		
+
 	public class ConfigValue {
 		public object _value;
 		

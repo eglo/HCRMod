@@ -59,7 +59,6 @@
     <Compile Include="Plugin.HCR\PluginMain.cs" />
     <Compile Include="Plugin.HCR\Configuration.cs" />
     <Compile Include="Plugin.HCR\IniFile.cs" />
-    <Compile Include="Plugin.HCR\Rain.cs" />
     <Compile Include="Plugin.HCR\Dbg.cs" />
     <Compile Include="Plugin.HCR\InvasionHandler.cs" />
     <Compile Include="Plugin.HCR\HCRMod.cs" />
@@ -73,6 +72,7 @@
     <Compile Include="Plugin.HCR\RainSound.cs" />
     <Compile Include="Plugin.HCR\Entity.cs" />
     <Compile Include="Plugin.HCR\UI.cs" />
+    <Compile Include="Plugin.HCR\Rain.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

@@ -14,6 +14,7 @@ namespace Plugin.HCR {
 		private bool isCorRunning;
 		public AudioSource asrc;		
 			
+		//*****************************************************************************************		
 		public override void Awake() {
 		}
 		
@@ -78,6 +79,7 @@ namespace Plugin.HCR {
 		}		
 	}
 	
+	//*****************************************************************************************		
 	public class RainSound : SingletonEntity<RainSound> {
 		private string applPath = "file:///" + Application.dataPath + "/../";
 		public AudioSource asrcRainLight;		
@@ -86,6 +88,7 @@ namespace Plugin.HCR {
 		public AudioSource asrcCurrent;		
 		public Fader fader;
 		
+		//*****************************************************************************************		
 		public override void Awake() {
 			Dbg.trc(Dbg.Grp.Init, 5);
 		}
@@ -111,7 +114,7 @@ namespace Plugin.HCR {
 			fader = AddEntity<Fader>(this.transform);
 		}
 				
-
+		//*****************************************************************************************		
 		IEnumerator rainSoundLoad(AudioSource asrc,string fileName) {
 			Configuration conf = Configuration.getInstance();
 			string filePath = applPath+conf.filePathPrefix+"/"+fileName;
@@ -132,6 +135,7 @@ namespace Plugin.HCR {
 			}
 		}
 		
+		//*****************************************************************************************		
 		public void rainSoundPlay(int type) {
 			Dbg.trc(Dbg.Grp.Sound, 5, asrcCurrent.ToString()+":"+asrcCurrent.clip.name);
 

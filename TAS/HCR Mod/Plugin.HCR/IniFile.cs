@@ -14,6 +14,8 @@ namespace Plugin.HCR {
 		static extern int GetPrivateProfileString(string section, string key, string Default, StringBuilder retVal, int size, string filePath);
 		
 		string path;
+
+		//*****************************************************************************************		
 		
 		public IniFile(string iniFileName) {
 			path = new FileInfo(iniFileName).FullName.ToString();

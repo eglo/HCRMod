@@ -13,7 +13,7 @@ namespace Plugin.HCR {
 		public static int lastImmigrantDay = 0;
 		public static int nextImmigrantDay = 0;
 		
-		///////////////////////////////////////////////////////////////////////////////////////////
+		//*****************************************************************************************
 
 		public override void Awake() {
 			Dbg.trc(Dbg.Grp.Init, 5);
@@ -28,7 +28,7 @@ namespace Plugin.HCR {
 			StartCoroutine(doImmigrants(10.0F));
 		}
 		
-		///////////////////////////////////////////////////////////////////////////////////////////
+		//*****************************************************************************************
 		
 		IEnumerator doImmigrants(float waitTime) {
 			TimeManager tm = AManager<TimeManager>.getInstance();
@@ -62,7 +62,7 @@ namespace Plugin.HCR {
 			}	
 		}
 
-		///////////////////////////////////////////////////////////////////////////////////////////
+		//*****************************************************************************************
 		
 		public static void processEvent(ref EventMigrant evt) {
 			TimeManager tm = AManager<TimeManager>.getInstance();

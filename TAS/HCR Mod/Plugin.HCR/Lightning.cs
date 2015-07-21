@@ -17,7 +17,25 @@ namespace Plugin.HCR {
 		private float[] freqData = new float[samples];
 		private AudioSource asrc;		
 		private GameObject lightGameObject = new GameObject("Lightning light");
+		private Vector3 pos;
+
+		public class Bolt  {
+			
+			public GameObject bolt;
+			public Vector3 location;
+			public Vector3 minHeight;
+			
+			public Bolt(Vector3 _location, Vector3 _minHeight) {
+				location = _location;
+				minHeight = _minHeight;
+				bolt = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+				bolt.transform.localScale = new Vector3(1.0f,10.0f,1.0f);
+				bolt.renderer.material = AManager<ChunkManager>.getInstance().materials[3];
+			}		
+		}
 		
+		//*****************************************************************************************		
+
 		public override void Awake() {
 			Dbg.trc(Dbg.Grp.Init, 5);
 			
@@ -27,7 +45,8 @@ namespace Plugin.HCR {
 			lightGameObject.light.intensity = 0;
 			lightGameObject.light.range = 0;
 			lightGameObject.transform.parent = go.transform;
-			lightGameObject.transform.position = new Vector3(20, 20, 20);
+			pos = new Vector3(UnityEngine.Random.Range(0,20), 20, UnityEngine.Random.Range(0,20));
+			lightGameObject.transform.position = pos;
 
 			int fSmplRate = AudioSettings.outputSampleRate/2;
 			bLow = (fMin/(fSmplRate/samples));
@@ -52,9 +71,9 @@ namespace Plugin.HCR {
 				if (!asrc || !asrc.isPlaying)
 					return;
 
-				Dbg.trc(Dbg.Grp.Light, 5);
-				Dbg.trc(Dbg.Grp.Light, 5,"Audiosource linked: "+asrc.gameObject.name+":"+asrc.name);			
-				Dbg.trc(Dbg.Grp.Sound, 5, "clip: " + asrc.clip.ToString()+":" + asrc.clip.name);
+				Dbg.trc(Dbg.Grp.Light, 3);
+				Dbg.trc(Dbg.Grp.Light, 2,"Audiosource linked: "+asrc.gameObject.name+":"+asrc.name);			
+				Dbg.trc(Dbg.Grp.Sound, 2, "clip: " + asrc.clip.ToString()+":" + asrc.clip.name);
 				
 				asrc.GetSpectrumData(freqData,0,FFTWindow.BlackmanHarris);
 				float vol = 0.0f;
@@ -63,15 +82,17 @@ namespace Plugin.HCR {
 					vol += freqData[i];
 				}
 				vol /= (bHigh - bLow + 1);
-				Dbg.trc(Dbg.Grp.Light, 5, "vol = "+ vol.ToString());
+				Dbg.trc(Dbg.Grp.Light, 2, "vol = "+ vol.ToString());
 
 				//cut off values just from trial and error for now 
 				//needs a better selection of frequencies, 20-8000 is probably not optimal at all
 				vol *= asrc.volume;
 				float intensity = vol;
-				if (intensity < 0.003f)
+				if (intensity < 0.003f) {
+					pos = new Vector3(UnityEngine.Random.Range(0,20), 20, UnityEngine.Random.Range(0,20));
+					lightGameObject.transform.position = pos;					
 					intensity *= 0f;	
-				else if (intensity < 0.006f)
+				} else if (intensity < 0.006f)
 					intensity *= 10f;
 				else if (intensity < 0.008f)
 					intensity *= 20f;

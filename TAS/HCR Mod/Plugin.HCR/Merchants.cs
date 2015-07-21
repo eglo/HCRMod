@@ -14,7 +14,7 @@ namespace Plugin.HCR {
 		public static int lastMerchantDay = 0;
 		public static int nextMerchantDay = 0;
 		
-		///////////////////////////////////////////////////////////////////////////////////////////
+		//*****************************************************************************************
 
 		public override void Awake() {
 			Dbg.trc(Dbg.Grp.Init, 5);
@@ -29,7 +29,7 @@ namespace Plugin.HCR {
 			StartCoroutine(doMerchants(10.0F));
 		}
 		
-		///////////////////////////////////////////////////////////////////////////////////////////
+		//*****************************************************************************************
 		
 		IEnumerator doMerchants(float waitTime) {
 			TimeManager tm = AManager<TimeManager>.getInstance();

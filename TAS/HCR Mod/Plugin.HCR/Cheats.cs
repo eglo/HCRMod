@@ -11,7 +11,7 @@ namespace Plugin.HCR {
 		
 		public static bool furCheatDone = false;
 		
-		///////////////////////////////////////////////////////////////////////////////////////////
+		//*****************************************************************************************
 
 		public override void Awake() {
 		}
@@ -25,7 +25,7 @@ namespace Plugin.HCR {
 			StartCoroutine(doCheats(5.0F));
 		}
 		
-		///////////////////////////////////////////////////////////////////////////////////////////
+		//*****************************************************************************************
 		
 		IEnumerator doCheats(float waitTime) {
 			TimeManager tm = AManager<TimeManager>.getInstance();
@@ -40,7 +40,7 @@ namespace Plugin.HCR {
 					cDay = tm.day;
 					cHour = tm.hour;
 
-					//animal fur cheat, gives a chance for animla found on 1st day
+					//fur cheat, gives a chance for animal fur found on 1st day
 					if((cDay == 1) && !furCheatDone && (UnityEngine.Random.Range(0, 200) == 0)) {
 						Dbg.trc(Dbg.Grp.Else, 5, "furCheat done");		
 						rm.AddResource(11, 5);

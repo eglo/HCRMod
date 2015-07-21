@@ -24,7 +24,7 @@ namespace Plugin.HCR {
 		};
 
 
-		///////////////////////////////////////////////////////////////////////////////////////////		
+		//*****************************************************************************************		
 		public static void incDebugLvl() {
 
 			Configuration conf = Configuration.getInstance();
@@ -34,7 +34,7 @@ namespace Plugin.HCR {
 			Dbg.printMsg("Debug level increased, now set to: " + conf.isEnabledDebugLevel.get().ToString());
 		}
 
-		///////////////////////////////////////////////////////////////////////////////////////////		
+		//*****************************************************************************************		
 		public static void decDebugLvl() {
 			
 			Configuration conf = Configuration.getInstance();
@@ -44,7 +44,7 @@ namespace Plugin.HCR {
 			}
 		}
 
-		///////////////////////////////////////////////////////////////////////////////////////////		
+		//*****************************************************************************************		
 		public static void halp() {
 			Dbg.printMsg("Forgot it *again*? you dense.. ");
 			int i = 1;
@@ -55,7 +55,7 @@ namespace Plugin.HCR {
 			}
 		}					
 		
-		///////////////////////////////////////////////////////////////////////////////////////////		
+		//*****************************************************************************************		
 		public static void weatherEvent() {
 			Dbg.printMsg("Test invoked: " + MethodBase.GetCurrentMethod().Name);
 			
@@ -68,7 +68,7 @@ namespace Plugin.HCR {
 			weather.nextRainHour = tm.hour;
 		}
 		
-		///////////////////////////////////////////////////////////////////////////////////////////		
+		//*****************************************************************************************		
 		public static void tryImmigrant() {
 			Dbg.printMsg("Test invoked: " + MethodBase.GetCurrentMethod().Name);
 
@@ -76,7 +76,7 @@ namespace Plugin.HCR {
 			Immigrants.nextImmigrantDay = tm.day;
 		}
 		
-		///////////////////////////////////////////////////////////////////////////////////////////		
+		//*****************************************************************************************		
 		public static void dumpTraitsDict() {
 			Dbg.printMsg("Test invoked: " + MethodBase.GetCurrentMethod().Name);
 
@@ -85,7 +85,7 @@ namespace Plugin.HCR {
 //			}
 		}
 		
-		///////////////////////////////////////////////////////////////////////////////////////////		
+		//*****************************************************************************************		
 		public static void dumpTreeData() {
 			Dbg.printMsg("Test invoked: " + MethodBase.GetCurrentMethod().Name);
 
@@ -96,7 +96,7 @@ namespace Plugin.HCR {
 			}
 		}
 		
-		///////////////////////////////////////////////////////////////////////////////////////////		
+		//*****************************************************************************************		
 		public static void dumpTradeResources() {
 			Dbg.printMsg("Test invoked: " + MethodBase.GetCurrentMethod().Name);
 			
@@ -110,7 +110,7 @@ namespace Plugin.HCR {
 			}
 		}
 		
-		///////////////////////////////////////////////////////////////////////////////////////////		
+		//*****************************************************************************************		
 		public static void dumpTrackedResources() {
 			Dbg.printMsg("Test invoked: " + MethodBase.GetCurrentMethod().Name);
 			
@@ -122,7 +122,7 @@ namespace Plugin.HCR {
 			}
 		}
 		
-		///////////////////////////////////////////////////////////////////////////////////////////		
+		//*****************************************************************************************		
 		public static void dumpDeadEnemies() {
 			Dbg.printMsg("Test invoked: " + MethodBase.GetCurrentMethod().Name);
 						
@@ -139,7 +139,7 @@ namespace Plugin.HCR {
 			}
 		}
 		
-		///////////////////////////////////////////////////////////////////////////////////////////		
+		//*****************************************************************************************		
 		//  10 animal hide, 18 scrap metal, 47 leather, 55 coin
 		public static void stuffDeadEnemies() {
 			Dbg.printMsg("Test invoked: " + MethodBase.GetCurrentMethod().Name);
@@ -159,7 +159,7 @@ namespace Plugin.HCR {
 		}
 
 	
-		///////////////////////////////////////////////////////////////////////////////////////////		
+		//*****************************************************************************************		
 
 		public static void toggleHookMouseEvents() {
 			Dbg.printMsg("Test invoked: " + MethodBase.GetCurrentMethod().Name);
@@ -204,12 +204,12 @@ namespace Plugin.HCR {
 		}
 
 
-		///////////////////////////////////////////////////////////////////////////////////////////		
+		//*****************************************************************************************		
 		public static void unassignedTestFunc() {
 			Dbg.printMsg("Test invoked: " + MethodBase.GetCurrentMethod().Name);
 		}
 
-		///////////////////////////////////////////////////////////////////////////////////////////		
+		//*****************************************************************************************		
 
 //		public class Hack : MonoBehaviour {
 //			
