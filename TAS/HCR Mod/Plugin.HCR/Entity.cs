@@ -24,6 +24,14 @@ namespace Plugin.HCR {
 			instance = this;
 		}
 			
+
+		public static SingletonEntity<T> getInstance() {
+			if (instance != null)
+				return (SingletonEntity<T>) instance;
+			else
+				throw new ArgumentException("Singleton not created");			
+		}
+
 		//*****************************************************************************************		
 		public new static U GetEntity<U>() where U : Entity {
 			object obj = instance.go.GetComponent(typeof(U));

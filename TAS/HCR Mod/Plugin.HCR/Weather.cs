@@ -80,7 +80,7 @@ namespace Plugin.HCR {
 							case 1:	
 							case 2:	
 								UI.print("It's raining. Good thing all the dirt gets washed away.");
-								StartCoroutine(createRainDrops(xpos, zpos, xext, zext, 1));
+								StartCoroutine(createRain(xpos, zpos, xext, zext, 1));
 								StartCoroutine(doRemoveBurntDirt(xpos, zpos, xext, zext));
 								break;
 								
@@ -88,7 +88,7 @@ namespace Plugin.HCR {
 							case 4:	
 							case 5:	
 								UI.print("Lots of rain today. Even those dead trees are growing sprouts again");
-								StartCoroutine(createRainDrops(xpos, zpos, xext, zext, 2));
+								StartCoroutine(createRain(xpos, zpos, xext, zext, 2));
 								StartCoroutine(doRemoveBurntDirt(xpos, zpos, xext, zext));
 								StartCoroutine(doRegrowTrees(xpos, zpos, xext, zext));
 								break;
@@ -96,7 +96,7 @@ namespace Plugin.HCR {
 							case 6:	
 							case 7:	
 								UI.print("It's pouring. The muddy water fills up puddles everywhere");
-								StartCoroutine(createRainDrops(xpos, zpos, xext, zext, 3));
+								StartCoroutine(createRain(xpos, zpos, xext, zext, 3));
 								StartCoroutine(doRemoveBurntDirt(xpos, zpos, xext, zext));
 								StartCoroutine(doRegrowTrees(xpos, zpos, xext, zext));
 								StartCoroutine(doFillHoles(xpos, zpos, xext, zext));
@@ -269,7 +269,7 @@ namespace Plugin.HCR {
 		//*****************************************************************************************
 		//create random rain drops over the map
 		
-		IEnumerator createRainDrops(int xpos, int zpos, int xext, int zext, int type) {
+		IEnumerator createRain(int xpos, int zpos, int xext, int zext, int type) {
 			
 			if(Configuration.getInstance().isEnabledShowRainBlocks.get() == 0) {
 				yield return null;

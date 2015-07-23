@@ -1,3 +1,13 @@
+2015-07-23  tengel  <tengel@home.de>
+
+	* Plugin.userprefs:
+	* Rain.cs:
+	* Entity.cs:
+	* HCRMod.cs:
+	* Weather.cs:
+	* Lightning.cs: 
+Lightning LineRenderer WIP
+
 2015-07-21  tengel  <tengel@home.de>
 
 	* Plugin.csproj:

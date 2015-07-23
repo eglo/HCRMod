@@ -60,8 +60,8 @@ namespace Plugin.HCR {
 //overrides ini config...
 				conf.isEnabledDebugLevel.set(4);
 				conf.isEnabledDebugGroup.set((int)(
-				Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Terrain|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
-				//Dbg.Grp.Init | Dbg.Grp.Startup | Dbg.Grp.Sound | Dbg.Grp.Terrain | Dbg.Grp.Weather
+				//Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Terrain|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
+					Dbg.Grp.Init|Dbg.Grp.Startup|Dbg.Grp.Unity|Dbg.Grp.Time|Dbg.Grp.Weather|Dbg.Grp.Units|Dbg.Grp.Invasion
 ));
 
 				Dbg.trc(Dbg.Grp.Init, 5);				

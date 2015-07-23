@@ -16,16 +16,16 @@ namespace Plugin.HCR {
 		//*****************************************************************************************
 		public class RainDrop {
 			
-			public GameObject blob;
+			public GameObject go;
 			public Vector3 location;
 			public Vector3 minHeight;
 			
 			public RainDrop(Vector3 _location, Vector3 _minHeight) {
 				location = _location;
 				minHeight = _minHeight;
-				blob = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-				blob.transform.localScale = new Vector3(0.1f,0.2f,0.1f);
-				blob.renderer.material = AManager<ChunkManager>.getInstance().materials[1];
+				go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+				go.transform.localScale = new Vector3(0.1f,0.2f,0.1f);
+				go.renderer.material = AManager<ChunkManager>.getInstance().materials[1];
 			}		
 		}
 
@@ -49,9 +49,9 @@ namespace Plugin.HCR {
 			//Dbg.trc(Dbg.Grp.Rain,3,"Rain update");
 			float speed = 2.0f;
 			foreach(RainDrop rainDrop in rainDropsOnMap) {
-				rainDrop.blob.transform.Translate(new Vector3(0,-1f,-.2f) * Time.deltaTime * speed, Space.World);
-				if(rainDrop.blob.transform.position.y < rainDrop.minHeight.y) {
-					rainDrop.blob.transform.position = rainDrop.location;
+				rainDrop.go.transform.Translate(new Vector3(0,-1f,-.2f) * Time.deltaTime * speed, Space.World);
+				if(rainDrop.go.transform.position.y < rainDrop.minHeight.y) {
+					rainDrop.go.transform.position = rainDrop.location;
 				}
 			}
 		}
@@ -77,9 +77,10 @@ namespace Plugin.HCR {
 		//*****************************************************************************************
 		public void addRainDrop(Vector3 location, Vector3 minHeight) {
 			RainDrop rainDrop = new RainDrop(location,minHeight);
-			rainDrop.blob = Instantiate(rainDrop.blob, location, Quaternion.identity) as GameObject;
+			rainDrop.go = Instantiate(rainDrop.go, location, Quaternion.identity) as GameObject;
+			//rainDrop.go.transform.tag = "RainDrop"+rainDropsOnMap.Count.ToString();
 			rainDropsOnMap.Add(rainDrop);
-			rainDrop.blob.SetActiveRecursively(true);	//TODO: check: is this needed?
+			rainDrop.go.SetActiveRecursively(true);	//TODO: check: is this needed?
 			Dbg.trc(Dbg.Grp.Rain, 3);			
 		} 
 
@@ -88,7 +89,7 @@ namespace Plugin.HCR {
 			Dbg.trc(Dbg.Grp.Rain, 5);
 
 			foreach(RainDrop rainDrop in rainDropsOnMap) {
-				UnityEngine.Object.Destroy(rainDrop.blob); 
+				UnityEngine.Object.Destroy(rainDrop.go); 
 			}
 			rainDropsOnMap.Clear();
 			RainSound rs = GetEntity<RainSound>();;

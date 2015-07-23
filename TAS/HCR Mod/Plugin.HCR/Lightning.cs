@@ -15,22 +15,24 @@ namespace Plugin.HCR {
 		private int bLow;
 		private int bHigh;
 		private float[] freqData = new float[samples];
-		private AudioSource asrc;		
-		private GameObject lightGameObject = new GameObject("Lightning light");
-		private Vector3 pos;
-
+		public AudioSource asrc;
+		public LineRenderer rend;
+		public new Light light;
+		public Vector3 pos;
+		public static List<Bolt> boltSegments = new List<Bolt>();
+		
 		public class Bolt  {
 			
-			public GameObject bolt;
+			public GameObject go;
 			public Vector3 location;
 			public Vector3 minHeight;
 			
 			public Bolt(Vector3 _location, Vector3 _minHeight) {
 				location = _location;
 				minHeight = _minHeight;
-				bolt = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-				bolt.transform.localScale = new Vector3(1.0f,10.0f,1.0f);
-				bolt.renderer.material = AManager<ChunkManager>.getInstance().materials[3];
+				go = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+				go.transform.localScale = new Vector3(1.0f,10.0f,1.0f);
+				go.renderer.material = AManager<ChunkManager>.getInstance().materials[30];
 			}		
 		}
 		
@@ -39,14 +41,21 @@ namespace Plugin.HCR {
 		public override void Awake() {
 			Dbg.trc(Dbg.Grp.Init, 5);
 			
-			lightGameObject.AddComponent<Light>();
-			lightGameObject.light.color = Color.white;
-			lightGameObject.light.type = LightType.Directional;
-			lightGameObject.light.intensity = 0;
-			lightGameObject.light.range = 0;
-			lightGameObject.transform.parent = go.transform;
-			pos = new Vector3(UnityEngine.Random.Range(0,20), 20, UnityEngine.Random.Range(0,20));
-			lightGameObject.transform.position = pos;
+			light = go.AddComponent<Light>();
+			light.color = Color.white;
+			light.type = LightType.Directional;
+			light.intensity = 0;
+			light.range = 0;
+
+			rend = go.AddComponent<LineRenderer>();
+			rend.useWorldSpace = true;
+			rend.material = new Material(Shader.Find("Particles/Additive"));
+			rend.SetColors(Color.white, Color.white);
+			rend.SetWidth(0.2F, 0.2F);
+			rend.SetVertexCount(20);
+
+			pos = new Vector3(0,15,0);
+			go.transform.position = pos;
 
 			int fSmplRate = AudioSettings.outputSampleRate/2;
 			bLow = (fMin/(fSmplRate/samples));
@@ -64,7 +73,10 @@ namespace Plugin.HCR {
 		}
 
 		public void Update() {
-			try {			
+			try {
+				Rain rain = Rain.getInstance() as Rain;
+				Dbg.trc(Dbg.Grp.All, 5,"rain= "+rain.ToString());
+				
 				RainSound rs = gameObject.GetComponent<RainSound>();
 				asrc = rs.asrcCurrent;
 				
@@ -88,10 +100,28 @@ namespace Plugin.HCR {
 				//needs a better selection of frequencies, 20-8000 is probably not optimal at all
 				vol *= asrc.volume;
 				float intensity = vol;
+
+				if (intensity < 0.006f) {
+					rend.enabled = false;
+					//pos = new Vector3(UnityEngine.Random.Range(0,20), 15, UnityEngine.Random.Range(0,20));
+					pos = new Vector3(0, 15, 0);
+					go.transform.position = pos;
+				} else if (intensity >= 0.006f) {
+					int i = 0;
+					while (i < 20) {
+						Vector3 lpos = pos;
+						lpos.x += UnityEngine.Random.value*2-1;
+						lpos.y -= i+UnityEngine.Random.value*2-1;
+						lpos.z += UnityEngine.Random.value*2-1;
+						rend.SetPosition(i, lpos);
+						i++;
+					}
+					rend.SetWidth(intensity*20,intensity*20);
+					rend.enabled = true;
+				}
+									
 				if (intensity < 0.003f) {
-					pos = new Vector3(UnityEngine.Random.Range(0,20), 20, UnityEngine.Random.Range(0,20));
-					lightGameObject.transform.position = pos;					
-					intensity *= 0f;	
+					intensity *= 0f;
 				} else if (intensity < 0.006f)
 					intensity *= 10f;
 				else if (intensity < 0.008f)
@@ -101,8 +131,8 @@ namespace Plugin.HCR {
 				else 
 					intensity *= 200f;	
 				
-				lightGameObject.light.intensity = intensity;
-				lightGameObject.light.range = intensity;	//does this even have an effect with directional light?
+				go.light.intensity = intensity;
+				go.light.range = intensity;	//does this even have an effect with directional light?
 				
 			} catch (Exception e) {
 				Dbg.dumpExc(e);
