@@ -9,32 +9,17 @@ namespace Plugin.HCR {
 	
 	public class Lightning : SingletonEntity<Lightning> {
 
-		private const int samples = 256;
-		private int fMin = 20;
-		private int fMax = 8000;
-		private int bLow;
-		private int bHigh;
-		private float[] freqData = new float[samples];
+		public const int samples = 256;
+		public int fMin = 20;
+		public int fMax = 8000;
+		public int bLow;
+		public int bHigh;
+		public float[] freqData = new float[samples];
 		public AudioSource asrc;
 		public LineRenderer rend;
 		public new Light light;
 		public Vector3 pos;
-		public static List<Bolt> boltSegments = new List<Bolt>();
 		
-		public class Bolt  {
-			
-			public GameObject go;
-			public Vector3 location;
-			public Vector3 minHeight;
-			
-			public Bolt(Vector3 _location, Vector3 _minHeight) {
-				location = _location;
-				minHeight = _minHeight;
-				go = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-				go.transform.localScale = new Vector3(1.0f,10.0f,1.0f);
-				go.renderer.material = AManager<ChunkManager>.getInstance().materials[30];
-			}		
-		}
 		
 		//*****************************************************************************************		
 
@@ -53,9 +38,9 @@ namespace Plugin.HCR {
 			rend.SetColors(Color.white, Color.white);
 			rend.SetWidth(0.2F, 0.2F);
 			rend.SetVertexCount(20);
+			rend.enabled = false;
 
 			pos = new Vector3(0,15,0);
-			go.transform.position = pos;
 
 			int fSmplRate = AudioSettings.outputSampleRate/2;
 			bLow = (fMin/(fSmplRate/samples));
@@ -101,18 +86,18 @@ namespace Plugin.HCR {
 				vol *= asrc.volume;
 				float intensity = vol;
 
-				if (intensity < 0.006f) {
+				if (intensity < 0.008f) {
 					rend.enabled = false;
-					//pos = new Vector3(UnityEngine.Random.Range(0,20), 15, UnityEngine.Random.Range(0,20));
-					pos = new Vector3(0, 15, 0);
+					pos = new Vector3(UnityEngine.Random.Range(0,20), 15, UnityEngine.Random.Range(0,20));
+					//pos = new Vector3(0, 15, 0);
 					go.transform.position = pos;
-				} else if (intensity >= 0.006f) {
+				} else if (intensity >= 0.008f) {
 					int i = 0;
 					while (i < 20) {
 						Vector3 lpos = pos;
-						lpos.x += UnityEngine.Random.value*2-1;
-						lpos.y -= i+UnityEngine.Random.value*2-1;
-						lpos.z += UnityEngine.Random.value*2-1;
+						lpos.x += UnityEngine.Random.value*3-1.5f;
+						lpos.y -= i+UnityEngine.Random.value*3-1.5f;
+						lpos.z += UnityEngine.Random.value*3-1.5f;
 						rend.SetPosition(i, lpos);
 						i++;
 					}
@@ -132,7 +117,7 @@ namespace Plugin.HCR {
 					intensity *= 200f;	
 				
 				go.light.intensity = intensity;
-				go.light.range = intensity;	//does this even have an effect with directional light?
+				go.light.range = intensity*2;	//TODO: does this have an effect with directional light?
 				
 			} catch (Exception e) {
 				Dbg.dumpExc(e);

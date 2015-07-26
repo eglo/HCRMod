@@ -25,6 +25,8 @@ namespace Plugin.HCR {
 		}
 			
 
+		//*****************************************************************************************	
+		/// get singleton entity by instance
 		public static SingletonEntity<T> getInstance() {
 			if (instance != null)
 				return (SingletonEntity<T>) instance;
@@ -32,7 +34,8 @@ namespace Plugin.HCR {
 				throw new ArgumentException("Singleton not created");			
 		}
 
-		//*****************************************************************************************		
+		//*****************************************************************************************	
+		/// get an entity child
 		public new static U GetEntity<U>() where U : Entity {
 			object obj = instance.go.GetComponent(typeof(U));
 			if (obj != null) {
@@ -41,7 +44,8 @@ namespace Plugin.HCR {
 				throw new ArgumentException("Entity not found");
 			}
 		}
-		//*****************************************************************************************		
+		//*****************************************************************************************
+		/// get an entity sibling
 		public new static U GetEntityInParent<U>() where U : Entity {
 			object obj = instance.gameObject.GetComponent(typeof(U));
 			if (obj != null) {
@@ -54,22 +58,9 @@ namespace Plugin.HCR {
 
 	//*****************************************************************************************
 
-
 	public abstract class Entity : MonoBehaviour {
 		protected GameObject go = new GameObject("iNiTiAl");
-		
-		//*****************************************************************************************		
-		protected virtual T AddEntity<T>(Transform parent)  where T : Entity {
-
-			Dbg.trcCaller(Dbg.Grp.Init, 5,"Start AddGameComponent: "+typeof(T).FullName);
-
-			T comp = go.AddComponent<T>();
-			comp.setup(parent);
-		
-			Dbg.trcCaller(Dbg.Grp.Init, 5,"Done AddGameComponent: "+ comp.go.name + " parent is:" + comp.gameObject.name);			
-			return comp;
-		}
-		
+				
 		//*****************************************************************************************				
 		protected virtual void setup(
 			Transform parent = null, 
@@ -114,6 +105,20 @@ namespace Plugin.HCR {
 		}
 
 		//*****************************************************************************************		
+		protected virtual T AddEntity<T>(Transform parent)  where T : Entity {
+			
+			Dbg.trcCaller(Dbg.Grp.Init, 4,"Start AddEntity: "+typeof(T).FullName);
+			
+			T comp = go.AddComponent<T>();
+			comp.setup(parent);
+			
+			Dbg.trcCaller(Dbg.Grp.Init, 5,"Done AddEntity: "+ comp.go.name + " parent is:" + comp.gameObject.name);			
+			return comp;
+		}
+
+		//*****************************************************************************************		
+		/// get an entity child
+
 		public T GetEntity<T>() where T : Entity {
 			object obj = go.GetComponent(typeof(T));
 			if (obj != null) {
@@ -125,22 +130,14 @@ namespace Plugin.HCR {
 		}
 
 		//*****************************************************************************************		
+		/// get an entity sibling
+
 		public U GetEntityInParent<U>() where U : Entity {
 			object obj = gameObject.GetComponent(typeof(U));
 			if (obj != null) {
 				return (U) obj;
 			} else {
 				throw new ArgumentException("Entity not found");
-			}
-		}
-
-		//*****************************************************************************************		
-		public static U FindEntity<U>() where U : Entity {
-			object obj = GameObject.FindObjectOfType(typeof(U));
-			if (obj != null) {
-				return (U) obj;
-			} else {
-				throw new ArgumentException("Gameobject not found");
 			}
 		}
 		

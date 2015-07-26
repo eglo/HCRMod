@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Timber_and_Stone;
 using Timber_and_Stone.API;
-using Timber_and_Stone.API.Event;
-using Timber_and_Stone.Event;
 using Timber_and_Stone.Blocks;
 
 namespace Plugin.HCR {
@@ -17,7 +15,8 @@ namespace Plugin.HCR {
 		public int nextRainHour = 0;
 		public Vector3i worldSize3i;
 
-
+		//*****************************************************************************************
+		
 		public override void Awake() {
 			Dbg.trc(Dbg.Grp.Init, 5);
 		}

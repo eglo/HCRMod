@@ -37,7 +37,7 @@ namespace Plugin.HCR {
 			GUIManager gm = AManager<GUIManager>.getInstance();
 			int ticks = 0;
 			while(!gm.inGame) {
-				Dbg.msg(Dbg.Grp.Init, 3, "Wait for game init.." + ticks.ToString());
+				Dbg.msg(Dbg.Grp.Init, 3, "wait for game init.." + ticks.ToString());
 				yield return new WaitForSeconds(1.0f);
 				ticks++;
 			}
@@ -45,18 +45,17 @@ namespace Plugin.HCR {
 			try {
 				Configuration conf = Configuration.getInstance();
 				AddEntity<UI>(this.transform);
-				
 #if HCRDEBUG				
 				gm.AddTextLine("HCR - Here Comes The Rain - Mod Version " + conf.version + " DEBUG BUILD " + conf.build);
 #else
 				gm.AddTextLine("HCR - Here Comes The Rain - Mod Version " + conf.version + " Build " + conf.build);
-#endif
+#endif				
 				if(!conf.init()) {
 					Dbg.printErr("Error in configuration init, mod is NOT enabled");
 					yield break;
 				}
 	
-//TODO_ delete this			
+//TODO: delete this			
 //overrides ini config...
 				conf.isEnabledDebugLevel.set(4);
 				conf.isEnabledDebugGroup.set((int)(

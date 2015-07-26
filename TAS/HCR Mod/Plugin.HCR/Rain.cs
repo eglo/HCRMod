@@ -78,7 +78,7 @@ namespace Plugin.HCR {
 		public void addRainDrop(Vector3 location, Vector3 minHeight) {
 			RainDrop rainDrop = new RainDrop(location,minHeight);
 			rainDrop.go = Instantiate(rainDrop.go, location, Quaternion.identity) as GameObject;
-			//rainDrop.go.transform.tag = "RainDrop"+rainDropsOnMap.Count.ToString();
+			rainDrop.go.transform.name = "RainDrop"+rainDropsOnMap.Count.ToString();
 			rainDropsOnMap.Add(rainDrop);
 			rainDrop.go.SetActiveRecursively(true);	//TODO: check: is this needed?
 			Dbg.trc(Dbg.Grp.Rain, 3);			
